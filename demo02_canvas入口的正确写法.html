@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>demo02</title>
+</head>
+
+<body>
+    <section>
+        <canvas id="mainCanvas"></canvas>
+    </section>
+    <script>
+        window.addEventListener('load', eventWindowLoaded, false);
+
+        // canvas应用的入口
+        function eventWindowLoaded() {
+            canvasApp();
+        }
+
+        // 检测浏览器是否支持canvas
+        function supportCanvas(element) {
+            return !!element.getContext;
+        }
+
+        // canvasApp
+        function canvasApp() {
+            var mainCanvas = document.getElementById('mainCanvas');
+            // 检测浏览器是否支持canvas,首先检测mainCanvas对象是否存在，然后检测canvas对象能否调用getContext方法来检测浏览器是否支持canvas
+            if (!supportCanvas(mainCanvas)) {
+                alert("浏览器不支持canvas!");
+            }
+            console.log(mainCanvas);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>transform矩阵实现多样化变形</title>
+</head>
+
+<body>
+    <canvas id="main"></canvas>
+    <script>
+        // transform(a,b,c,d,e,f)对应的矩阵
+        // a c e
+        // b d f 
+        // 0 0 1
+        // 原始的坐标为（x,y）,缩放后的坐标为（x1,y1）,缩放的倍数分别为a和d
+        // x1=a*x
+        // y1=d*y
+        // 因此，有如下的矩阵公式
+        // |x1| |a 0 0| |x|
+        // |y1|=|0 d 0| |y|
+        // | 1| |0 0 1| |1|
+        // 这样就可以用（a,0,0,d,0,0）来替换scale(a,d)
+        var c = document.getElementById("main");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.strokeStyle = "red";
+        ctx.strokeRect(10, 10, 150, 100);
+
+        // +缩放
+        ctx.transform(2, 0, 0, 2, 0, 0);
+        ctx.beginPath();
+        ctx.strokeStyle = '#cccccc';
+        ctx.strokeRect(10, 10, 150, 100);
+        // +平移
+        // 原坐标（x,y）,平移后的坐标（x1,y1）,在x轴y轴的平移量分别是e和f,那么就有下列公式
+        // x1 = x + e 
+        // y1 = y + f
+        // 可以得到如下的矩阵公式,矩阵的乘法是横竖相乘
+        // |x1| |1 0 e| |x|
+        // |y1|=|0 1 f| |y|
+        // | 1| |0 0 1| |1|
+        // 就可以用transform(1,0,0,1,e,f)来代替translate(e,f)
+        ctx.transform(1, 0, 0, 1, 5, 10);
+        ctx.beginPath();
+        ctx.strokeStyle = 'blue';
+        ctx.strokeRect(10, 10, 150, 100);
+        // +旋转
+        // 对应的矩阵公式
+        // |x1| |cosa -sina 0| |x|
+        // |y1|=|sina cosa  0| |y|
+        // | 1| |0    0     1| |1|
+        // 就可以用transform（cosa,sina,-sina,cosa,0,0）来替换rotate(a)
+        ctx.transform(Math.cos(45 * Math.PI / 180),
+            Math.sin(45 * Math.PI / 180), -Math.sin(45 * Math.PI / 180),
+            Math.cos(45 * Math.PI / 180), 0, 0);
+        ctx.beginPath();
+        ctx.strokeStyle = 'green';
+        ctx.strokeRect(10, 10, 150, 100);
+    </script>
+</body>
+
+</html>

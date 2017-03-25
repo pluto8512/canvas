@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>颜色渐变</title>
+</head>
+
+<body>
+    <section>
+        <canvas id="main"></canvas>
+    </section>
+    <script>
+        var c = document.getElementById('main');
+        var ctx = c.getContext('2d');
+        // 线性渐变API,creatLinearGradient(x1,y1,x2,y2)
+        // 参数的意思:出发点坐标（x1,y1），终点坐标（x2,y2）
+        // addColorStop(position,color)
+        // position参数必须在0.0到1.0
+        var grd = ctx.createLinearGradient(0, 0, 200, 0);
+        grd.addColorStop(0.5, 'red');
+        grd.addColorStop(0.5, 'green');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, 200, 100);
+        var grd2 = ctx.createLinearGradient(0, 0, 200, 0);
+        grd2.addColorStop(0.2, 'red');
+        grd2.addColorStop(0.8, 'green');
+        ctx.fillStyle = grd2;
+        ctx.fillRect(0, 100, 200, 100);
+    </script>
+</body>
+
+</html>

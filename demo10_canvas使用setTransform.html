@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>setTransform</title>
+</head>
+
+<body>
+    <section>
+        <canvas id="main"></canvas>
+    </section>
+    <script>
+        var c = document.getElementById("main");
+        var ctx = c.getContext('2d');
+        ctx.beginPath();
+        ctx.strokeStyle = "#000000";
+        ctx.strokeRect(200, 50, 100, 50);
+
+        ctx.transform(Math.cos(5 * Math.PI / 180),
+            Math.sin(5 * Math.PI / 180), -Math.sin(5 * Math.PI / 180),
+            Math.cos(5 * Math.PI / 180), 0, 0);
+        ctx.beginPath();
+        ctx.strokeStyle = 'blue';
+        ctx.strokeRect(200, 50, 100, 50);
+
+        ctx.transform(Math.cos(5 * Math.PI / 180),
+            Math.sin(5 * Math.PI / 180), -Math.sin(5 * Math.PI / 180),
+            Math.cos(5 * Math.PI / 180), 0, 0);
+        ctx.beginPath();
+        ctx.strokeStyle = 'pink';
+        ctx.strokeRect(200, 50, 100, 50);
+
+        ctx.transform(Math.cos(5 * Math.PI / 180),
+            Math.sin(5 * Math.PI / 180), -Math.sin(5 * Math.PI / 180),
+            Math.cos(5 * Math.PI / 180), 0, 0);
+        ctx.beginPath();
+        ctx.strokeStyle = 'green';
+        ctx.strokeRect(200, 50, 100, 50);
+
+        // setTransform实现旋转效果的时候会清除前面的transform
+        ctx.setTransform(Math.cos(5 * Math.PI / 180),
+            Math.sin(5 * Math.PI / 180), -Math.sin(5 * Math.PI / 180),
+            Math.cos(5 * Math.PI / 180), 0, 0);
+        ctx.beginPath();
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect(200, 50, 100, 50);
+    </script>
+</body>
+
+</html>

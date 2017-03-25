@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas绘制图片</title>
+</head>
+<section>
+    <canvas id="main"></canvas>
+</section>
+<script>
+    window.addEventListener('load', eventWindowLoaded, false);
+    // BEGIN
+    function eventWindowLoaded() {
+        canvasApp();
+    }
+
+    // canvasApp
+    function canvasApp() {
+        var mainCanvas = document.getElementById('main');
+        if (!supportCanvas(mainCanvas)) {
+            alert("浏览器不支持canvas!");
+        }
+        var ctx = mainCanvas.getContext('2d');
+
+        var image = new Image();
+        image.src = './images/0.png';
+        // 图片绘制API
+        image.onload = function() {
+            ctx.drawImage(image, 10, 10);
+            var imgData = ctx.getImageData(50, 50, 200, 200);
+            ctx.putImageData(imgData, 10, 260);
+            ctx.putImageData(imgData, 200, 260, 50, 50, 100, 100);
+
+        };
+    }
+
+    function supportCanvas(element) {
+        return !!element.getContext;
+    }
+</script>
+
+<body>
+
+</body>
+
+</html>

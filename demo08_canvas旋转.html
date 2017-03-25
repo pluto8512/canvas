@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>旋转</title>
+</head>
+
+<body>
+    <canvas id="main"></canvas>
+    <script>
+        var c = document.getElementById('main');
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.strokeStyle = "#000000";
+        ctx.strokeRect(0, 0, 100, 50);
+
+        // 顺时针旋转45度
+        ctx.rotate(45 * Math.PI / 180);
+        ctx.beginPath();
+        ctx.strokeStyle = "#ff0000";
+        ctx.strokeRect(0, 0, 100, 50);
+    </script>
+</body>
+
+</html>

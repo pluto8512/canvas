@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>demo1</title>
+</head>
+
+<body>
+    <section id="cont">
+        <canvas id="main" width="400" height="400">
+        Your browser dose not support HTML5 canvas
+    </canvas>
+    </section>
+
+    <script>
+        // 两个顶层对象window,document
+        // 在canvas放入web页面之前所有的资源都要加载好，所有的html元素都要已经展现出来
+        (function() {
+            var canvas = document.createElement('canvas');
+            // document.body.appendChild(canvas);
+            document.getElementById("cont").appendChild(canvas);
+            canvas.id = "myCanvas";
+            canvas.width = '400';
+            canvas.height = '400';
+        })();
+    </script>
+</body>
+
+</html>
