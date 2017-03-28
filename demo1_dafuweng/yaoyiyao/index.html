@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>yaoyiyao</title>
+</head>
+
+<body>
+    <script src="../node_modules/jQuery/lib/node-jquery.js"></script>
+    <script>
+        var SHAKE_THRESHOLD = 1500; //摇动的门槛
+        var last_update = 0; //最后更新的时间
+        var x = y = z = last_x = last_y = last_z = 0; //初始化加速度
+        var isShakeable = true; //判断可不可以摇一摇的标志
+        /**
+         * 设备移动管理者
+         * @param eventData
+         */
+        function deviceMotionHandler(eventData) {
+            var acceleration = eventData.accelerationIncludingGravity; //accelerationIncludingGravity属性返回设备的加速度的记录
+            var curTime = new Date().getTime(); // curTime当前时间
+            if ((curTime - last_update) > 100) {
+                var diffTime = curTime - last_update; // diffTime两次摇动之间的时间间距
+                last_update = curTime; //重置最后一次摇动手机的时间
+                x = acceleration.x; // x轴上的加速度
+                y = acceleration.y; // y轴上的加速度
+                z = acceleration.z; // z轴上的加速度
+                var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000; //摇动程度的计算公式
+                // 手机摇动调用的逻辑
+                if (speed > SHAKE_THRESHOLD) {
+                    // 出现蒙版的时候禁止摇动，就是蒙版不可见的时候执行下面的逻辑
+                    if ($(".mask:visible").length === 0) {
+                        // 获取摇动结果，延迟5秒执行
+                        if (isShakeable) {
+                            isShakeable = false;
+                            // 执行逻辑
+                            alert("检测到了摇动!");
+                            // // 提交分数抽奖
+                            // window.game.commitScore({
+                            //     "score": 100,
+                            //     "needFollow": true,
+                            //     "callback": function() {
+                            //         setTimeout(function() {
+                            //             window.game.showLottoPage();
+                            //         }, 5000);
+                            //     },
+                            //     "failCallback": function() {
+                            //         isShakeable = true; //提交没有成功，则重置未可以执行摇一摇逻辑
+                            //     }
+                            // });
+                        }
+                    }
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z; //重置加速度
+            }
+        }
+        /**
+         * 初始化
+         */
+        function myInit() {
+            //! 监听手机摇动的兼容性代码
+            // 重力感应-运动速度
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('devicemotion', function(eventData) {
+                    // 摇动
+                    deviceMotionHandler(eventData);
+                }, false);
+            } else {
+                alert("你的设备不支持重力感应！");
+            }
+        }
+    </script>
+</body>
+
+</html>
