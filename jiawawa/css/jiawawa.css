@@ -1,0 +1,64 @@
+/*common B!*/
+*,
+::before,
+::after {
+  padding: 0;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+body {
+  color: #333;
+  font-family: "MicroSoft YaHei","sans-serif"; }
+
+ul, ol {
+  list-style: none; }
+
+a {
+  text-decoration: none;
+  color: #333; }
+
+a:hover {
+  color: #333; }
+
+input, textarea {
+  border: none;
+  outline: none;
+  resize: none;
+  -webkit-appearance: none; }
+
+.fl {
+  float: left; }
+
+.fr {
+  float: right; }
+
+.clearfix::after,
+.clearfix::before {
+  content: ".";
+  line-height: 0;
+  height: 0;
+  display: block;
+  visibility: hidden;
+  clear: both; }
+
+/*common E*/
+#jiawawa_game {
+  width: 13.75rem !important;
+  height: 16.75rem !important;
+  background: skyblue;
+  margin: 0 auto; }
+
+#jiawawa_game canvas {
+  width: 13.75rem !important;
+  height: 16.75rem !important; }
+
+.button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 1.25rem;
+  background: pink;
+  margin: 0.25rem auto; }
+
+/*# sourceMappingURL=jiawawa.css.map */

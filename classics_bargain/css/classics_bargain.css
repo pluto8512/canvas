@@ -1,0 +1,324 @@
+
+/*通用 B！*/
+*,
+::before,
+::after{
+    padding: 0;
+    margin: 0;
+
+    /*在移动端特殊的设置*/
+    /*清除点击高亮效果*/
+    -webkit-tap-highlight-color: transparent;
+    /*设置所有的盒子的宽度以边框开始计算*/
+    -webkit-box-sizing: border-box;
+    /*要兼容 webkit 浏览器内核厂商 这种情况一般是老的移动端浏览器*/
+    box-sizing: border-box;
+}
+body{
+    color: #333;
+    font-family: "MicroSoft YaHei","sans-serif";/*是设备默认的字体*/
+}
+ul,ol{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color: #333;
+}
+a:hover{
+    color: #333;
+}
+input,textarea{
+    border: none;
+    outline: none;
+    resize: none;
+    /*特殊的属性定义  清除浏览器给input自带的样式*/
+    -webkit-appearance: none;/*组件默认的样式空*/
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.clearfix::after,
+.clearfix::before{
+    content: ".";
+    line-height: 0;
+    height: 0;
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+/*通用 E！*/
+/*助力列表 B!*/
+.helpList {
+    width: 16rem;   
+    position: relative;
+}
+.helpList .help_head {
+    width: 15.325rem;
+    height: 2.3rem;
+    margin: 0 auto;
+    position: relative;
+}
+.helpList .help_head img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0.025rem;
+}
+.helpList .help_content {
+    width: 14.9rem;
+    border-radius: 0 0 0.2rem 0.2rem;
+    border-width: 0 0.05rem 0.05rem 0.05rem;
+    border-style: solid;
+    border-color: white;
+    margin: -0.4rem auto 0 auto;
+}
+.helpList .help_content .item {
+    width: 100%;
+    height: 3.15rem;
+    margin: 0 auto;
+    padding-top: 0.65rem;
+    overflow: hidden;
+}
+.helpList .help_content .item {
+    border-bottom: solid 0.05rem white;
+    box-shadow: 0rem 0rem 0.5rem 0.01rem #09777D;
+}
+.helpList .help_content .item:last-child {
+    border-bottom: none;
+}
+.helpList .help_content .item img {
+    display: inline-block;
+    width: 1.625rem;
+    height: 1.625rem;
+    margin-left: 1.55rem;
+    margin-right: 0.5rem;
+}
+.helpList .help_content .item .description {
+    display: inline-block !important;
+}
+.helpList .help_content .item .description p:first-child{
+    font-size: 0.5rem;
+    color: #CE1FA1;
+}
+.helpList .help_content .item .description p:first-child span{
+    font-size: 0.675rem;
+    color: #FFE618;
+}
+.helpList .help_content .item .description p:last-child {
+    font-size: 0.725rem;
+    color: #EB12A1;
+}
+.helpList .help_content .item .description p:last-child span {
+    color: #FFE618;
+}
+/*助力列表 E!*/
+/*content B！*/
+.content {
+    width: 16rem;
+    height: 8.85rem;
+    position: relative;
+}
+.content .base_layer {
+    width: 15.85rem;
+    height: 7.925rem;
+    position: absolute;
+    left: 0;
+    top: 0.825rem;
+}
+.status {
+    width: 15.85rem;
+    height: 7.925rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.content .base_layer .status>img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.content .price_bar {
+    width: 14.75rem;
+    height: 1.85rem;
+    position: absolute;
+    left: 50%;
+    margin-left: -7.375rem;
+    top: 0.825rem;
+    margin-top: -0.925rem;
+}
+.content .price_bar img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.content .bar {
+    width: 13.3rem;
+    height: 0.65rem;
+    border-radius: 0.32rem;
+    position: absolute;
+    right: 0.8rem;
+    top: 0.55rem;
+    background: rgba(86, 228, 186, 0.7);
+}
+.content #mark {
+    width: 13.3rem;
+    height: 1rem;
+    position: absolute;
+    right: 0.8rem;
+    top: -0.8rem;
+}
+.content #mark span:first-child,.content #mark span:last-child {
+    padding: 0 0.2rem;
+    background: #6B1A49;
+    color: white;
+    height: 0.825rem;
+    border-radius: 0.2rem;
+    position: absolute;
+    top: 0;
+    font-size: 0.3rem;
+    transform-origin: center center;
+    -webkit-transform-origin: center center;
+    transform: scale(0.70,0.80);
+    -webkit-transform: scale(0.70,0.80);
+}
+.content #mark span:nth-child(2) {
+    padding: 0 0.2rem 0 1rem;
+    background: #EB3799 !important;
+    color: white;
+    height: 0.825rem;
+    border-radius: 0.2rem;
+    position: absolute;
+    top: 0;
+    font-size: 0.3rem;
+    transform-origin: center center;
+    -webkit-transform-origin: center center;
+    transform: scale(0.70,0.80);
+    -webkit-transform: scale(0.70,0.80);
+    z-index: 99;
+}
+.content #mark span:nth-child(2) s {
+    width: 0.65rem;
+    height: 0.65rem;
+    background: url(../../../../../image/mobile/newgame/gamepage/classics_bargain/icon.png) no-repeat 0 0;
+    background-size: 0.65rem 0.65rem;
+    position: absolute;
+    top:0.1rem;
+    left: 0.3rem;
+    
+}
+.content #mark span:nth-child(2) i {
+    border-color: #EB3799 transparent transparent;
+}
+.content #mark i {
+    border-style: solid; 
+    border-width: 0.225rem;
+    border-color: #6B1A49 transparent transparent;
+    position: absolute;
+    bottom: -0.4rem;
+    left: 50%;
+    margin-left: -0.1125rem;
+}
+.content .realFrame {
+    width: 14.375rem;
+    height: 6.475rem;
+    position: absolute;
+    left: 0.78rem;
+    top: 0.8rem;
+    /*background: rgba(255,255,255,0.8);*/
+}
+.content .base_layer .text {
+    height: 1.925rem;
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: #D10F8F;
+    text-align: center;
+    margin-top: 0.6rem;
+}
+.content .base_layer .text>img {
+    width: 1.7rem;
+    height: 1.925rem;
+}
+.content .base_layer .text span {
+    color: #FFE618;
+}
+.content .base_layer .text .desc {
+    display: inline-block;
+}
+.content .base_layer .text p {
+    text-align: center;
+}
+.content .base_layer .act_btn {
+    width: 7.125rem;
+    height: 2.275rem;
+    position: absolute;
+    left: 50%;
+    margin-left: -3.5625rem;
+    bottom: 0.85rem;
+}
+.content .base_layer .act_btn>img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.content .base_layer .btn {
+    width: 100%;
+    height: 2rem;
+    position: absolute;
+    left: 0;
+    bottom: 0.9rem;
+}
+.content .base_layer .btn .btn_thjy, .content .base_layer .btn .btn_share{
+    width: 6.15rem;
+    height: 1.9rem;
+    position: absolute;
+    top: 0;
+}
+.content .base_layer .btn .btn_thjy {
+    left: 0.6rem;
+}
+.content .base_layer .btn .btn_share {
+    right: 0.6rem;
+}
+.content .base_layer .btn .btn_thjy img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.content .base_layer .btn .btn_share img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.content #helpOtherLayer .text .userInfo ,.content #meTooLayer .text .userInfo {
+    display: inline-block;
+}
+.content #helpOtherLayer .text .userInfo img,.content #meTooLayer .text .userInfo img {
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 0.6875rem;
+    -webkit-border-radius: 0.6875rem;
+    border: solid 0.05rem white; 
+}
+.content #helpOtherLayer .text .userInfo p,.content #meTooLayer .text .userInfo p {
+    height: 0.625rem;
+    font-size: 0.625rem;
+    line-height: 0.625rem;
+    color: #FFE618;
+}
+
+/*content E！*/

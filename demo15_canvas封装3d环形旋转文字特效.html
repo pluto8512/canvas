@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    body {
+        /*视窗(Viewport)单位,*/
+        /*这些单位是vw,vh,vmin和vmax。它们都代表了浏览器（视窗(Viewport，视窗包括滚动条)）尺寸的比例和窗口大小调整产生的规模改变.*/
+        /*1vw代表视窗(Viewport)的宽度为1%,vh同理*/
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="600" height="300"></canvas>
+    <script>
+        window.addEventListener('load', eventWindowLoaded, false);
+
+        function eventWindowLoaded () {
+            canvasApp(); //包含整个Canvas应用程序
+        }
+        function canvasSupport (e) {
+        
+            return !!e.getContext;
+
+        }
+        function canvasApp () {
+        var canvas = document.getElementById('myCanvas');
+
+        if (!canvasSupport(myCanvas)) {
+            return; 
+        }
+        
+        var ctx = canvas.getContext('2d');
+        var w = canvas.width = window.innerWidth;// 浏览器视口（viewport）宽度（单位：像素），如果存在垂直滚动条则包括它。
+        var h = canvas.height = window.innerHeight;
+        
+        function drawGrid(ctx, w, h, color, steps){
+            ctx.save();// 保存CanvasRenderingContext2D对象状态
+            ctx.beginPath();
+            for (var i = 0.5; i < w; i += steps) {
+ ctx.moveTo(i, 0);
+            ctx.lineTo(i, h);
+            }
+            for(var i = 0.5; i < h; i += steps) {
+            ctx.moveTo(0, i);
+            ctx.lineTo(w, i);
+            }
+            ctx.strokeStyle = color;
+            ctx.stroke();
+            ctx.restore();// 恢复CanvasRenderingContext2D对象状态
+        }
+        
+        function draw3DTextCircle(ctx, text, x, y, radius, startAngle, isFill, color, textDepth, shadowBlur, shadowColor, interval) {
+            var len = text.length;
+            var numRadPerLetter = Math.PI * 2 / len;
+            var startRadAngle = startAngle * Math.PI / 180;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(startRadAngle);
+            for (var i = 0; i < len; i++) {
+            ctx.save();
+            ctx.rotate(i * numRadPerLetter);
+            
+            for (var j = 0; j < textDepth; j++) {
+                if (isFill) {
+                ctx.fillStyle = color;
+                ctx.fillText(text[i], j, j - radius);
+                } else {
+                ctx.strokeStyle = color;
+                ctx.strokeText(text[i], j, j - radius);
+                }
+            }
+            
+            ctx.shadowColor = shadowColor;
+            ctx.shadowBlur = shadowBlur;
+            ctx.shadowOffsetX = textDepth + interval;
+            ctx.shadowOffsetY = textDepth + interval;
+            
+            if(isFill) {
+                ctx.fillStyle = color;
+                ctx.fillText(text[i], 0, -radius);
+            } else {
+                ctx.strokeStyle = color;
+                ctx.strokeText(text[i], 0, -radius);
+            }
+            ctx.restore();
+            }
+            ctx.restore();
+        }
+        var iAngle = 0;
+        
+        function update() {
+            ctx.clearRect(0,0,w,h);
+            drawGrid(ctx, w, h, '#eee', 10);
+            iAngle += .5;
+            draw3DTextCircle(ctx, 'HelloW3cplus.com', w / 2, h / 2, 140, (90 - iAngle), true, '#f36', 6, 10, '#000', 2);
+        }
+
+        function drawScreen () {
+            drawGrid(ctx, w, h, '#eee', 10);
+            
+            ctx.font = 'bold 40px Verdana';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            
+            draw3DTextCircle(ctx, 'HelloW3cplus.com', w / 2, h / 2, 200, (90 - iAngle), true, '#f36', 6, 10, '#000', 2);
+            
+            setInterval(update, 40);
+        }
+        
+        drawScreen();
+        
+        }
+    </script>
+</body>
+</html>

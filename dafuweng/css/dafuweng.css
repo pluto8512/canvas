@@ -1,0 +1,13 @@
+body , div{
+	padding: 0;
+	margin: 0;
+}
+#dafuweng_game{
+	margin-top: 100px;
+	width: 16rem!important;
+	height: 19.5rem!important;
+}
+#dafuweng_game canvas{
+	width: 16rem!important;
+	height: 19.5rem!important;
+}

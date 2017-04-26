@@ -10,33 +10,35 @@
 
 <body>
     <section>
-        <canvas id="main_canvas"></canvas>
+        <canvas id="main"></canvas>
     </section>
     <script>
-        window.addEventListener('load', eventWindowLoaded, false);
+        window.addEventListener('load', loaded, false);
 
-        // canvas应用的入口
-        function eventWindowLoaded() {
-            canvasApp();
+        // 入口
+        function loaded() {
+            main();
         }
 
-        // 检测浏览器是否支持canvas
+        // 兼容
         function supportCanvas(element) {
             return !!element.getContext;
         }
 
-        // canvasApp
-        function canvasApp() {
-            var mainCanvas = document.getElementById('main_canvas');
+        function main() {
+            var mainCanvas = document.getElementById('main');
             if (!supportCanvas(mainCanvas)) {
                 alert("浏览器不支持canvas!");
             }
             var ctx = mainCanvas.getContext('2d');
+            ctx.strokeStyle='skyblue';
+            ctx.fillStyle='pink';
+
             // 逻辑
-            ctx.font = "italic 900 30px Arial";
+            ctx.font = "italic 900 48px Arial";
             // 参数(text，x，y，maxWidth)
-            ctx.fillText('Hellow World', 100, 50, 50);
-            ctx.strokeText('Hellow', 100, 100, 50);
+            ctx.fillText('Hellow World', 100, 50);
+            ctx.strokeText('Hellow', 100, 50);
         }
     </script>
 </body>

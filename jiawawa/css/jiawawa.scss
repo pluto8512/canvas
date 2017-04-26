@@ -1,0 +1,66 @@
+@function torem($px){
+  @return $px / 40 * 1rem;
+}
+/*common B!*/
+*,
+::before,
+::after{
+    padding: 0;
+    margin: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body{
+    color: #333;
+    font-family: "MicroSoft YaHei","sans-serif";
+}
+ul,ol{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color: #333;
+}
+a:hover{
+    color: #333;
+}
+input,textarea{
+    border: none;
+    outline: none;
+    resize: none;
+    -webkit-appearance: none;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.clearfix::after,
+.clearfix::before{
+    content: ".";
+    line-height: 0;
+    height: 0;
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+/*common E*/
+#jiawawa_game{
+	width: torem(550)!important;
+	height: torem(670)!important;
+    background:skyblue;
+    margin: 0 auto;
+}
+#jiawawa_game canvas{
+	width: torem(550)!important;
+	height: torem(670)!important;
+}
+.button {
+    width: torem(100);
+    height: torem(100);
+    border-radius: torem(50);
+    background: pink;
+    margin: torem(10) auto;
+}

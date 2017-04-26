@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="main" style="width:1200px;height:900px;background:skyblue"></canvas>
+    <script>
+        var canvas = document.getElementById("main");
+        var ctx = canvas.getContext('2d');
+        ctx.font = 'bold 12px Arial';
+        // ctx.textBaseline = 'middle';//设置文本的垂直对齐方式
+        // ctx.textAlign = 'center'; //设置文本的水平对对齐方式
+        drawCircleText(ctx,'tumileotumi',100,60,40,0,true,'pink');
+        // 文字绘制
+        // @param {Object} ctx - CanvasRenderingContext2D
+        // @param {String} text - 文本内容
+        // @param {Number} x - 绘制的x轴的起始点坐标
+        // @param {Number} y - 绘制的y轴的起始点坐标
+        // @param {Boolean} isFill - 是否填充，true为填充，false为描边
+        // @param {Boolean} isMaxWidth - 是否设置文本最大的宽度，true为设置，false为不设置
+        // @param {String} color - 设置文本颜色
+        // @param {Number} maxWidth - 文本最大的宽度
+        function drawText(ctx,text,x,y,isFill,isMaxWidth,color,maxWidth) {
+            if(isFill){
+                ctx.fillStyle= color;
+                if(isMaxWidth){
+                    ctx.fillText(text, x, y, maxWidth);
+                }else {
+                    ctx.fillText(text,x,y);
+                }
+            }else {
+                ctx.strokeStyle='color';
+                if(isMaxWidth){
+                    ctx.stroke(text, x, y, maxWidth);
+                }else {
+                    ctx.stroke(text,x,y);
+                }
+            }
+        }
+        // 环形文本绘制
+        // @param {Object} ctx - CanvasRenderingContext2D
+        // @param {String} text - 文本内容
+        // @param {Number} x - 绘制的x轴的起始点坐标
+        // @param {Number} y - 绘制的y轴的起始点坐标
+        // @param {Number} radius - 圆形半径，弧度
+        // @param {Number} startAngle - 开始的角度值
+        // @param {Boolean} isFill - 是否填充，true为填充，false为不填充
+        // @param {String} color - 设置文本颜色
+        function drawCircleText(ctx,text,x,y,radius,startAngle,isFill,color){
+            // 将角度换成弧度
+            var startRad = Math.PI*startAngle/180;
+            // 绘制的文本的长度
+            var len = text.length;
+            // 每个文字对应的弧度
+            var numRadsPerLetter = Math.PI*2/len;
+            // 保存CanvasRenderingContext2D对象状态
+            ctx.save();
+            // 将坐标原点移动到(x,y)
+            ctx.translate(x, y);
+            // 将坐标旋转startRad
+            ctx.rotate(startRad);
+
+            // 处理字符串
+            for(var i=0;i<len;i++){
+                ctx.save();
+                // CanvasRenderingContext2D对象在旋转，那么他的坐标系也在旋转，所以ctx的运动轨迹是一段圆弧
+                ctx.rotate(i*numRadsPerLetter);
+                if(isFill){
+                    ctx.fillStyle = color;
+                    ctx.fillText(text[i],0,-radius);
+                }else {
+                    ctx.stroke = color;
+                    ctx.stroke(text[i],0,-radius);
+                }
+                ctx.restore();
+            }
+             ctx.restore();
+        }
+        // 3D文本绘制
+        // @param {Object} ctx - CanvasRenderingContext2D
+        // @param {String} text - 绘制的文本内容
+        // @param {Number} x - 文本起始点x轴坐标
+        // @param {Number} y - 文本起始点y轴坐标
+        // @param {Number} textDepth - 阴影的深度
+        // @param {Boolean} isFill - 文本是否填充，true为填充，false为描边
+        // @param {String} color - 文本颜色
+        // @param {String} shadowColor - 阴影颜色
+        // @param {Number} shadowBlur - 阴影距离
+        // @param {Number} interval - 间距
+        function draw3DText(ctx, text, x, y, textDepth,isFill, color, shadowColor, shadowBlur, interval) {
+            var i;
+            for (i = 0; i <textDepth; i++) {
+            if(isFill) {
+                ctx.fillText(text, x - i, y - i);
+            } else {
+                ctx.strokeText(text, x - i, y - i);
+            }
+            }
+            ctx.shadowColor = shadowColor;
+            ctx.shadowBlur = shadowBlur;
+            ctx.shadowOffsetX = textDepth + interval;
+            ctx.shadowOffsetY = textDepth + interval;
+
+            if (isFill) {
+            ctx.fillStyle = color;
+            ctx.fillText(text, x - i, y - i);
+            } else {
+            ctx.strokeStyle = color;
+            ctx.strokeText(text, x - i, y - i);
+            }
+
+        }
+    </script>
+</body>
+</html>

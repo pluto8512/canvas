@@ -1,0 +1,2714 @@
+/* 持续旋转-逆时针 */
+@-webkit-keyframes rotatingL {
+  0%{-webkit-transform: rotate(0);opacity:1;}
+  100%{-webkit-transform: rotate(360deg);opacity:1;}
+}
+@-moz-keyframes rotatingL {
+  0%{-moz-transform: rotate(0);opacity:1;}
+  100%{-moz-transform: rotate(360deg);opacity:1;}
+}
+@-ms-keyframes rotatingL {
+  0%{-ms-transform: rotate(0);opacity:1;}
+  100%{-ms-transform: rotate(360deg);opacity:1;}
+}
+@keyframes rotatingL {
+  0%{transform: rotate(0);opacity:1;}
+  100%{transform: rotate(360deg);opacity:1;}
+}
+input::-webkit-input-placeholder {
+	color: #fff !important;
+	opacity: 0.5;
+} 
+::-webkit-scrollbar  
+{     
+	width: 0.25rem;  
+    background-color: #ccc;  
+    border-radius: 15px;  
+}  
+  
+/*定义滚动条轨道 内阴影+圆角*/  
+::-webkit-scrollbar-track  
+{  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);  
+    border-radius: 15px;  
+    background-color: #ccc;  
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+::-webkit-scrollbar-thumb  
+{  
+    border-radius: 15px;  
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);  
+    background-color: #666;  
+}   
+.a-rotateL{
+	-webkit-animation-name:rotatingL;-moz-animation-name:rotatingL;-ms-animation-name:rotatingL;animation-name:rotatingL;
+	-webkit-animation-iteration-count: infinite;-moz-animation-iteration-count: infinite;-ms-animation-iteration-count: infinite;animation-iteration-count: infinite;
+	-webkit-animation-direction: initial;-moz-animation-direction: initial;-ms-animation-direction: initial;animation-direction: initial;
+	-webkit-animation-timing-function: linear;-moz-animation-timing-function: linear;-ms-animation-timing-function: linear;animation-timing-function: linear;
+	animation-duration: 6s;animation-delay: 0.2s;-webkit-animation-duration: 6s;-webkit-animation-delay: 0.2s;
+}
+/* @-webkit-keyframes loading{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}@-moz-keyframes loading{0%{-moz-transform:rotate(0deg);}100%{-moz-transform:rotate(360deg);}}@-o-keyframes loading{0%{-o-transform:rotate(0deg);}100%{-o-transform:rotate(360deg);}}@-ms-keyframes loading{0%{-ms-transform:rotate(0deg);}100%{-ms-transform:rotate(360deg);}}@keyframes loading{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}.mp_loading{position:absolute; width:100%; height:100%; overflow:hidden; background-color:black; left:0; top:0; -webkit-transform-style:preserve-3d; z-index:1;}.mp_loading_clip{position:fixed; left:50%; top:50%; width:60px; height:60px; margin:-30px 0 0 -30px; overflow:hidden;  -webkit-animation:loading 1.2s linear infinite; -moz-animation:loading 1.2s linear infinite; -o-animation:loading 1.2s linear infinite; -ms-animation:loading 1.2s linear infinite; animation:loading 1.2s linear infinite;}.mp_loading_bar{position:absolute; left:0; top:0; width: 54px;height: 54px; border-radius:50px; overflow:hidden; clip: rect(0px,36px,70px,0); background:rgba(0,0,0,0); border:3px solid #fff367; -webkit-mask:-webkit-gradient(linear,0 0,0 100%,from(rgba(255,255,255,1)),to(rgba(255,255,255,0)));}.mp_loading_txt{width: 100px;height: 30px;line-height: 30px;position: absolute;left: 50%;top: 50%;margin-left: -50px;margin-top: -15px;text-align: center;color: #fff;} */
+.mp_loading_clip{ position: fixed; top: 50%; left: 50%; margin:-30px 0 0 -30px; width: 60px; height: 60px; }
+.mp_loading_clip .mp_loading_bar{ width: 60px; height: 60px; background: url("../../../image/mobile/newgame/mp_loading_hourglass.gif") no-repeat center 0/100%; }
+.mp_loading_cover {
+   width: 100%;
+   height: 100%;
+   background: #000;
+   opacity: 0.8!important;
+   position: fixed;
+   left: 0;
+   top: 0;
+   display: none;
+   z-index: 1500;
+}
+a,button,input
+{
+	-webkit-tap-highlight-color:transparent;
+	outline:0;
+}
+
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td
+{
+	vertical-align:baseline;
+	margin:0;
+	padding:0;
+}
+
+img
+{
+	border:0 none;
+	-webkit-tap-highlight-color:rgba(0,0,0,0.2);
+	vertical-align:top;
+}
+
+i,em
+{
+	font-style:normal;
+}
+
+ol,ul
+{
+	list-style:none;
+}
+
+input,select,button,h1,h2,h3,h4,h5,h6
+{
+	font-size:100%;
+	font-family:inherit;
+}
+
+table
+{
+	border-collapse:collapse;
+	border-spacing:0;
+}
+
+a
+{
+	text-decoration:none;
+	color:#333;
+}
+html,body{min-height: 100%;height:100%;}
+body
+{
+	font:normal 12px "Microsoft Yahei", "Helvetica Neue", Helvetica, "STHeiti STXihei", "Microsoft JhengHei", Arial, sans-serif;
+	-webkit-text-size-adjust:none;
+	-webkit-touch-callout:none;
+	-webkit-tap-highlight-color:transparent;
+	-webkit-user-select:none;
+	user-select:none;
+	margin:0 auto;
+	height:100%;
+	min-height: 100%;
+	overflow-x: hidden;
+}
+.clear-fix { *overflow: hidden; *zoom: 1; }  
+.clear-fix:after { display: table; content: ""; width: 0; clear: both; }
+.zoom{
+	height: 100%;
+}
+.hide{
+	display: none;
+}
+.left{
+	float: left;
+}
+.right{
+	float: right;
+}
+.ellipsis{
+	text-overflow:ellipsis; 
+	overflow:hidden; 
+	white-space:nowrap; 
+}
+a[href]{
+	color:white;
+	text-decoration: none;
+}
+.container{
+	width: 100%;
+	min-height: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	background-position: center top;
+	position: relative;
+}
+.fire_res{
+	
+}
+.fire_res>*{
+	background-size: 100% auto;
+    background-repeat: no-repeat;
+	position: absolute;
+	top:50%;
+	left:50%;
+	text-align:center;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+.fire_res .fire_btn_cont{
+	position: absolute;
+}
+.fire_res .rank_table>*{
+	position: static;
+	left: auto;
+	top: auto;
+}
+.fire_res .fire_btn_cont .fire_btn{
+	position: static;
+	left: auto;
+	top: auto;
+	margin-top: 0.4rem;
+    width: 7.5rem;
+    height: 2.5rem;
+    margin-left: -3.75rem;
+}
+
+.fire_res>p{
+	width: 100%;
+	left: 0;
+}
+.mask{
+	position:fixed;
+	width:100%;
+	height:100%;
+	background-color:rgba(0,0,0,0.8);
+	color:white;
+	font-size:0.8rem;
+	top:0;
+	z-index: 106;
+}
+/* 弹幕消息弹出层 */
+.danmu-mask{
+	z-index: 101;
+	overflow: hidden;
+	width: 100%;	
+}
+.danmu-msg-item {
+	position: fixed;
+	height: 80px;
+	line-height: 30px;
+	z-index: 101;
+	font-size: 36px;
+}
+.danmu-msg-item .user-photo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 25;
+    width: 2rem;
+    height: 2rem;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+	overflow: hidden;
+	background: rgba(0,0,0,0.7);
+}
+.danmu-msg-item .user-photo img {
+    position: absolute;
+    top: .13rem;
+    left: .13rem;
+    display: block;
+    width: 1.74rem;
+    height: 1.74rem;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+.danmu-msg-item .user-content {
+    position: absolute;
+    top: .5rem;
+    left: 2.5em;
+    z-index: 24;
+    border-radius: 40px;
+    height: 1rem;
+    max-width: 12rem;
+    line-height: 1rem;
+    padding: 0 0.5rem 0 0.6rem;
+    text-align: left;
+    font-size: .6rem;
+    color: #fff;
+    background: rgba(0,0,0,0.7);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.danmu-msg-item .user-content>span{
+	display: inline-block;
+}
+.danmu-msg-item .user-content .nickname{
+	max-width: 4rem;
+}
+.danmu-msg-item .user-content .prize_name{
+	display: inline-block;
+	color: #ff9494;
+	max-width: 4.3rem;
+}
+.fire_res input,.award_help_page input{
+	border: none;
+    border-radius: 0.4rem;
+	-webkit-border-radius: 0.4rem;
+	background: #FFF;
+	height: 2rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	line-height: 2rem;
+	font-size: 0.8rem;
+	width: 80%;
+	text-align: left;
+	padding: 0.2rem 0.7rem;
+}
+.fire_res textarea{
+	border: none;
+    border-radius: 0.4rem;
+	-webkit-border-radius: 0.4rem;
+	background: #FFF;
+	height: 4rem;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	line-height: 1.6rem;
+	font-size: 0.8rem;
+	width: 80%;
+	text-align: left;
+	padding: 0.2rem 0.7rem;
+	font-family: "Microsoft Yahei";
+}
+
+/* 游戏未发布顶部提示 */
+.topbar_unpublish{
+    height: 2rem;
+    background-color: #ef4b41;
+    line-height: 2rem;
+    color: #FFF;
+    font-size: 0.65rem;
+    text-align: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 222;
+    width: 100%;
+    display: none;
+}
+
+/* 封面底部版权信息 */
+#start_bottom{
+	position: fixed;
+	width: 100%;
+	height: 1.3rem;
+	bottom: 0px;
+	left: 0px;
+	background: rgba(0,0,0,0.4);
+	z-index: 111;
+}
+
+.start_logo{
+	width: 7.38rem;
+    margin: 0.18rem auto 0;
+    height: 0.8rem;
+}
+.scroller {
+	color:#813621;
+}
+.gameScrollbarV{
+}
+/* 封面参与人数信息 */
+#join_line_cont{
+	position: absolute;
+	text-align: center;
+	left: 0;
+	width: 100%;
+	z-index: 101;
+}
+#join_line_cont .join_line{
+	background: rgba(255,255,255,0.5);
+    padding: 0.15rem 0.3rem;
+    color: #169d24;
+    display: inline-block;
+    border-radius: 0.3rem;
+    line-height: 0.8rem;
+}
+#join_line_cont .join_line .join_num{
+	color: #e42e3a;
+}
+
+/* 封面企业logo */
+.organizer-btn{
+    z-index: 100;
+    position: absolute;
+	left: 0;
+	right:0;
+	margin: auto;
+	top: 0;
+}
+.organizer-btn .organizer-logo{
+   	position: absolute;
+	top: 3.5rem;
+    left: 0.75rem;
+	margin: auto;
+    height: 40px;
+    width: 40px;
+}
+
+/* 游戏开始前loading页面 */
+.fire_loading{
+	z-index: 9001;
+	height: 100%;
+	background-color: #fff;
+	transition: left 0.35s;
+	-moz-transition: left 0.45s; /* Firefox 4 */
+	-webkit-transition: left 0.45s; /* Safari 和 Chrome */
+	-o-transition: left 0.45s; /* Opera */
+	left: 0;
+}
+.fire_loading.close{
+	left:-100%;
+}
+
+.fire_loading .loading_banner_bg{
+	width: 16rem;
+	height: 21.75rem;
+	background-image: url("../../../image/mobile/newgame/opening_bg2.jpg");
+	margin-left: -8rem;
+	top: 0rem;
+    background-position: center center;
+    background-size: contain;
+}
+.fire_loading .yy_logo_bg{
+	width: 16rem;
+	height: 3.5rem;
+	background-image: url("../../../image/mobile/newgame/opening_logo.png");
+	margin-left: -8rem;
+	top: auto;
+	bottom:0;
+    background-position: center center;
+    background-size: 8.9rem 1.85rem;
+    background-color: #fff;
+}
+.fire_loading .skip_btn{
+    background: rgba(0,0,0,0.35);
+    padding: 0.15rem 0.1rem;
+    font-size: 0.6rem;
+    text-align: center;
+    color: #fff;
+    top: 0.5rem;
+    border-radius: 0.2rem;
+    width: 2.7rem;
+    left: auto;
+    right: 0.5rem;
+}
+.fire_loading .skip_time{
+	-webkit-text-size-adjust:none;
+	font-size: 10px;
+}
+.fire_loading span{
+	color: #fff;
+}
+/* 游戏规则弹出框 */
+.fire_rule .content{
+	width: 80%;
+	margin-top: -52%;
+	margin-left: -40%;
+    font-size: 0.6rem;
+    line-height: 1rem;
+	text-align:left;
+	overflow:hidden;
+	padding: 0 0.5rem;
+	height: 17rem;
+}
+.fire_rule .rule_tab{
+	margin-top: 0.2rem;
+}
+.fire_res_rule_tips_text {
+	margin: 0.3rem 0;
+}
+.fire_res_rule_tips_text p {
+	line-height: 0.9rem;
+}
+.fire_rule .scroller {
+	margin: 0rem 0.25rem 0 0.25rem;
+	color:#813621;
+}
+.fire_rule .scroller a{
+	color:#813621;
+}
+/* 分享二维码弹出框 */
+.fire_qrcode .p_text_1{
+	width: 99%;
+	top:10%;
+	margin-left: 0.5%;
+	font-size: 0.7rem;
+}
+.fire_qrcode .help_qrcode_img{
+	width: 82%;
+	height: auto;
+	margin-left: -41%;
+	top: 20%;
+}
+.fire_qrcode .youyu_qrcode_img{
+    width: 33%;
+    margin-left: -32.5%;
+    top: 50.4%;
+}
+
+/* 分享二维码自定义页面 */
+.fire_qrcode_edit .help_qrcode_img{
+	width: 100%;
+	top: 0;
+}
+.fire_qrcode_edit .qrcode_edit_btn{
+	position: absolute;
+	left: 0;
+	right: auto;
+	margin: 0;
+	top: 0;
+	overflow: visible;
+	z-index: 101;
+}
+.fire_qrcode_edit .qrcode_edit_headimg{
+	width: 2.5rem;
+	height: 2.5rem;
+	top: 1rem;
+	left: 1rem;
+}
+.fire_qrcode_edit .qrcode_edit_codeimg{
+	width: 5rem;
+	height: 5rem;
+	top: 9rem;
+	left: 1rem;
+}
+
+/* 段图文分享引导弹出框 */
+.fire_wx_share .share_tips_img{
+	width: 82%;
+	margin-left: -41%;
+	top: 1rem;
+}
+
+.block_img{
+	display: block;
+	width: 100%;
+}
+/* 游戏封面 */
+.start_page{
+	width: 100%;
+	height: 100%;
+	max-width: 800px;
+	margin: 0px auto;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	background-color: #FFF;
+	background-position: center top;
+	position: relative;
+}
+.start_page .start_btn{
+	position: absolute;
+	left: 0;
+	right: auto;
+	margin: 0;
+	top: 0;
+	overflow: visible;
+	z-index: 101;
+}
+.start_page .title_img{
+	position: absolute;
+	left: 0;
+	right:0;
+	margin: auto;
+	top: 0;
+}
+.start_page .bg{
+	display: block;
+	width: 100%;
+}
+.start_btn .ui-wrapper{
+	overflow: visible!important;
+}
+.organizer-btn .ui-wrapper{
+	margin: 0!important;
+}
+/* 游戏奖品助力页面 */
+.help_page_style{
+	width: 100%;
+	height: 100%;
+	max-width: 800px;
+	margin: 0px auto;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	background-color: #FFF;
+	background-position: center top;
+	position: relative;
+	background-color:#ed4d41; 
+	display: none;
+}
+.help_page_style .help_page_cont{
+	position: absolute;
+	top: 0.5rem;
+	bottom: 1.1rem;
+	left: 0.6rem;
+	right: 0.6rem;
+	background-color: #fff;
+	border-radius: 0.4rem;
+	-webkit-border-radius: 0.4rem;
+	text-align: center;
+    -webkit-box-shadow: 4px 4px 2px rgba(0,0,0,0.3);
+    -moz-box-shadow: 4px 4px 2px rgba(0,0,0,0.3);
+    box-shadow: 4px 4px 2px rgba(0,0,0,0.3);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.help_page_style .cyclo_l{
+	width: 1rem;
+	height: 1rem;
+	position: absolute;
+	top: 0rem;
+	left: -0.5rem;
+	border-radius: 1rem;
+	-webkit-border-radius: 1rem;
+	background-color: #ed4d41;
+}
+.help_page_style .cyclo_r{
+	width: 1rem;
+	height: 1rem;
+	position: absolute;
+	top: 0rem;
+	right: -0.5rem;
+	border-radius: 1rem;
+	-webkit-border-radius: 1rem;
+	background-color: #ed4d41;
+	-webkit-box-shadow: inset 4px 1px 2px rgba(0,0,0,0.3);
+	box-shadow: inset 4px 1px 2px rgba(0,0,0,0.3);
+}
+.award_help_page .p_title{
+	font-size: 0.8rem;
+    color: #843828;
+    font-weight: bold;
+    border-bottom: 1px dashed #adadad;
+    margin-top: 0.8rem;
+    padding-bottom: 0.4rem;
+}
+.award_help_page .award_statu_2{
+	display: none;
+}
+.award_help_page .p_text_3{
+	font-size: 0.9rem;
+	margin-bottom: 0.6rem;
+	color: #843828;
+}
+.award_help_page .p_text_4{
+	color: #959595;
+	font-size: 0.6rem;
+	display: none;
+}
+.award_help_page .input_cont{
+    background-color: #fff;
+    width: 12rem;
+    height: 1.55rem;
+    position: relative;
+    margin: 0.5rem auto 0.5rem;
+    text-align: left;
+}
+.award_help_page .validcode_cont{
+    margin-bottom: 0;
+}
+.award_help_page .phone_cont{
+	display: none;
+}
+.award_help_page .input_cont input{
+	height: 100%;
+	line-height: 1.5rem;
+    width: 100%;
+    background: #e8e8e8;
+    font-size: 0.65rem;
+    color: #000;
+    padding: 0.2rem 0.6rem;
+}
+.award_help_page .validcode_cont input{
+	width: 7.4rem;
+}
+.award_help_page .validcode_cont .valid_img{
+    width: 4.2rem;
+    height: 100%;
+    background: white;
+    vertical-align: top;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.award_help_page .validcode_cont .valid_refresh{
+	width: 7%;
+    vertical-align: middle;
+    position: absolute;
+    top: 0;
+    right: -2.7rem;
+}
+.award_help_page .p_awardname{
+	font-size: 1.8rem;
+    color: #acacac;
+    font-weight: bold;
+    margin-top: 1rem;
+    padding-bottom: 0.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    width: 15rem;
+    width: 100%;
+}
+.award_help_page .p_time{
+	font-size: 0.8rem;
+    color: #843828;
+    font-weight: bold;
+    margin-top: 0.8rem;
+    padding-bottom: 0.3rem;
+}
+.award_help_page .p_text_1{
+	font-size: 0.8rem;
+    color: #843828;
+    margin-top: 0rem;
+    padding-bottom: 0.3rem;
+}
+.award_help_page .invite_btn{
+    width: 1rem;
+    background-color: #ed4d41;
+    width: 6.7rem;
+    height: 1.75rem;
+    color: #fff;
+    font-size: 0.9rem;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    line-height: 1.75rem;
+    margin: 0.4rem auto;
+}
+.award_help_page .p_text_2{
+	font-size: 0.7rem;
+    color: #843828;
+    margin-top: 0rem;
+    padding-bottom: 0.3rem;
+}
+.award_help_page .help_list_cont{
+	font-size: 0.7rem;
+    color: #843828;
+    border-top: 1px solid #a5a5a5;
+}
+.award_help_page .help_list li{
+	height: 2.6rem;
+	position: relative;
+	border-top: 1px solid #f0f0f0;
+	color: #838383;
+}
+.award_help_page .help_list_cont .p_total{
+    line-height: 1.6rem;
+    color: #5a5a5a;
+    font-size: 0.75rem;
+}
+.award_help_page .help_list li .headimg{
+	height: 2rem;
+	width: 2rem;
+	position: absolute;
+	top: 0.3rem;
+	left: 0.85rem;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+}
+.award_help_page .help_list li .nickname{
+    position: absolute;
+    top: 0.3rem;
+    left: 3.3rem;
+    width: 4rem;
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    text-align: left;
+}
+.award_help_page .help_list li .time{
+    position: absolute;
+    top: 0.4rem;
+    left: 7.6rem;
+    font-size: 0.6rem;
+    color: #b3b3b3;
+}
+.award_help_page .help_list li .word{
+	position: absolute;
+	top: 1.4rem;
+	left: 3.3rem;
+}
+/* 游戏主页面 */
+.game_page{
+	width: 100%;
+	height: 100%;
+	max-width: 800px;
+	margin: 0px auto;
+	position: relative;
+	display: none;
+}
+.absCenter {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.abs {
+    position: absolute;
+}
+.tada {
+	-moz-animation: tada .6s ease 0s infinite forwards;
+	-o-animation: tada .6s ease 0s infinite forwards;
+	-webkit-animation: tada .6s ease 0s infinite forwards;
+	animation: tada .6s ease 0s infinite forwards
+}
+.startTada {
+    animation: tada .6s ease 1s 1 forwards;
+    -webkit-animation: tada .6s ease 1s 1 forwards;
+    -moz-animation: tada .6s ease 1s 1 forwards;
+    -o-animation: tada .6s ease 1s 1 forwards;
+}
+
+.titleDown {
+    animation: bounceInDown 1s ease 1;
+    -webkit-animation: bounceInDown 1s ease 1;
+    -moz-animation: bounceInDown 1s ease 1;
+    -o-animation: bounceInDown 1s ease 1;
+}
+#homeBgBox {
+    width: 100%;
+    overflow: hidden;
+}
+#homeBgBox img {
+    width: 100%;
+    height: auto;
+}
+@-moz-keyframes tada{0%{-moz-transform:scale3d(1,1,1)}
+10%,20%{-moz-transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg)}
+30%,50%,70%,90%{-moz-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg)}
+40%,60%,80%{-moz-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg)}
+100%{-moz-transform:scale3d(1,1,1)}
+}
+@-o-keyframes tada{0%{-o-transform:scale3d(1,1,1)}
+10%,20%{-o-transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg)}
+30%,50%,70%,90%{-o-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg)}
+40%,60%,80%{-o-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg)}
+100%{-o-transform:scale3d(1,1,1)}
+}
+@-webkit-keyframes tada{0%{-webkit-transform:scale3d(1,1,1)}
+10%,20%{-webkit-transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg)}
+30%,50%,70%,90%{-webkit-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg)}
+40%,60%,80%{-webkit-transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg)}
+100%{-webkit-transform:scale3d(1,1,1)}
+}
+@keyframes tada{0%{transform:scale3d(1,1,1)}
+10%,20%{transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg)}
+30%,50%,70%,90%{transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg)}
+40%,60%,80%{transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg)}
+100%{transform:scale3d(1,1,1)}
+}
+@-webkit-keyframes bounceInDown{0%{opacity:0;-webkit-transform:translateY(-2000px)}
+60%{opacity:1;-webkit-transform:translateY(30px)}
+80%{-webkit-transform:translateY(-10px)}
+100%{-webkit-transform:translateY(0)}
+}
+@-moz-keyframes bounceInDown{0%{opacity:0;-moz-transform:translateY(-2000px)}
+60%{opacity:1;-moz-transform:translateY(30px)}
+80%{-moz-transform:translateY(-10px)}
+100%{-moz-transform:translateY(0)}
+}
+@-o-keyframes bounceInDown{0%{opacity:0;-o-transform:translateY(-2000px)}
+60%{opacity:1;-o-transform:translateY(30px)}
+80%{-o-transform:translateY(-10px)}
+100%{-o-transform:translateY(0)}
+}
+@keyframes bounceInDown{0%{opacity:0;-webkit-transform:translateY(-2000px)}
+60%{opacity:1;-webkit-transform:translateY(30px)}
+80%{-webkit-transform:translateY(-10px)}
+100%{-webkit-transform:translateY(0)}
+}
+/* 红包获奖列表弹出框 */
+.hbres{
+	background:white;overflow-y:auto;
+}
+.hbres .hbTop{
+	top:0;left:0;margin-top:0;margin-left:0;width:100%;
+}
+.hbres .list_header{
+	height: 2rem;
+    line-height: 2rem;
+    width: 100%;
+    font-size: 0.5rem;
+    left: 0;
+    text-align: left;
+    background: #f2f2f2;
+    border-top: 0.05rem solid #E0E0E0;
+    border-bottom: 0.05rem solid #E0E0E0;
+    color: #b2b2b2;
+}
+.hbres .item{	
+    color: black;
+    font-size: 0.8rem;
+    padding: 0.65rem 0.75rem;
+    clear: both;
+    overflow: hidden;
+    border-bottom: 0.05rem solid #E0E0E0;
+}
+.hbres .item>img{
+	width: 2.4rem;
+	float: left;
+	border-radius: 3rem;
+	margin-right: 0.8rem;
+}
+.hbres .item .info{
+	float: left;
+	text-align: left;
+	padding-top: 0.15rem;
+}
+.hbres .item .time{
+	font-size: 0.7rem;
+	color: #B2B2B2;
+	padding-top: 0.1rem;
+}
+
+.page_lotto_hb{
+	background-color:#b0cc3a;
+}
+/* 抽奖页面 */
+.lotto_container{
+	position: absolute;
+	top:0;
+	left:0;
+	overflow:hidden;
+	background:#FFF;
+	visibility: hidden;
+}
+.lotto_container .itemWrap{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    color: #c04a26;
+    font-size: 0.8rem;
+    line-height: 2.3rem;
+    margin-left: -0.65rem;
+    top: 31.6%;
+    transition: transform 10s ease-in-out;
+    -webkit-transition: -webkit-transform 10s ease-in-out;
+}
+.lotto_container  .itemSelect{
+	width: 70%;
+    height: 2rem;
+    position: absolute;
+    background: #FFD626;
+    left: 16%;
+    top: 47%;
+    display:none;
+}
+/* 我的奖品页面 */
+.page_myprize{
+	background-color: #fa5a40;
+}
+.myprize_container{
+	margin-top: 0;
+}
+.myprize_list{
+	background-color: #fff6d9;
+	margin: 0 0.5rem;
+	position: relative;
+	padding-top: 1.4rem;
+}
+.myprize_header{
+	background-image: url("../../../image/mobile/newgame/prize/prize_header.png?v=5");
+	position: absolute;
+	width: 15rem;
+	height: 5.875rem;
+	left: 50%;
+	margin-left: -7.5rem;
+	top: -1.25rem;
+}
+.myprize_list .myprize_cont{
+	background-image: url("../../../image/mobile/newgame/prize/prize_s1.png?v=5");
+	width: 14.1rem;
+	height: 4.125rem;
+	margin: 0 auto 0.5rem;
+	position: relative;
+	z-index: 2;
+}
+.myprize_list .myprize_cont.s1{
+	background-image: url("../../../image/mobile/newgame/prize/prize_s2.png?v=5");
+}
+.myprize_list .myprize_cont.s2{
+	background-image: url("../../../image/mobile/newgame/prize/prize_s3.png?v=5");
+}
+.myprize_list .wp_support{
+	line-height: 1.25rem;
+	font-size: 0.5rem;
+	color: #eac096;
+	text-align: center;
+}
+.myprize_list .goback_btn{
+	width: 7rem;
+	height: 1.75rem;
+	margin: 0.7rem auto 0.375rem;
+	background-color:#4bc1ef;
+	cursor: pointer;
+	border-radius:0.4rem;
+	-webkit-border-radius:0.4rem;
+	color: #FFF;
+	font-size: 0.9rem;
+	text-align: center;
+	line-height: 1.75rem;
+    position: relative;
+    z-index: 1;
+    display: block;
+}
+.myprize_cont .award_name,.myprize_cont .prize_name{
+	width: 8.625rem;
+	color: #fff;
+	left: 0.43rem;
+	text-align: center;
+	font-size: 0.6rem;
+	position: absolute;
+	top: 0.95rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 0.3rem;
+    box-sizing: border-box;
+}
+.myprize_cont .prize_name{
+	font-weight: bold;
+	top: 1.95rem;
+	font-size: 0.7rem;
+}
+.myprize_cont .exchange_btn, .myprize_cont .view_btn{
+	width: 3.475rem;
+	height: 1.375rem;
+	position: absolute;
+	top: 1.175rem;
+	right: 0.57rem;
+	background-size: 100% auto;
+    background-repeat: no-repeat;
+}
+.myprize_cont .exchange_btn{
+	background-image: url("../../../image/mobile/newgame/prize/exchange_btn.png?v=5");
+}
+.myprize_cont .view_btn{
+	background-image: url("../../../image/mobile/newgame/prize/view_btn.png?v=5");
+}
+.myprize_cont .exchange_status{
+    position: absolute;
+    top: 1.28rem;
+    right: 1.2rem;
+    font-size: 0.75rem;
+    color: #FFF;
+    font-weight: bold;
+}
+.myprize_empty{
+	height: 2rem;
+	line-height: 2rem;
+	color: #fa5a40;
+	text-align: center;
+	font-size: 1rem;
+    position: relative;
+    z-index: 1;
+    display: none;
+}
+.myprize_youyu_logo{
+	background-image: url("../../../image/mobile/newgame/youyu.png?v=5");
+	width: 4.625rem;
+	height: 1rem;
+	margin: 0.5rem auto 0.5rem;
+	position: relative;
+	z-index: 2;
+}
+div{
+	background-size: 100% auto;
+    background-repeat: no-repeat;
+}
+
+.fire_res .btn{
+	display: inline-block;
+    width: 41%;
+    padding: 0.6rem;
+    background-color: #FA5A40;
+    border-radius: 0.45rem;
+    color:white;
+}
+.rule_tag{
+	width: 2.5rem;
+	height: 2.775rem;
+	position: absolute;
+	right: 0.4rem;
+	top: 0;
+	z-index: 100;
+}
+.rank_btn{
+	width: 3rem;
+	height: 3.75rem;
+	position: absolute;
+	right: 2.8rem;
+	top: 0;
+	z-index: 100;
+	display: none;
+}
+/* 规则弹出框 */
+.fire_rule .fire_res_rule_bg{
+    background-image: url("../../../image/mobile/newgame/fire_res_rule.png?v=2");
+    width: 15rem;
+    height: 22rem;
+    margin-top: -11rem;
+    margin-left: -7.5rem;
+}
+.fire_rule .rule_myprize_link{
+    width: 5.23rem;
+    height: 2.25rem;
+    margin-top: -10.86rem;
+    margin-left: 0.4rem;
+    z-index: 11;
+}
+.fire_rule .rule_rule_link{
+    width: 5.23rem;
+    height: 2.25rem;
+    margin-top: -10.86rem;
+    margin-left: -5.8rem;
+    z-index: 11;
+}
+.fire_rule .fire_res_rule_time{
+    background-image: url("../../../image/mobile/newgame/fire_res_rule_time.png?v=5");
+    width: 3.3rem;
+    height: 1.15rem;
+}
+.fire_rule .fire_res_rule_organizer{
+    background-image: url("../../../image/mobile/newgame/fire_res_rule_organizer.png?v=5");
+    width: 3.3rem;
+    height: 1.15rem;
+}
+.fire_rule .fire_res_rule_tips{
+    background-image: url("../../../image/mobile/newgame/fire_res_rule_tips.png?v=5");
+    width: 3.3rem;
+    height: 1.15rem;
+}
+.fire_rule .fire_res_rule_award{
+    background-image: url("../../../image/mobile/newgame/fire_res_rule_award.png?v=5");
+    width: 3.3rem;
+    height: 1.15rem;
+}
+.fire_rule .content{
+	margin-top: -48%;
+}
+.fire_rule  #myprizeWrapper{
+	display: none;
+    margin-top: -45%;
+    height: 16.5rem;
+}
+.fire_rule  #myprizeWrapper .myprize_list_cont{
+	padding-bottom: 0.8rem;
+}
+.fire_rule  #myprizeWrapper .myprize_list_cont p{
+	color: #fff;
+}
+.fire_rule  #myprizeWrapper .myprize_empty{
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.8rem;
+}
+#myprizeWrapper .myprize_item{
+	background-image: url("../../../image/mobile/newgame/prize_item.png?v=5");
+	width: 11.5rem;
+	height: 4.55rem;
+	margin: 0.5rem auto 0rem;
+	position: relative;
+	z-index: 2;
+	color: #fff;
+	padding: 0 0.5rem;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+#myprizeWrapper .award_name{
+    width: 100%;
+    font-size: 0.85rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0.58rem 0 0;
+    box-sizing: border-box;
+    line-height: 1.1rem;
+}
+#myprizeWrapper .expired_time{
+	font-size: 0.6rem;
+	-webkit-text-size-adjust:none;
+	font-size: 10px;
+}
+#myprizeWrapper .exchange_statu{
+	font-size: 0.6rem;
+	margin-top: 0.3rem;
+}
+
+/* 挑战成功弹出框 */
+.fire_success .fire_res_light{
+	width: 11rem;
+	height: 11rem;
+	margin-left: -5.5rem;
+	margin-top: -61.2%;
+	background-image: url("../../../image/mobile/newgame/fire_res_light.png?v=5");
+	display: none;
+}
+.fire_success .fire_res_success{
+    width: 16rem;
+    height: 11rem;
+    margin-left: -8rem;
+	top: 0.2em;
+	background-image: url("../../../image/mobile/newgame/fire_res_success.png?v=5");
+}
+.fire_success .fire_ress_success_award{
+	background-image: url("../../../image/mobile/newgame/award_btn.png?v=5");
+}
+.fire_success .fire_btn_cont{
+	top: 14.8rem;
+}
+.fire_success .fire_btn_cont.nolottery{
+	top: 16rem;
+}
+.fire_success .fire_ress_success_share{
+    background-image: url("../../../image/mobile/newgame/share_btn.png?v=5");
+}
+.fire_success .fire_ress_success_subscribe{
+    background-image: url("../../../image/mobile/newgame/subscribe_btn.png?v=5");
+}
+.fire_success .p_text_1{
+	top: 11rem;
+}
+.fire_success .score {
+	color: #ffcc17;
+	font-size:1.8rem;
+}
+.fire_success .p_text_2{
+	top: 13.5rem;
+}
+.fire_success .p_text_3{
+	top: 14.88rem;
+}
+.fire_success .p_btn{
+	margin-top: 28%;
+}
+
+/* 挑战失败弹出框 */
+.fire_fail .fire_res_fail{
+	background-image: url(../../../image/mobile/newgame/fire_res_fail.png?v=5);
+	width: 16rem;
+	height: 10.8rem;
+	margin-left: -8.0rem;
+	top: 0.1rem;
+}
+.fire_fail .fire_btn_cont{
+    top: 14.8rem;
+}
+.fire_fail .fire_ress_fail_playagain{
+    background-image: url("../../../image/mobile/newgame/playagain_btn.png?v=5");
+}
+.fire_fail .fire_ress_fail_share{
+    background-image: url("../../../image/mobile/newgame/share_btn.png?v=5");
+}
+.fire_fail .fire_ress_fail_subscribe{
+    background-image: url("../../../image/mobile/newgame/subscribe_btn.png?v=5");
+}
+.fire_fail .score {
+    color: #ffcc17;
+    font-size:1.8rem;
+}
+.fire_fail .p_text_1{
+	top: 11rem;
+}
+.fire_fail .p_text_2{
+	top: 13.5rem;
+}
+.fire_fail .p_text_3{
+	top: 15rem;
+	display: none;
+}
+.fire_fail .p_btn_replay{
+	margin-top: 3%;
+}
+.fire_fail .p_btn_share{
+	margin-top: 19%;
+}
+.fire_fail .share_text{
+	margin-top: 35%;
+	font-size:0.8rem;
+}
+
+/* 游戏结束弹出框 */
+.fire_end .fire_res_light{
+    width: 14.825rem;
+    height: 13.2rem;
+    margin-left: -7.212rem;
+    top: 0rem;
+	background-image: url("../../../image/mobile/newgame/fire_res_light.png?v=2");
+}
+.fire_end .fire_res_end{
+    width: 16rem;
+    height: 11rem;
+    margin-left: -8rem;
+	top: 0.2em;
+	background-image: url("../../../image/mobile/newgame/fire_res_end.png?v=2");
+}
+.fire_end .score_text,.fire_end .total_score,.fire_end .rank_text{
+	font-size: 1.1rem;
+    padding: 0 0.15rem;
+    font-weight: bold;
+}
+.fire_end .score_text{
+	color: #fafd68;
+}
+.fire_end .p_text_1{top: 10.2rem;}
+.fire_end .p_text_2{top: 11.5rem;}
+.fire_end .p_text_3{top: 13rem;}
+.fire_end .fire_btn_cont{
+    top: 14.8rem;
+}
+.fire_end .fire_ress_end_playagain{
+    background-image: url("../../../image/mobile/newgame/playagain_btn.png?v=5");
+}
+.fire_end .fire_btn_cont .fire_ress_end_share{
+    background-image: url("../../../image/mobile/newgame/share_s_btn.png?v=5");
+    width: 3.5rem;
+    height: 2.5rem;
+    float: left;
+    margin-top: -2.53rem;
+    margin-left: 0.2rem;
+}
+.fire_end .fire_btn_cont .fire_ress_end_rank{
+    background-image: url("../../../image/mobile/newgame/rank_s_btn.png?v=5");
+    width: 3.5rem;
+    height: 2.5rem;
+    margin-left: -3.6rem;
+}
+.fire_end .fire_ress_end_subscribe{
+    background-image: url("../../../image/mobile/newgame/subscribe_btn.png?v=5");
+}
+
+/* 没有机会弹出框 */
+.fire_nochance .fire_res_nochance{
+	width: 13rem;
+	margin-left: -6.5rem;
+	height:6.5rem;
+	top: 8rem;
+	background-image: url("../../../image/mobile/newgame/fire_res_box.png?v=5");
+}
+.fire_nochance .p_text_1{
+    width: 74%;
+    top: 10rem;
+    margin-left: 13%;
+    line-height: 1.15rem;
+    color: #761600;
+}
+.fire_nochance>span.close{
+    top: 7rem;
+    right: 0.5rem;
+    margin-top: 0;
+}
+.fire_nochance .p_btn_share{
+	margin-top: -9%;
+}
+.fire_nochance .share{
+    background-image: url("../../../image/mobile/newgame/share_btn.png?v=5");
+}
+.fire_nochance .fire_btn_cont{
+    margin-top:0.5rem;
+}
+
+
+/* 排行榜弹出框 */
+.fire_rank{
+	text-align:center;
+}
+.fire_rank .rank_prizerecord_link{
+    width: 5.23rem;
+    height: 2.25rem;
+    margin-top: -10.86rem;
+    margin-left: 0.4rem;
+    z-index: 11;
+}
+.fire_rank .rank_rank_link{
+    width: 5.23rem;
+    height: 2.25rem;
+    margin-top: -10.86rem;
+    margin-left: -5.8rem;
+    z-index: 11;
+}
+.fire_rank .content {
+	width: 12.3rem;
+    margin-top: -46%;
+    margin-left: -6.1rem;
+    font-size: 0.6rem;
+    line-height: 1rem;
+    text-align: left;
+    overflow: hidden;
+    height: 17rem;
+}
+.fire_rank .fire_res_rank_bg{
+    background-image: url("../../../image/mobile/newgame/fire_res_rank.png?v=2");
+    width: 15rem;
+    height: 22rem;
+    margin-top: -11rem;
+    margin-left: -7.5rem;
+}
+.fire_rank .fire_res_rank_prizerecord_bg{
+    background-image: url("../../../image/mobile/newgame/fire_res_prizerecord.png?v=2");
+}
+.fire_rank  #prizeRecordWrapper{
+	display: none;
+}
+.fire_rank .prize_award_tab{
+	background-color: #ffcc18;
+    color: #811c03;
+    line-height: 1.5rem;
+    width: auto;
+    padding: 0 0.7rem;
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 0.3rem;
+    display: inline-block;
+}
+.fire_rank .award_record_list{
+	margin: 0.1rem 0 0;
+}
+.fire_rank .rank_text{
+	line-height: 0.9rem;
+    font-size: 0.6rem;
+    padding-bottom: 0.3rem;
+    text-align: left;
+}
+.fire_rank .rank_table{
+    overflow: auto;
+    height: 14.55rem;
+    position: relative;
+}
+.fire_rank .prizelist_table{
+    overflow: auto;
+    height: 17rem;
+    position: relative;
+}
+.fire_rank .ranklist_empty,.fire_rank .prizelist_empty{
+    text-align: center;
+    margin-bottom: 0.5rem;
+    line-height: 2rem;
+}
+.fire_rank table{
+    width: 100%;
+    margin-bottom: 0.1rem;
+    font-size: 0.6rem;
+}
+.fire_rank table td,.fire_rank table th{
+	border-bottom:0.05rem solid #e4c597;
+	padding:0.2rem;	
+	vertical-align: middle;
+	text-align: center;
+}
+.fire_rank table .header td{
+	padding-bottom:0.5rem;
+}
+.fire_rank table td .headerimg{
+    width: 1rem;
+    height: 1rem;
+    border-radius: 1rem;
+}
+.fire_rank table td.nickname_td{
+    width: 35%;
+}
+.fire_rank table span.nickname{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    width: 3rem;
+}
+.fire_rank .close{
+	background-image:url("../../../image/mobile/newgame/fire_res_close_white.png?v=5");
+    width: 1.6rem;
+    height: 1.6rem;
+    z-index: 11;
+    left: inherit;
+    right: 1rem;
+    margin-top: 4.5%;
+    position: absolute;
+}
+
+/* 中奖（自定义SN码，红包） 弹出框*/
+.fire_prize_success .prize_success, .fire_prize_hb_success .prize_success{
+	width: 15.8rem;
+	margin-left: -7.9rem;
+	height: 11rem;
+	top: 1rem;
+	background-image: url("../../../image/mobile/newgame/prize_success.png?v=5");
+}
+.fire_prize_success .fire_btn_cont,.fire_prize_hb_success .fire_btn_cont{
+	top: 15rem;
+}
+.fire_prize_success .prize_success .price_success_gift, .fire_prize_hb_success .prize_success .price_success_gift{
+    height: 9.6rem;
+    background-image: url("../../../image/mobile/newgame/gift.png?v=5");
+}
+.fire_prize_success .fire_success_detail, .fire_prize_hb_success .fire_success_detail{
+    background-image: url("../../../image/mobile/newgame/show_detail_btn.png?v=5");
+}
+.fire_prize_success .fire_success_subscribe, .fire_prize_hb_success .fire_success_subscribe{
+    background-image: url("../../../image/mobile/newgame/subscribe_btn.png?v=5");
+}
+.fire_prize_success .p_text_1, .fire_prize_hb_success .p_text_1{
+	width: 74%;
+	margin-left: 13%;
+	line-height: 1.65rem;
+	font-weight: bold;
+	top: 12.5rem;
+}
+.fire_prize_success .p_text_2, .fire_prize_hb_success .p_text_2{
+    width: 74%;
+    margin-top: 13%;
+    margin-left: 13%;
+    line-height: 1.65rem;
+    font-weight: bold;
+}
+.fire_prize_success .p_btn_1, .fire_prize_hb_success .p_btn_1{
+	margin-top: 29%;
+}
+.fire_prize_success .score {
+    color: #ffcc17;
+    font-size:1.4rem;
+}
+
+/* 没有中奖弹出框*/
+.fire_prize_fail .prize_fail{
+	width: 16rem;
+	margin-left: -8rem;
+	height: 11.25rem;
+	top: 1rem;
+	background-image: url("../../../image/mobile/newgame/prize_fail.png?v=5");
+}
+.fire_prize_fail .fire_btn_cont{
+	top: 14.5rem;
+}
+.fire_prize_fail .fire_prize_fail_playagain{
+    background-image: url("../../../image/mobile/newgame/playagain_btn.png?v=5");
+}
+.fire_prize_fail .fire_prize_fail_subscribe{
+    background-image: url("../../../image/mobile/newgame/subscribe_btn.png?v=5");
+}
+.fire_prize_fail .p_text_1{
+	width: 74%;
+	top: 12.8rem;
+	margin-left: 13%;
+	line-height: 1.65rem;
+}
+.fire_prize_fail .p_btn_1{
+	margin-top: 26%;
+}
+
+/* 兑奖前填写个人信息弹出框 */
+.fire_award_userinfo .fire_res_userinfo_bg{
+    background-image: url("../../../image/mobile/newgame/fire_res_userinfo.png?v=5");
+    width: 15rem;
+    height: 22rem;
+    margin-top: -11rem;
+    margin-left: -7.5rem;
+}
+
+.fire_award_userinfo>span.close{
+	right: 0.6rem;
+    margin-top: -11rem;
+}
+.fire_award_userinfo .p_tips_text{
+	width: 100%;
+	margin-top: -7.5rem;
+	left:0;
+	font-size: 0.75rem;
+	color: #6f1804;
+}
+.fire_award_userinfo .fire_btn_cont{
+    top: 18rem;
+}
+.fire_award_userinfo .input_cont{
+    background-color: #ef4b41;
+    width: 9.5rem;
+    height: 1.5rem;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    margin-top: -4.8rem;
+    margin-left: -4.75rem;
+}
+.fire_award_userinfo .validcode_cont{
+    width: 5.63rem;
+    margin-top: -2rem;
+}
+.fire_award_userinfo .input_cont input{
+	height: 100%;
+	line-height: 1.5rem;
+    width: 100%;
+    background: none;
+    font-size: 0.65rem;
+    color: #FFF;
+    padding: 0.2rem 0.6rem;
+}
+.fire_award_userinfo .btn_save{
+    background-image: url("../../../image/mobile/newgame/getaward_btn.png?v=5");
+}
+.fire_award_userinfo .validcode_cont .valid_img{
+    width: 33%;
+    height: 88%;
+    background: white;
+    vertical-align: top;
+    margin-top: 1.5%;
+    position: absolute;
+    top: 0;
+    right: -2rem;
+}
+.fire_award_userinfo .validcode_cont .valid_refresh{
+	width: 7%;
+    vertical-align: middle;
+    position: absolute;
+    top: 0;
+    right: -2.7rem;
+}
+
+/* 奖品核销前验证个人信息弹出框 */
+.fire_award_verify .input_cont input[placeholder],.fire_award_verify .input_cont input::-webkit-input-placeholder{ 
+	color:#999!important;
+} 
+.fire_award_verify .fire_res_verify_bg{
+    background-image: url("../../../image/mobile/newgame/verify_userinfo_bg.png?v=5");
+    width: 13.93rem;
+    height: 15.55rem;
+    margin-top: -9.8rem;
+    margin-left: -6.96rem;
+}
+.fire_award_verify .userinfo_form_cont{
+    width: 13.93rem;
+    margin-top: -2.2rem;
+    margin-left: -6.96rem;
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+    -webkit-border-radius: 0 0 8px 8px;
+}
+.fire_award_verify .userinfo_form_cont>*{
+	position: static;
+	top: auto;
+	left: auto;
+}
+.fire_award_verify>span.close{
+	right: 0.6rem;
+    margin-top: -13rem;
+}
+.fire_award_verify .p_award_name{
+	width: 12.8rem;
+    margin-top: -8.7rem;
+    left: 0;
+    font-size: 1.5rem;
+    color: #acacac;
+    border-bottom: 1px solid #acacac;
+    padding-bottom: 1rem;
+    margin-left: 1.6rem;
+    line-height: 1.5em;
+    font-weight: bold;
+    height: 3.3rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.fire_award_verify .p_tips_text{
+	width: 100%;
+	margin-top: -4.6rem;
+	left:0;
+	font-size: 0.75rem;
+	color: #726a67;
+}
+.fire_award_verify .input_cont{
+    width: 11rem;
+    height: 1.55rem;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+	margin: 0.4rem auto 0;
+	background-color: #fff;
+    text-align: left;
+    position: relative;
+}
+.fire_award_verify .btn_save{
+    background-color: #ed4d41;
+    width: 6.7rem;
+    height: 1.75rem;
+    color: #fff;
+    font-size: 0.9rem;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    line-height: 1.75rem;
+    margin: 1.2rem auto 1rem;
+}
+.fire_award_verify .validcode_cont .valid_img{
+    width: 4.2rem;
+    height: 100%;
+    background: white;
+    vertical-align: top;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.fire_award_verify .phone_cont{
+	display: none;
+}
+.fire_award_verify .username_cont{
+	display: none;
+}
+.fire_award_verify .address_cont{
+	display: none;
+}
+.fire_award_verify .input_cont input{
+	height: 100%;
+	line-height: 1.5rem;
+    width: 100%;
+    background: #e8e8e8;
+    font-size: 0.65rem;
+    color: #000;
+    padding: 0.2rem 0.6rem;
+}
+.fire_award_verify .input_cont select{
+	height: 100%;
+	line-height: 1.5rem;
+    width: 100%;
+    background: #e8e8e8;
+    font-size: 0.65rem;
+    color: #000;
+    padding: 0.2rem 0.6rem;
+	border: none;
+    border-radius: 0.4rem;
+    -webkit-border-radius: 0.4rem;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    text-align: left;
+}
+.fire_award_verify .validcode_cont{
+}
+.fire_award_verify .validcode_cont input{
+	width: 6.4rem;
+}
+.fire_award_verify .validcode_cont .valid_refresh{
+	width: 7%;
+    vertical-align: middle;
+    position: absolute;
+    top: 0;
+    right: -2.7rem;
+}
+
+/* 奖品核销前验证手机号码弹出框（发送手机验证码） */
+.fire_award_phone_verify .fire_res_verify_phone_bg{
+    width: 14rem;
+    height: 10.5rem;
+    margin-top: -6.8rem;
+    margin-left: -7rem;
+    background-color: #fff;
+    border-radius: 0.3rem;
+    -webkit-border-radius: 0.3rem;
+}
+
+.fire_award_phone_verify>span.close{
+	right: 0.6rem;
+    margin-top: -11rem;
+}
+.fire_award_phone_verify .p_tips_text{
+	width: 100%;
+	margin-top: -6rem;
+	left:0;
+	font-size: 0.75rem;
+	color: #000;
+}
+.fire_award_phone_verify .fire_btn_cont{
+    top: 18rem;
+}
+.fire_award_phone_verify .input_cont{
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    background-color: #fff;
+    width: 12rem;
+    height: 1.55rem;
+    margin-top: 0rem;
+    margin-left: -6rem;
+    text-align: left;
+}
+.fire_award_phone_verify .input_cont .phone_label{
+	float: left;
+    width: 3.25rem;
+    background-color: #fff;
+    text-align: center;
+    line-height: 1.46rem;
+    color: #bcbcbc;
+    font-size: 0.65rem;
+    border-radius: 0.3rem 0 0 0.3rem;
+    -webkit-border-radius: 0.3rem 0 0 0.3rem;
+    border: 1px solid #bcbcbc;
+    border-right: 0px;
+}
+.fire_award_phone_verify .btn_next{
+	background-color: #ed4d41;
+    width: 12rem;
+    height: 1.75rem;
+    color: #fff;
+    font-size: 0.85rem;
+    border-radius: 0.3rem;
+    -webkit-border-radius: 0.3rem;
+    line-height: 1.75rem;
+    margin-left: -6rem;
+    margin-top: 1.2rem;
+}
+.fire_award_phone_verify .validcode_cont .valid_img{
+    width: 4.2rem;
+    height: 100%;
+    background: white;
+    vertical-align: top;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.fire_award_phone_verify .phone_cont{
+	margin-top: -4.2rem;
+}
+.fire_award_phone_verify .input_cont input{
+	height: 100%;
+	line-height: 1.5rem;
+    width: 100%;
+    background: #e8e8e8;
+    font-size: 0.65rem;
+    color: #000;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+    -webkit-border-radius: 0.3rem;
+    border: 1px solid #bcbcbc;
+}
+.fire_award_phone_verify .phone_cont input{
+	width: 8.69rem;
+	border-radius: 0 0.3rem 0.3rem 0;
+    -webkit-border-radius: 0 0.3rem 0.3rem 0;
+}
+.fire_award_phone_verify .input_cont input[placeholder], .fire_award_phone_verify .input_cont input::-webkit-input-placeholder{ 
+	color:#000!important;
+} 
+.fire_award_phone_verify .yuyin_tips{
+	color: red;
+    text-align: center;
+    width: 14rem;
+    left: 1rem;
+    margin-top: 0rem;
+    font-size: 0.6rem;
+    -webkit-transform: scale(0.9,0.9);
+}
+.fire_award_phone_verify .validcode_cont{
+	margin-top: -1.9rem;
+}
+.fire_award_phone_verify .validcode_cont input{
+	width: 7.4rem;
+}
+.fire_award_phone_verify .phone_display{
+	width: 100%;
+	margin-top: -3.7rem;
+	left:0;
+	font-size: 0.75rem;
+	color: #ee4329;
+	display: none;
+}
+.fire_award_phone_verify .phone_number{
+	display: inline-block;
+}
+.fire_award_phone_verify .phone_number span{
+	width: 0.48rem;
+    margin: 0;
+    padding: 0;
+    float: left;
+    font-size: 0.8rem;
+}
+.fire_award_phone_verify .phone_number span:nth-child(3),.fire_award_phone_verify .phone_number span:nth-child(7){
+	margin-right: 0.2rem;
+}
+.fire_award_phone_verify .resend_btn{
+    display: inline-block;
+    margin: 0 0 0 0.5rem;
+    position: relative;
+    top: -0.3rem;
+    border: 1px solid #ee4329;
+    padding: 0.1rem 0.6rem;
+    border-radius: 0.15rem;
+    -webkit-border-radius: 0.15rem;
+    font-size: 0.6rem;
+    cursor: pointer;
+}
+.fire_award_phone_verify .resend_btn.disabled{
+	color: #8b8b8b;
+	border-color: #8b8b8b;
+	padding: 0.1rem 0.4rem;
+}
+.fire_award_phone_verify .code_input_area{
+	width: 100%;
+	margin-top: -1.1rem;
+	left:0;
+	display: none;
+}
+.fire_award_phone_verify .code_input_area ul li{
+	float: left;
+	margin-left: 0.75rem;
+}
+.fire_award_phone_verify .code_input_area ul li:first-child{
+	margin-left: 3.1rem;
+}
+.fire_award_phone_verify .code_input_area input.code_input{
+	width: 1.9rem;
+	height: 1.9rem;
+	background-color: #e8e8e8;
+	border: 1px solid #bfbfbf;
+    border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+    text-align: center;
+    padding: 0 0;
+    font-size: 1rem;
+    line-height: 1.9rem;
+}
+
+/* 奖品核销前验证手机号码弹出框（发送手机验证码） */
+.fire_award_attention_verify .fire_res_verify_attention_bg{
+    width: 14rem;
+    height: 10.5rem;
+    margin-top: -6.8rem;
+    margin-left: -7rem;
+    background-color: #fff;
+    border-radius: 0.3rem;
+    -webkit-border-radius: 0.3rem;
+}
+
+.fire_award_attention_verify .p_tips_text{
+	width: 12rem;
+    margin-top: -3.9rem;
+    left: 2rem;
+    font-size: 0.85rem;
+    color: #000;
+    text-align: center;
+}
+
+.fire_award_attention_verify .btn_attention{
+	background-color: #ed4d41;
+    width: 12rem;
+    height: 1.75rem;
+    color: #fff;
+    font-size: 0.85rem;
+    border-radius: 0.3rem;
+    -webkit-border-radius: 0.3rem;
+    line-height: 1.75rem;
+    margin-left: -6rem;
+    margin-top: -1rem;
+    background-image: none!important;
+}
+.fire_award_attention_verify .wxname{
+    display: inline-block;
+    overflow: hidden;
+    max-width: 6.9rem;
+    text-overflow: ellipsis;
+    height: 1rem;
+    white-space: nowrap;
+    line-height: 1rem;
+    position: relative;
+    top: 0.15rem;
+}
+
+/* 参与前填写个人信息弹出框 */
+.fire_participate_userinfo .fire_res_userinfo_bg{
+    background-image: url("../../../image/mobile/newgame/fire_res_userinfo.png?v=5");
+    width: 15rem;
+    height: 15.5rem;
+    top: 4rem;
+    margin-left: -7.5rem;
+}
+
+.fire_participate_userinfo>span.close{
+	right: 0.6rem;
+    margin-top: -11rem;
+}
+.fire_participate_userinfo .p_tips_text{
+	width: 10rem;
+    top: 7.5rem;
+    left: 3rem;
+    font-size: 0.65rem;
+    color: #6f1804;
+}
+.fire_participate_userinfo .p_tips_text_2{
+	width: 10rem;
+    top: 12.5rem;
+    left: 3rem;
+    font-size: 0.6rem;
+    color: #d7bf81;
+}
+.fire_participate_userinfo .fire_btn_cont{
+    top: 14.5rem;
+}
+.fire_participate_userinfo .input_cont{
+    background-color: #ef4b41;
+    width: 9.5rem;
+    height: 1.5rem;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    top: 10rem;
+    margin-left: -4.75rem;
+}
+.fire_participate_userinfo .input_cont input{
+	height: 100%;
+	line-height: 1.5rem;
+    width: 100%;
+    background: none;
+    font-size: 0.65rem;
+    color: #FFF;
+    padding: 0.2rem 0.6rem;
+}
+.fire_participate_userinfo .btn_save{
+    background-image: url("../../../image/mobile/newgame/getaward_btn.png?v=5");
+}
+
+/* 奖品核销密码输入框 */
+.fire_verify_pwd,.fire_verify_pwd_result{
+	text-align: center;
+	z-index: 2001;
+}
+.fire_verify_pwd .fire_res_verify_pwd_bg,.fire_verify_pwd_result .fire_res_verify_pwd_result_bg{
+    width: 12rem;
+    height: 8.4rem;
+    top: 7.5rem;
+    margin-left: -6rem;
+    background-color: #fff;
+    border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+}
+
+.fire_verify_pwd>span.close,.fire_verify_pwd_result>span.close{
+    right: 2.2rem;
+    margin-top: 0;
+    color: #959595;
+    font-size: 1.6rem;
+    background: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    line-height: 1rem;
+    text-align: center;
+    padding: 0;
+    top: 7.75rem;
+}
+.fire_verify_pwd .p_tips_text,.fire_verify_pwd_result .p_tips_text{
+    width: 10rem;
+    top: 8.2rem;
+    left: 3rem;
+    font-size: 0.95rem;
+    color: #000;
+}
+.fire_verify_pwd_result .p_tips_text{
+	top: 9.7rem;
+    font-size: 0.75rem;
+}
+.fire_verify_pwd .p_tips_text_2{
+	width: 12rem;
+    top: 14.5rem;
+    left: 2rem;
+    font-size: 0.6rem;
+    color: #8c8c8c
+}
+.fire_verify_pwd .input_cont{
+	width: 9.2rem;
+    top: 10.2rem;
+    margin-left: -4.6rem;
+    background-color: #f2f2f2;
+}
+.fire_verify_pwd .input_cont input{
+	background-color: #f2f2f2;
+    height: 100%;
+    line-height: 1.5rem;
+    width: 100%;
+    background: none;
+    font-size: 0.65rem;
+    color: #000;
+    padding: 0.2rem 0.6rem;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #e8e8e8;
+    height: 1.5rem;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+}
+.fire_verify_pwd .btn_save,.fire_verify_pwd_result .btn_save{
+	background-color: #32b2f9;
+    top: 11.3rem;
+    width: 4.8rem;
+    height: 1.75rem;
+    color: #fff;
+    font-size: 0.8rem;
+    border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+    line-height: 1.75rem;
+    margin: 1.2rem auto 1rem;
+    margin-left: -2.4rem;
+}
+.fire_verify_pwd_result .btn_save{
+	top: 11.2rem;
+}
+
+/* 奖品详情样式 */
+.fire_award_info {
+    z-index: 2000;
+    font-size: .7rem;
+    color: #fff;
+    background-color: #f0eff4;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.fire_award_info>*{
+	position: static;
+	top: auto;
+	left: auto;
+}
+.fire_award_info .awardDetail {
+    width: 100%;
+    height: 7.5rem;
+    background-color: #33b3fa;
+    text-align: center;
+    position: relative
+}
+
+.fire_award_info .awardDetail .awardName {
+    font-size: 1.2rem;
+    max-width: 16rem;
+}
+
+.fire_award_info .awardDetail .organizerName {
+	padding: 0.7rem 0.7rem 1rem;text-align: left;color:#fff;
+}
+
+.fire_award_info .awardDetail .awardSubTitle {
+    font-size: .6rem;
+    line-height: 1rem
+}
+
+.fire_award_info .awardDetail .awardCodeTime {
+    font-size: .55rem;
+    line-height: 1rem;
+    margin-top: .5rem;
+}
+.fire_award_info>span.close{
+    width: 0.8rem;
+    height: 0.8rem;
+    background: url('../../../image/mobile/newgame/prize/close.png') no-repeat;
+    background-position: 0;
+    top: .6rem;
+    z-index: 202;
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    position: absolute;
+    right: .6rem;
+}
+.fire_award_info .awardDetail .awardDetailWarp {
+    height: 0.25rem;
+    width: 100%;
+    background: url('../../../image/mobile/newgame/prize/quan.png') repeat-x;
+	position: absolute;
+    bottom: -2px;
+    background-size: 0.5rem auto;
+    background-position: -1px -1px;
+}
+.fire_award_info .codeStatusBox {
+	padding-top:1.25rem;color:#777;
+}
+.fire_award_info .awardDetailBtn {
+    border: 1px solid #ececec;
+    height: 1.75rem;
+    color: #333;
+    line-height: 1.75rem;
+    padding-left: .6rem;
+    background-color: #fff;
+    font-size: 14px;
+    text-align: left;
+}
+.fire_award_info .awardCollection {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 2.75rem;
+    background-color: #f0effc;
+}
+.fire_award_info .awardCollection #awardCollectionBtn{
+    width: 13.75rem;
+    height: 1.75rem;
+    line-height: 1.75rem;
+    text-align: center;
+    font-size: .8rem;
+    color: #fff;
+    border-radius: .2rem;
+    background-color: #33b3fa;
+    margin: .5rem auto;
+}
+
+.fire_award_info .awardVerifyPwd {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 2.75rem;
+    background-color: #f0effc;
+}
+.fire_award_info .awardVerifyPwd #awardVerifyPwdBtn{
+    width: 13.75rem;
+    height: 1.75rem;
+    line-height: 1.75rem;
+    text-align: center;
+    font-size: .8rem;
+    color: #fff;
+    border-radius: .2rem;
+    background-color: #33b3fa;
+    margin: .5rem auto;
+}
+
+.fire_award_info .awardVerifyPwd #awardVerifyOverPass{
+    width: 13.75rem;
+    height: 1.75rem;
+    line-height: 1.75rem;
+    text-align: center;
+    font-size: .8rem;
+    color: #fff;
+    border-radius: .2rem;
+    background-color: #ccc;
+    margin: .5rem auto;
+}
+
+.fire_award_info .awardDetailBtn span em {
+    font-style: normal;
+    color: #666
+}
+.fire_award_info .codeImgBox {
+    text-align: center;
+    color: #666;
+    background-color: #fff;
+    padding-bottom: .5rem
+}
+
+.fire_award_info .codeImgBox .codeImg-wrapper {
+	position: relative;
+}
+
+.fire_award_info .codeImgBox .codeImg-wrapper .codeImg {
+	margin: 0.7rem auto 0 auto;
+    width: 7.25rem;
+    height: 7.25rem;
+}
+
+.fire_award_info .codeImgBox .codeImg-wrapper .codeStatu {
+	display: none;
+    position: absolute;
+    top: 5rem;
+    left: 8.8rem;
+    height: 3.88rem;
+    width: 3.88rem;
+}
+
+.fire_award_info .codeImgBox .codeImg-wrapper .j-write-off {
+	display: block;
+	background: url("../../../image/mobile/newgame/fire_res_write_off.png") no-repeat center 0/100% 100%;
+}
+
+.fire_award_info .codeImgBox .codeLine {
+    margin-bottom: .1rem;
+    padding-top: .4rem;
+    color: #333
+}
+
+.fire_award_info #codeDetailInfoBox {
+    padding-top: .2rem
+}
+.fire_award_info #codeStatusBtn {
+    width: 4.5rem;
+    height: 1.75rem;
+    line-height: 1.75rem;
+    background-color: #d9d9d9;
+    border-radius: .2rem;
+    margin: 0 auto .5rem
+}
+.fire_award_info .codeOptInfo {
+    color: #1f3d86;
+    font-size: 0.6rem;
+}
+
+.fire_award_info .awardDeailIcon {
+    width: .6rem;
+    height: .6rem;
+    background: url('../../../image/mobile/newgame/prize/gd.png') no-repeat;
+    background-size: 100%;
+    float: right;
+    margin-top: .6rem;
+    margin-right: .5rem
+}
+.fire_award_info .awardDetailText {
+    color: #333;
+    font-size: .6rem;
+    padding: .5rem .7rem;
+    background: #fff;
+}
+.awardDetailText .itemList {
+    font-size: .6rem;
+    padding-bottom: .6rem;
+}
+.awardDetailText .itemList .title {
+    float: left;
+    color: #666;
+}
+.awardDetailText .itemList .box {
+    width: auto;
+    margin-left: 3.52rem;
+    text-align: left;
+}
+
+/* 参与人数超过限制信息弹出框 */
+.fire_participate_overlimit .fire_res_overlimit_bg{
+    background-image: url("../../../image/mobile/newgame/participate_overlimit.png?v=5");
+    width: 16rem;
+    height: 11.25rem;
+    top: 3rem;
+    margin-left: -8rem;
+}
+.fire_participate_overlimit .fire_btn_cont{
+	margin-top: 3rem;
+}
+
+/* 红包奖品详情弹出框 */
+.fire_hbres>* {
+    position: static;
+    top: auto;
+    left: auto;
+}
+.fire_hbres{
+	background-color: #f0eff4;
+	overflow-y:auto;
+	z-index: 2001;
+}
+.fire_hbres>span.close{
+    width: 0.8rem;
+    height: 0.8rem;
+    background: url('../../../image/mobile/newgame/prize/close.png') no-repeat;
+    background-position: 0;
+    top: .6rem;
+    z-index: 202;
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    position: absolute;
+    right: .6rem;
+}
+.fire_hbres .hbTop{
+	top:0;left:0;margin-top:0;margin-left:0;width:100%;
+}
+.fire_hbres .header_cont{
+    top: 3.96rem;
+    left: 6.4rem;
+    width: 3.35rem;
+    border-radius: 100%;
+    position: absolute;
+}
+.fire_hbres .p_text_1{
+    width: 12rem;
+    margin-left: 2rem;
+    margin-top: 0.8rem;
+    line-height: 1rem;
+    color: black;
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+}
+.fire_hbres .p_text_2{
+    width: 13rem;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+    line-height: 1.65rem;
+    color: black;
+    font-size: 0.7rem;
+}
+.fire_hbres .p_text_3{
+    width: 12rem;
+    margin-left: 2rem;
+    line-height: 1.65rem;
+    color: black;
+    font-size: 0.6rem;
+    color: #497ACE;
+}
+.fire_hbres .awardDetailBtn {
+    border: 1px solid #ececec;
+    height: 1.75rem;
+    color: #333;
+    line-height: 1.75rem;
+    padding-left: .6rem;
+    background-color: #fff;
+    font-size: 14px;
+    text-align: left;
+}
+
+.fire_hbres .awardDetailBtn span em {
+    font-style: normal;
+    color: #666
+}
+
+.fire_hbres #codeDetailInfoBox {
+    padding-top: .2rem
+}
+
+.fire_hbres .awardDeailIcon {
+    width: .6rem;
+    height: .6rem;
+    background: url('../../../image/mobile/newgame/prize/gd.png') no-repeat;
+    background-size: 100%;
+    float: right;
+    margin-top: .6rem;
+    margin-right: .5rem
+}
+.fire_hbres .awardDetailText {
+    color: #333;
+    font-size: .6rem;
+    padding: .5rem .7rem;
+    background: #fff;
+}
+
+/* 抽奖页面弹出框 */
+.fire_lotto{
+	background-color:#fff; 
+	z-index: 105;
+}
+.fire_lotto>* {
+    position: static;
+    top: auto;
+    left: auto;
+}
+.fire_lotto .itemWrap{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    color: #c04a26;
+    font-size: 0.8rem;
+    line-height: 2.3rem;
+    margin-left: -0.65rem;
+    top: 31.6%;
+    transition: transform 10s ease-in-out;
+    -webkit-transition: -webkit-transform 10s ease-in-out;
+}
+.fire_lotto  .itemSelect{
+	width: 70%;
+    height: 2rem;
+    position: absolute;
+    background: #FFD626;
+    left: 16%;
+    top: 47%;
+    display:none;
+}
+.fire_lotto .lotto_banner_bg{
+	width: 13.65rem;
+	height: 9.2rem;
+	background-image: url("../../../image/mobile/newgame/lotto_banner2.jpg?v=5");
+	margin: 0.8rem auto 0;
+}
+.fire_lotto .lotto_logo_bg{
+	width: 3rem;
+	height: 2.13rem;
+	background-image: url("../../../image/mobile/newgame/lotto_logo.png?v=5");
+	margin: 2.25rem auto 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -1.5rem;
+	background-color: #fff;
+	z-index: 11;
+}
+.fire_lotto .lotting_text_cont{
+	color: #bdbdbd;
+	border-bottom: 1px solid #bdbdbd;
+	position: absolute;
+	top: 50%;
+	margin-top: 7.5rem;
+	width: 9.64rem;
+	margin-left: -4.82rem;
+	left: 50%;
+}
+.fire_lotto .lotting_text{
+	font-size: 0.8rem;
+    position: absolute;
+    width: 4rem;
+    left: 50%;
+    margin-left: -2rem;
+    top: -0.45rem;
+    background-color: #fff;
+    text-align: center;
+    line-height: 1.1rem;
+}
+.fire_lotto .loader_lotto{
+	border: solid 0.2rem #ed4d41;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background-clip: content-box;
+    animation: spinDisc 1.5s linear infinite;
+    -webkit-animation: spinDisc 1.5s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -2.7rem;
+    margin-top: 0.53rem;
+}
+@keyframes spinDisc {
+  50% {
+    border-top-color: #3498db;
+    border-bottom-color: #3498db;
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}
+@-webkit-keyframes spinDisc {
+  50% {
+    border-top-color: #3498db;
+    border-bottom-color: #3498db;
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+/* 领取红包验证码弹出框 */
+.valid_code_mask{
+	position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    display:none;
+}
+.valid_code_mask_loading{
+	position: absolute;
+    top: 46%;
+    margin-top:-7.5rem;
+    left: 5%;
+    width: 90%;
+    height: 13rem;
+    text-align: center;
+    line-height: 1rem;
+    z-index: 999;
+    font-size: 1rem;
+    color: #F8AB47;
+    font-weight: bold;
+    background:url('../../../image/mobile/paoku/valid_bg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.valid_code_mask_loading>img.valid_text{
+	width: 53%;
+    margin-top: 0px;
+    position: absolute;
+    top: 8%;
+    left: 50%;
+    margin-left: -28.5%;
+}
+.valid_code_mask_loading>img.valid_btn{
+	width: 46%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -23%;
+}
+.valid_code_mask_loading input.valid_val[placeholder],.valid_code_mask_loading input.valid_val::-webkit-input-placeholder { 
+	color:white!important;
+} 
+.valid_code_mask_loading .valid_input{
+	
+}
+.valid_code_mask_loading .valid_input input.valid_val{
+	height: 100%;
+	border: 0.1rem solid rgba(255, 255, 255, 0.55);
+	border-radius: 0.3rem;
+	background-color: rgba(241, 29, 31, 0.18);
+	padding-left: 2%;
+	width: 47.5%;
+	font-size: 0.65rem;
+}
+.valid_code_mask_loading .valid_input  .valid_img{
+	width: 33%;
+	height: 88%;
+	margin-left: 1%;
+	background: white;
+	vertical-align: top;
+	margin-top:1.5%;
+}
+.valid_code_mask_loading .valid_input  .valid_refresh{
+	width: 7%;
+    margin-left: 1%;
+    vertical-align: middle;
+}
+.valid_code_mask_loading .valid_tip{
+	position: absolute;
+	text-align: left;
+	top: 77%;
+	left: 6%;
+	width: 90%;
+	height: 18%;
+	text-align: center;
+	font-size: 0.65rem;
+	color: #ce301d;
+}
+
+/* 弹出框统一关闭按钮样式 */
+.fire_res>.close{
+    background-image:url("../../../image/mobile/newgame/fire_res_close.png?v=5");
+	width: 2.5rem;
+    height: 2.5rem;
+    display: inline-block;
+    z-index: 9;
+    left: inherit;
+    right: -0.2rem;
+    margin-top: -9.4rem;
+    background-repeat: no-repeat;
+}
+
+#favoritePanel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background-color: rgba(0,0,0,.8);
+    background-size: 95%;
+    background-repeat: no-repeat;
+    background-image:url("../../../image/mobile/newgame/tssc.png?v=5");
+}
+
+#awardHelpPanel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background-color: rgba(0,0,0,.8);
+    background-size: 7.15rem auto;
+    background-repeat: no-repeat;
+    background-image: url("../../../image/mobile/newgame/help_share_tip.png?v=5");
+    background-position: right 0;
+}
+#gameSharePanel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background-color: rgba(0,0,0,.8);
+    background-size: 13.55rem auto;
+    background-repeat: no-repeat;
+    background-image: url("../../../image/mobile/newgame/share_tips.png?v=5");
+    background-position: right 0;
+}
+#awardHelpPanel:after{
+    content: "邀请小伙伴来拿奖";
+    color: #fff;
+    position: absolute;
+    top: 5rem;
+    right: 1rem;
+    font-size: 0.8rem;
+}
+
+
+/* 新游戏特殊样式 */
+#qixi_fire_prize_fail .prize_fail{
+	width: 14.73rem;
+	margin-left: -7.36rem;
+	height: 15.7rem;
+	top: 1rem;
+	background-image: url("../../../image/mobile/newgame/qixi/common/prize_fail.png?v=5");
+}
+#qixi_fire_prize_fail .fire_btn_cont{
+	top: 12.3rem;
+}
+#qixi_fire_prize_fail .fire_btn_cont .fire_btn,#qixi_fire_prize_success .fire_btn_cont .fire_btn,#qixi_fire_prize_hb_success .fire_btn_cont .fire_btn{
+    height: 2.5rem;
+    width: 6.4rem;
+    margin-left: -3.2rem;
+    margin-top: .3rem;
+}
+#qixi_fire_prize_fail .fire_prize_fail_playagain{
+    background-image: url("../../../image/mobile/newgame/qixi/common/play_btn.png?v=5");
+}
+#qixi_fire_prize_fail .p_text_1{
+    width: 74%;
+    top: 9.8rem;
+    margin-left: 13%;
+    line-height: 1.65rem;
+    font-size: 1.1rem;
+    color: #000;
+}
+
+#qixi_fire_prize_success .prize_success, #qixi_fire_prize_hb_success .prize_success{
+	width: 14.18rem;
+	margin-left: -7.09rem;
+	height: 15.93rem;
+	top: 1rem;
+	background-image: url("../../../image/mobile/newgame/qixi/common/prize_success.png?v=5");
+}
+#qixi_fire_prize_success .fire_btn_cont,#qixi_fire_prize_hb_success .fire_btn_cont{
+	top: 10rem;
+}
+#qixi_fire_prize_success .fire_success_detail,#qixi_fire_prize_hb_success .fire_success_detail{
+    background-image: url("../../../image/mobile/newgame/qixi/common/show_detail_btn.png?v=5");
+}
+#qixi_fire_prize_success .fire_success_playagain,#qixi_fire_prize_hb_success .fire_success_playagain{
+    background-image: url("../../../image/mobile/newgame/qixi/common/play_btn.png?v=5");
+}
+#qixi_fire_prize_success .p_text_1,#qixi_fire_prize_hb_success .p_text_1{
+	width: 74%;
+	margin-left: 13%;
+	line-height: 1.65rem;
+	font-weight: normal;
+	top: 7rem;
+	color: #000;
+	font-size: 1.1rem;
+}
+#qixi_fire_prize_success .score ,#qixi_fire_prize_hb_success .score{
+    color: #000;
+    font-size:1.8rem;
+}
+
+#music_editorBtn{
+	z-index: 100;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2.5rem;
+    height: auto;
+    border-radius: 50%;
+}
