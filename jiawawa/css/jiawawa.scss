@@ -64,3 +64,9 @@ input,textarea{
     background: pink;
     margin: torem(10) auto;
 }
+.head {
+        width: torem(640px);
+        height: torem(88px);
+        background: red url(./image/top.png) no-repeat torem(-12px) torem(-30px) ;
+        background-size: torem(686px) torem(88px); 
+}
