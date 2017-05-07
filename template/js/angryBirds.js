@@ -15,7 +15,7 @@
 
 ;(function(){
 	//全局参数
-	var Global = {
+	var AGlobal = {
 		// 游戏状态
 		"globalState": 1,
 		// canvas ID
@@ -34,28 +34,28 @@
 		"imglist": {}
 	}
 	var imgData = new Array({});
-	init(10, Global.canvasId , Global.GAME_WIDTH, Global.GAME_HEIGHT, main);
+	init(10, AGlobal.canvasId , AGlobal.GAME_WIDTH, AGlobal.GAME_HEIGHT, main);
 
 	function main() {
-		Global.backLayer = new LSprite();
-		Global.backLayer.graphics.drawRect(1,"#000",[0,0,Global.GAME_WIDTH,Global.GAME_HEIGHT],true,"#000");
-		addChild(Global.backLayer);
+		AGlobal.backLayer = new LSprite();
+		AGlobal.backLayer.graphics.drawRect(1,"#000",[0,0,AGlobal.GAME_WIDTH,AGlobal.GAME_HEIGHT],true,"#000");
+		addChild(AGlobal.backLayer);
 
-		Global.loadingLayer = new LoadingSample3(12,"yellow","skyblue");
-		Global.backLayer.addChild(Global.loadingLayer);
+		AGlobal.loadingLayer = new LoadingSample3(12,"yellow","skyblue");
+		AGlobal.backLayer.addChild(AGlobal.loadingLayer);
 		LLoadManage.load(
             imgData,
             function(progress) {
-                Global.loadingLayer.setProgress(progress);
+                AGlobal.loadingLayer.setProgress(progress);
             },
             gameInit
         );  
 	}
 
 	function gameInit(result) {
-		Global.imglist = result;
-		Global.backLayer.removeAllChild(Global.loadingLayer);
-		Global.loadingLayer = null;
+		AGlobal.imglist = result;
+		AGlobal.backLayer.removeAllChild(AGlobal.loadingLayer);
+		AGlobal.loadingLayer = null;
 		// 游戏逻辑开始
 		startGame();
 	}

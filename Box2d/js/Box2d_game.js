@@ -19,7 +19,7 @@
 		// 游戏状态
 		"globalState": 1,
 		// canvas ID
-		"canvasId":"angryBirds_game",
+		"canvasId":"Box2d_game",
 		// 画布宽
 		"GAME_WIDTH": 640,
 		// 画布高
@@ -33,7 +33,10 @@
 		// 图片缓存
 		"imglist": {}
 	}
-	var imgData = new Array({});
+	// var imgData = new Array({
+    //     name: "ball",
+    //     path: "./images/ball.png"
+    // });
 	init(10, Global.canvasId , Global.GAME_WIDTH, Global.GAME_HEIGHT, main);
 
 	function main() {
@@ -41,14 +44,14 @@
 		Global.backLayer.graphics.drawRect(1,"#000",[0,0,Global.GAME_WIDTH,Global.GAME_HEIGHT],true,"#000");
 		addChild(Global.backLayer);
 
-		Global.loadingLayer = new LoadingSample3(12,"yellow","skyblue");
+		Global.loadingLayer = new LoadingSample3(900,"yellow","skyblue");
 		Global.backLayer.addChild(Global.loadingLayer);
 		LLoadManage.load(
             imgData,
             function(progress) {
                 Global.loadingLayer.setProgress(progress);
             },
-            gameInit
+            gameInit    
         );  
 	}
 
@@ -61,6 +64,13 @@
 	}
 
 	function startGame() {
-		
+		// 初始化Box2d
+        LGlobal.box2d = new LBox2d();
+        // 加入一个矩形刚体
+        cLayer = new LSprite();
+        cLayer.x = 300;
+        cLayer.y = 390;
+        Global.backLayer.addChild(cLayer);
+        cLayer.addBodyPolygon();
 	}
 })();
