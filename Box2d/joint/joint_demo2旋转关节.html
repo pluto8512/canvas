@@ -89,7 +89,7 @@
             cplayer.y = 390;//刚体中点的y坐标
             // 添加钢体
             Global.backLayer.addChild(cplayer);
-            cplayer.addBodyPolygon(640,10,0,5,0.4,0.2);
+            cplayer.addBodyPolygon(640,10,0,5,0.4,0.2);//刚体的宽和高，动/静态，密度，摩擦，弹力                        
 
             // 加入一个动态的圆形物体
             var box = new LSprite();
@@ -99,9 +99,9 @@
             box.addBodyCircle(100,0,0,1,5,0.4,0.2);
             box.setBodyMouseJoint(true);
 
-            // 加入一个物体2
+            // 加入一个动态的矩形物体2
             var box2  =  new LSprite();
-            box2.x = 200;               
+            box2.x = 400;               
             box2.y = 100;
             Global.backLayer.addChild(box2);
             box2.addBodyPolygon(100,60,1,5,0.4,0.2);
@@ -109,7 +109,7 @@
 
             // 加入一个距离关节
             LGlobal.box2d.setDistanceJoint(box.box2dBody,box2.box2dBody);
-
+            
         }
     </script>
 </body>
