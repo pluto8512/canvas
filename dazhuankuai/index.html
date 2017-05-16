@@ -34,9 +34,9 @@
 <!--加上font-size:0;解决1.9.7白底边bug-->
 <body style="font-size:0;">
     <div id="dazhuankuai_game"></div>
-    <script src="../js/jquery.js"></script>
-    <script src="../js/Box2dWeb-2.1.a.3.min.js"></script>
-    <script src="../js/lufylegend-1.10.1.js"></script>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/Box2dWeb-2.1.a.3.min.js"></script>
+    <script src="./js/lufylegend-1.10.1.js"></script>
     <script>
     ;(function (doc, win) {
         var docEl = doc.documentElement,
@@ -57,7 +57,7 @@
         // 问题： setBodyMouseJoint失效
         // 全局配置G
         var G = {
-            // 游戏状态
+            // 游戏状态(1:游戏开始时2:球已经发射)
             "globalState": 1,
             // canvas ID
             "canvasId":"dazhuankuai_game",
@@ -78,7 +78,21 @@
             // 发射区域圆心
             "point": {x:320,y:640*window.innerHeight/window.innerWidth-120-15},
             // 小球
-            "ball": null
+            "ball": null,
+            // 点击的初始位置
+            "STARTX": 0,
+            // 位移
+            "distance": 0,
+            // 倒计时文字
+            "field": null,
+            // 开启距离计算
+            "flag": false ,
+            // 保存球的位置的数组
+            "posiArr": [],
+            // 重弹标志
+            "reflag": false,
+            // 来球方向标志(false:右方true:左方)
+            "direflag": false
         }
         var imgData = new Array({
             name: "bg2",
@@ -148,20 +162,20 @@
             top.x = 320;
             top.y = 62.5;
             G.stageLayer.addChild(top);
-            top.addBodyPolygon(640,125,0,5,0.4,0.5);
+            top.addBodyPolygon(640,125,0,10,0.4,0);
 
             // 通过顶点坐标加入2面墙
             var wall1 = new Wall();
             wall1.x = 11;
             wall1.y = G.GAME_HEIGHT/2;
             G.stageLayer.addChild(wall1);
-            wall1.addBodyPolygon(22,G.GAME_HEIGHT,0,5,0.4,0.5);
+            wall1.addBodyPolygon(22,G.GAME_HEIGHT,0,10,0.4,0);
 
             var wall2 = new Wall();
             wall2.x = 640-11;
             wall2.y = G.GAME_HEIGHT/2;
             G.stageLayer.addChild(wall2);
-            wall2.addBodyPolygon(22,G.GAME_HEIGHT,0,5,0.4,0.5);
+            wall2.addBodyPolygon(22,G.GAME_HEIGHT,0,10,0.4,0);
             // 设置层级,最底下调到最上面
             G.stageLayer.setChildIndex(G.stageLayer.getChildAt(0), G.stageLayer.numChildren-1);
 
@@ -170,42 +184,134 @@
             G.floor.x = 320;
             G.floor.y = G.GAME_HEIGHT-120+8;
             G.stageLayer.addChild(G.floor);
-            G.floor.addBodyPolygon(130,16,0,5,0.4,6);
+            G.floor.addBodyPolygon(130,16,0,1,0.9,1.5);
             // 添加移动
-            G.backLayer.addEventListener(LMouseEvent.MOUSE_DOWN, onmouse);
+            G.floor.addEventListener(LMouseEvent.MOUSE_DOWN, onmousedown);
+            G.backLayer.addEventListener(LMouseEvent.MOUSE_MOVE, onmousemove);
+            G.backLayer.addEventListener(LMouseEvent.MOUSE_UP, onmouseup);
 
             // 小球
             G.ball = new Ball();
             G.ball.x = G.point.x;
             G.ball.y = G.point.y;
-            G.backLayer.addChild(G.ball);
-            G.ball.addBodyCircle(15,0,0,1,5,0.5,0.6);
-            // var angle = Math.PI/4;
-            // var force = 2000;
-            // var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle));
-            // G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter());
-
+            G.stageLayer.addChild(G.ball);
+            G.ball.addBodyCircle(15,0,0,1,0.1,0.9,0.1);
+            // 倒计时3s,随机发射
+            G.field = new LTextField();
+            G.backLayer.addChild(G.field);
+            doTimeDown(3);
+            // 加入碰撞侦听事件
+            LGlobal.box2d.setEvent(LEvent.POST_SOLVE,postSolve);
+            
             // 方块
-            var box = new Box();
+            var box1 = new Box();
+            box1.getBox(box1.box1,22,188,G.imglist["sprite"],[23,157,52,48]);
+            var box2 = new Box();
+            box2.getBox(box2.box2,22,430,G.imglist["sprite"],[23,157,52,48]);
+            var box3 = new Box();
+            box3.getBox(box3.box3,410,188,G.imglist["sprite"],[23,157,52,48]);
+            var box4 = new Box();
+            box4.getBox(box4.box4,410,430,G.imglist["sprite"],[23,157,52,48]);
+            var box5 = new Box();
+            box5.getBox(box5.box5,164,263,G.imglist["sprite"],[131,157,52,48]);
+
+            // 循环动画
+            G.backLayer.addEventListener(LEvent.ENTER_FRAME, onframe);
+        }
+        function onframe() {
+           if(G.posiArr.length<30) {
+               G.posiArr.push(G.ball.x);
+           }else {
+               G.posiArr.shift();
+               G.posiArr.push(G.ball.x);
+           }
+        //    if((parseInt(G.posiArr[0]) === parseInt(G.posiArr[49])) && (G.globalState==2) && (parseInt(G.posiArr[0]) === parseInt(G.posiArr[20]))){
+        //        console.log("原地重弹");
+        //        G.reflag = true;
+        //    }
+           // 左方
+           if( (G.posiArr[0] > G.posiArr[9]) && (G.posiArr[9]>G.posiArr[29])) {
+               G.direflag = true;
+           }
            
-            // addWawa();
-            // armO = new Arm(); //手臂
-            // // armO.graphics.drawRect(2, "#ff0000", [armO.x-14, armO.y, armO.getWidth(), armO.getHeight()], true, "#880088");
-            // stageLayer.addChild(armO);
-            // globalState = 1;
-            // //动画
-            // backLayer.addEventListener(LEvent.ENTER_FRAME, onframe);
         }
-        function onmouse(event) {
-            console.log(event.offsetX);
-            if(640>event.offsetX && event.offsetX>320){
-                G.floor.box2dBody.SetPosition(new LGlobal.box2d.b2Vec2(G.floor.box2dBody.GetPosition().x+1,G.floor.box2dBody.GetPosition().y));
-            }else if(0<event.offsetX && event.offsetX<=320){
-                G.floor.box2dBody.SetPosition(new LGlobal.box2d.b2Vec2(G.floor.box2dBody.GetPosition().x-1,G.floor.box2dBody.GetPosition().y));
+        // 碰撞(问题：无法给动态的刚体添加力)
+        function postSolve(contact,impulse) {
+            // if(gameOver)return;
+            var objA = contact.GetFixtureA().GetBody().GetUserData();
+            var objB = contact.GetFixtureB().GetBody().GetUserData();
+
+            if(objA.name == "ball" && objB.name == "box"){
+                G.stageLayer.removeChild(objB);
+            }else if(objA.name == "box" && objB.name == "ball"){
+                G.stageLayer.removeChild(objA);
             }
-            G.floor.box2dBody.SetAwake(true);
         }
-        // 背景层，舞台层，顶层，地板层，射击层，小球层，方块层
+        // 动画(鼠标移动)
+        function onmousedown(event) {
+            G.flag = true;
+        }
+        function onmousemove(event) {
+            /**
+            * 使用SetPosition设定刚体位置的时候，参数也是box2d世界中的单位。
+            * 而box2d世界中的单位和像素值之间的换算单位是LGlobal.box2d.drawScale，也就是
+            * 像素坐标＝box2d中的坐标/LGlobal.box2d.drawScale；
+            * 当然，重新设定了坐标之后，要唤醒刚体
+            */
+            if(G.flag){
+                if(event.offsetX>=87 && event.offsetX<=553){
+                    G.floor.box2dBody.SetPosition(new LGlobal.box2d.b2Vec2(event.offsetX/LGlobal.box2d.drawScale,G.floor.box2dBody.GetPosition().y));
+                    if(G.globalState==1){
+                        G.ball.box2dBody.SetPosition(new LGlobal.box2d.b2Vec2(event.offsetX/LGlobal.box2d.drawScale,G.ball.box2dBody.GetPosition().y));
+                    }
+                }
+                G.floor.box2dBody.SetAwake(true);
+            }
+        }
+        function onmouseup(event) {
+             G.flag = false;
+        }
+        // Tools
+        // 写时间
+        function writeTime(time) {
+            G.field.text = time;
+            G.field.x = 288;
+            G.field.y = 330;
+            G.field.size = 100;
+            G.field.color = "#333";
+            G.field.weight = "bolder";
+            // G.stageLayer.graphics.drawRect(2, "#ff0000", [ G.stageLayer.x-14,  G.stageLayer.y,  G.stageLayer.getWidth(),  G.stageLayer.getHeight()], true, "#880088");
+        }
+        // 随机角度发射
+        function shoot(flag) {
+            if(flag){
+                // var angle = (parseInt(Math.random()*90)+60)*(180/Math.PI)*(Math.random>0.5?1:-1);
+                var arr = [-5*Math.PI/12,-7*Math.PI/12];
+                var angle = arr[parseInt(Math.random()*2)];
+                var force = 50;
+                var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle));
+                G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter());
+            }
+        }
+        // 倒计时
+        function doTimeDown(time){
+            var timer = setInterval(function(){
+                if(time > 0){
+                    if(writeTime && typeof writeTime == "function"){
+                        writeTime(time);
+                        time--;
+                    }
+                }else{
+                    if(shoot && typeof shoot == "function"){
+                        G.backLayer.removeChild(G.field);
+                        clearInterval(timer);
+                        shoot(true);
+                        G.globalState=2;
+                    }
+                }
+            },1000);
+        }
+        // 背景层，舞台层，顶层，地板层，小球层，方块层(创建方块刚体)，发射层
         function Background() {
             base(this, LSprite, []);
             var self = this;
@@ -238,16 +344,15 @@
         function Floor() {
             base(this, LSprite, []);
             var self = this;
+            self.name = "floor";
             self.bitmapData = new LBitmapData(G.imglist["sprite"],537,166,130,16);
             self.bitmap = new LBitmap(self.bitmapData);
             self.addChild(self.bitmap);
         }
-        function ShootArea() {
-            base(this, LSprite, []);
-        }
         function Ball() {
             base(this, LSprite, []);
             var self = this;
+            self.name = "ball";
             self.bitmapData = new LBitmapData(G.imglist["sprite"],359,158,30,29);
             self.bitmap = new LBitmap(self.bitmapData);
             self.addChild(self.bitmap); 
@@ -273,150 +378,33 @@
             self.box5 = [[0,0,1,1,0,0],
                          [0,1,1,1,1,0],
                          [1,1,1,1,1,1],
-                         [1,1,1,1,1,1]
+                         [1,1,1,1,1,1],
                          [0,1,1,1,1,0],
-                         [0,0,1,1,0,0],];
+                         [0,0,1,1,0,0]];
         }
         Box.prototype = {
-            getBox1:function() {
-                var self = this;
+            getBox : function(box,START_X,START_Y,imgObj,arr) {
+                var i,j,bitmap;
+	            for(i=0;i<box.length;i++){
+                    for(j=0;j<box[0].length;j++){
+                        if(box[i][j] == 0){
+                            continue;
+                        }
+                        var sprite = new LSprite();
+                        sprite.name = "box";
+                        var bitmapData = new LBitmapData(G.imglist["sprite"],arr[0],arr[1],arr[2],arr[3]);
+                        var bitmap = new LBitmap(bitmapData);
+                        sprite.addChild(bitmap);
 
+                        sprite.x = (bitmap.getWidth()*j+START_X) + (bitmap.getWidth()/2);
+                        sprite.y = (bitmap.getHeight()*i+START_Y) + (bitmap.getHeight()/2);
+                        G.stageLayer.addChild(sprite);
+                        sprite.addBodyPolygon(bitmap.getWidth(),bitmap.getHeight(),0,5,0.4,0);
+                    }
+                }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // // 距离关节
-        // var Global = {
-        //     // 游戏状态
-        //     "globalState": 1,
-        //     // canvas ID
-        //     "canvasId":"dazhuankuai_game",
-        //     // 画布宽
-        //     "GAME_WIDTH": 640,
-        //     // 画布高
-        //     "GAME_HEIGHT": 700,
-        //     // 背景层
-        //     "backLayer": null,
-        //     // 舞台层
-        //     "stageLayer": null,
-        //     // 图片缓存
-        //     "imglist": {}
-        // }
-        // var imgData = new Array({
-        //     name:"bg2",
-        //     path:"./images/bg2.jpg"
-        // });
-
-        // init(10, Global.canvasId , Global.GAME_WIDTH, Global.GAME_HEIGHT, start);
-
-        // var loadingLayer;
-        // function start() {
-        //     // LGlobal.setDebug(true);
-        //     // // 初始化Box2dweb
-        //     // LGlobal.box2d = new LBox2d();
-        //     // Global.backLayer = new LSprite();
-        //     // Global.backLayer.graphics.drawRect(1, "#000000", [0, 0, GAME_WIDTH, GAME_HEIGHT], true, "#000000");
-        //     // addChild(Global.backLayer);
-
-        //     // // 读取图片，显示进度条，初始化
-        //     // loadingLayer = new LoadingSample5(12);
-        //     // Global.backLayer.addChild(loadingLayer);
-        //     // LLoadManage.load(
-        //     //     imgData,
-        //     //     function(progress) {
-        //     //         loadingLayer.setProgress(progress);
-        //     //     },
-        //     //     init
-        //     // );  
-        //     Global.backLayer = new LSprite();
-        //     //在背景精灵上绘制黑色背景
-        //     addChild(Global.backLayer);
-        //     //利用LLoadManage读取图片，并显示进度条,执行init
-        //     loadingLayer = new LoadingSample5(12);
-        //     backLayer.addChild(loadingLayer);
-        //     LLoadManage.load(
-        //         imgData,
-        //         function(progress) {
-        //             loadingLayer.setProgress(progress);
-        //         },
-        //         init
-        //     );  
-        // }
-
-        // function init(result) {
-        //     //取得图片读取结果
-        //     Global.imglist = result;
-        //     //移除进度条
-        //     Global.backLayer.removeAllChild(loadingLayer);
-        //     loadingLayer = null;
-        //     //游戏主进程开始
-        //     main();
-        // }
-
-        // function main() {
-        //     // 全屏
-        //     LGlobal.align = LStageAlign.TOP_LEFT;
-        //     LGlobal.stageScale = LStageScaleMode.SHOW_ALL;
-        //     LSystem.screen(LStage.FULL_SCREEN);
-        //     // 格式化游戏背景
-        //     Global.backLayer.die();
-        //     Global.backLayer.removeAllChild();
-        //     // 加载游戏背景实例
-        //     bgO = new Background(); 
-        //     Global.backLayer.addChild(bgO);
-           
-
-        //     // var cplayer  = new LSprite();
-        //     // cplayer.x = 300;//刚体中点的x坐标
-        //     // cplayer.y = 390;//刚体中点的y坐标
-        //     // // 添加钢体
-        //     // Global.backLayer.addChild(cplayer);
-        //     // cplayer.addBodyPolygon(640,10,0,5,0.4,0.2);//刚体的宽和高，动/静态，密度，摩擦，弹力                        
-
-        //     // // 加入一个动态的圆形物体
-        //     // var box = new LSprite();
-        //     // box.x = 250;
-        //     // box.y = 200;
-        //     // Global.backLayer.addChild(box);
-        //     // box.addBodyCircle(100,0,0,1,5,0.4,0.2);
-        //     // box.setBodyMouseJoint(true);
-
-        //     // // 加入一个动态的矩形物体2
-        //     // var box2  =  new LSprite();
-        //     // box2.x = 400;               
-        //     // box2.y = 100;
-        //     // Global.backLayer.addChild(box2);
-        //     // box2.addBodyPolygon(100,60,1,5,0.4,0.2);
-        //     // box2.setBodyMouseJoint(true);
-
-        //     // // 加入一个距离关节
-        //     // LGlobal.box2d.setDistanceJoint(box.box2dBody,box2.box2dBody);
-
-        // }
-        // // 背景类
-        // function Background() {
-        //     base(this, LSprite, []);
-        //     var self = this;
-        //     self.bitmapData = new LBitmapData(imglist["bg2"],0,0,GAME_WIDTH,GAME_HEIGHT);
-        //     self.bitmap = new LBitmap(self.bitmapData);
-        //     self.addChild(self.bitmap);
-        // }
     })();
-       
-
-        
     </script>
 </body>
 </html>
