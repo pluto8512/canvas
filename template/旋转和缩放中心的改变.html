@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <title>angryBirds</title>
+    <link rel="stylesheet" type="text/css" href="./css/angryBirds.css">
+    <style>
+            *,
+        ::before,
+        ::after {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box; }
+
+        #dazhuankuai_game {
+            width: 16rem !important;
+            margin: 0 auto;}
+
+        #dazhuankuai_game canvas {
+            width: 16rem !important;
+            margin: 0 auto;}
+
+    </style>
+</head>
+<body>
+    <div class="head"></div>
+    <div id="lufy_game"></div>
+    <div class="button"></div>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/lufylegend-1.10.1.min.js"></script>
+    <script>    
+        ;(function (doc, win) {
+            var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                    recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth > 800) clientWidth=800;
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+            
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            recalc();
+        })(document, window);
+
+        var G = {
+            // canvas ID
+            "canvasId":"lufy_game",
+            // 画布宽
+            "GAME_WIDTH": 640,
+            // 画布高
+            "GAME_HEIGHT": 640*window.innerHeight/window.innerWidth,
+            // 背景层
+            "backLayer": null,
+            // 加载层
+            "loadingLayer": null,
+            // 舞台层
+            "stageLayer": null,
+            // 图片缓存
+            "imglist": {},
+        }
+
+        var imgData = new Array({
+            name: "ball",
+            path: "./images/ball.png"
+        });
+
+        LInit(1, G.canvasId , G.GAME_WIDTH, G.GAME_HEIGHT, start);
+
+         // 进程
+        function start(){
+            LGlobal.setDebug(true);
+            
+            // 实现移动端适配，1.6以后才能使用这个API
+            LGlobal.align = LStageAlign.TOP_LEFT;
+            LGlobal.stageScale = LStageScaleMode.SHOW_ALL;
+            LSystem.screen(LStage.FULL_SCREEN);
+            G.backLayer = new LSprite();
+            addChild(G.backLayer);
+            //利用LLoadManage读取图片, 显示进度条, 执行init
+            G.loadingLayer = new LoadingSample5(12);
+            G.backLayer.addChild(G.loadingLayer);
+            G.backLayer.removeAllChild(G.loadingLayer);
+            LLoadManage.load(
+                imgData,
+                function(progress) {
+                    G.loadingLayer.setProgress(progress);
+                },
+                // 不能写init,冲突
+                initGame
+            );  
+        }  
+
+         function initGame(result) {
+            //取得图片读取结果
+            G.imglist = result;
+            //移除进度条
+            G.backLayer.removeAllChild(G.loadingLayer);
+            G.loadingLayer = null;
+            //游戏逻辑
+            main();
+        }
+
+        var bitmapData,bitmap,sprite;
+        function main() {
+            // 格式化背景层
+            G.backLayer.die();
+            G.backLayer.removeAllChild();
+           
+            bitmapData = new LBitmapData(G.imglist["ball"],0,0,66,66);
+
+            bitmap = new LBitmap(bitmapData);
+            bitmap.x = 287;//320-66/2(66是图片的宽)
+            bitmap.y = 287;
+            bitmap.alpha = 0.5;
+            addChild(bitmap);
+            
+            bitmap = new LBitmap(bitmapData);
+            bitmap.alpha = 0.9;
+            bitmap.x = -bitmap.getWidth()*0.5;
+            bitmap.y = -bitmap.getHeight()*0.5;
+            sprite = new LSprite();
+            sprite.addChild(bitmap);
+            sprite.graphics.drawArc(1,"#000000",[0,0,10,0,Math.PI*2],true);
+            sprite.x = 320;//缩放中心
+            sprite.y = 320;//缩放中心
+            sprite.scaleX = 0.5;
+            sprite.scaleY = 0.5;
+            addChild(sprite);
+
+            LTweenLite.to(sprite,0.1,{scaleX:1,scaleY:1});
+           
+            // 循环动画
+            G.backLayer.addEventListener(LEvent.ENTER_FRAME, onframe);
+        } 
+        // function onframe() {
+        //     if(sprite.scaleX<10){
+        //         sprite.scaleX++;
+        //     }
+            
+        // }
+    </script>
+</body>
+</html>

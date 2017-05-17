@@ -92,7 +92,13 @@
             // 重弹标志
             "reflag": false,
             // 来球方向标志(false:右方true:左方)
-            "direflag": false
+            "direflag": false,
+            // 光圈
+            "halo": null,
+            // 光圈缓动播完标志
+            "overflag": true,
+            // 方块被撞击次数
+            "num": 0
         }
         var imgData = new Array({
             name: "bg2",
@@ -107,8 +113,7 @@
             name: "sprite",
             path: "./images/sprite.png"
         });
-        // $("#dazhuankuai_game").css("height",G.GAME_HEIGHT);
-        // $("#dazhuankuai_game canvas").css("height",G.GAME_HEIGHT);
+        
         LInit(10, G.canvasId , G.GAME_WIDTH, G.GAME_HEIGHT, start);
 
         // 进程
@@ -184,7 +189,7 @@
             G.floor.x = 320;
             G.floor.y = G.GAME_HEIGHT-120+8;
             G.stageLayer.addChild(G.floor);
-            G.floor.addBodyPolygon(130,16,0,1,0.9,1.5);
+            G.floor.addBodyPolygon(130,16,0,1,0.9,2);
             // 添加移动
             G.floor.addEventListener(LMouseEvent.MOUSE_DOWN, onmousedown);
             G.backLayer.addEventListener(LMouseEvent.MOUSE_MOVE, onmousemove);
@@ -205,49 +210,134 @@
             
             // 方块
             var box1 = new Box();
-            box1.getBox(box1.box1,22,188,G.imglist["sprite"],[23,157,52,48]);
+            box1.getHardBox(box1.box1,22,188,G.imglist["sprite"],[23,157,52,48]);
             var box2 = new Box();
-            box2.getBox(box2.box2,22,430,G.imglist["sprite"],[23,157,52,48]);
+            box2.getHardBox(box2.box2,22,430,G.imglist["sprite"],[23,157,52,48]);
             var box3 = new Box();
-            box3.getBox(box3.box3,410,188,G.imglist["sprite"],[23,157,52,48]);
+            box3.getHardBox(box3.box3,410,188,G.imglist["sprite"],[23,157,52,48]);
             var box4 = new Box();
-            box4.getBox(box4.box4,410,430,G.imglist["sprite"],[23,157,52,48]);
+            box4.getHardBox(box4.box4,410,430,G.imglist["sprite"],[23,157,52,48]);
             var box5 = new Box();
             box5.getBox(box5.box5,164,263,G.imglist["sprite"],[131,157,52,48]);
 
             // 循环动画
             G.backLayer.addEventListener(LEvent.ENTER_FRAME, onframe);
         }
+        // 跟踪
         function onframe() {
-           if(G.posiArr.length<30) {
-               G.posiArr.push(G.ball.x);
-           }else {
-               G.posiArr.shift();
-               G.posiArr.push(G.ball.x);
-           }
-        //    if((parseInt(G.posiArr[0]) === parseInt(G.posiArr[49])) && (G.globalState==2) && (parseInt(G.posiArr[0]) === parseInt(G.posiArr[20]))){
+            switch(G.globalState){
+                // 跟踪小球坐标
+                case 2:
+                    if(G.posiArr.length<30) {
+                        G.posiArr.push({"x":G.ball.x,"y":G.ball.y});
+                    }else {
+                        G.posiArr.shift();
+                        G.posiArr.push({"x":G.ball.x,"y":G.ball.y});
+                    }
+                    // 左方
+                    if( G.posiArr.length==30 &&　G.posiArr[0].x < G.posiArr[29].x ) {
+                        G.direflag = true;
+                        console.log(0); 
+                    }else if( G.posiArr.length==30　&&　G.posiArr[0].x >= G.posiArr[29].x ) {
+                        G.direflag = false;
+                        console.log(1);
+                    }
+                    break;
+                case 3:
+                    breack;
+                default:
+           } 
+        //    if(G.posiArr.length==30 
+        //        && (Math.abs( parseInt(G.posiArr[0].x) - parseInt(G.posiArr[14].x ))< 130) 
+        //        && (G.globalState==2) 
+        //        && ( Math.abs(parseInt(G.posiArr[14].x) - parseInt(G.posiArr[29].x))<130 )){
         //        console.log("原地重弹");
         //        G.reflag = true;
         //    }
-           // 左方
-           if( (G.posiArr[0] > G.posiArr[9]) && (G.posiArr[9]>G.posiArr[29])) {
-               G.direflag = true;
-           }
-           
         }
-        // 碰撞(问题：无法给动态的刚体添加力)
+        // 碰撞(问题：无法给动态的刚体添加力,可能是要清除所有力，再添加力；但是添加冲量的效果很明显)
         function postSolve(contact,impulse) {
-            // if(gameOver)return;
             var objA = contact.GetFixtureA().GetBody().GetUserData();
             var objB = contact.GetFixtureB().GetBody().GetUserData();
 
-            if(objA.name == "ball" && objB.name == "box"){
-                G.stageLayer.removeChild(objB);
-            }else if(objA.name == "box" && objB.name == "ball"){
-                G.stageLayer.removeChild(objA);
+            if(objA.name == "ball" && (objB.name == "box" || objB.name == "hardBox") ){
+                // 处理打两次才消除的方块
+                if(objB.name == "box"){
+                    G.stageLayer.removeChild(objB);
+                }else if( objB.name == "hardBox" && objB.num == 0){
+                    objB.num++;
+                    objB.alpha = 0.5;
+                }else {
+                    G.stageLayer.removeChild(objB);
+                }
+                // 撞击的缓动动画
+                if(G.overflag){
+                    G.halo = new Halo();
+                    G.halo.x = objB.x;
+                    G.halo.y = objB.y;
+                    G.halo.scaleX = 0.5;
+                    G.halo.scaleY = 0.5;
+                    G.stageLayer.addChild(G.halo);
+                    G.overflag = false;
+                }
+                LTweenLite.to(G.halo,0.05,{scaleX:1,scaleY:1,onComplete:function(){
+                    G.stageLayer.removeChild(G.halo);
+                    G.overflag = true;
+                }});
+
+            }else if((objA.name == "box" || objA.name == "hardBox") && objB.name == "ball"){
+                // 处理打两次才消除的方块
+                if(objA.name == "box"){
+                    G.stageLayer.removeChild(objA);
+                }else if( objA.name == "hardBox" && objA.num == 0){
+                    objA.num++;
+                    objA.alpha = 0.5;
+                }else {
+                    G.stageLayer.removeChild(objA);
+                }
+                // 撞击的缓动动画
+                if(G.overflag){
+                    G.halo = new Halo();
+                    G.halo.x = objB.x;
+                    G.halo.y = objB.y;
+                    G.halo.scaleX = 0.5;
+                    G.halo.scaleY = 0.5;
+                    G.stageLayer.addChild(G.halo);
+                    G.overflag = false;
+                }
+                LTweenLite.to(G.halo,0.1,{scaleX:1,scaleY:1,onComplete:function(){
+                    G.stageLayer.removeChild(G.halo);
+                    G.overflag = true;
+                }});
+
+            }else if(objA.name == "ball" && objB.name == "floor" && G.globalState==2) {
+                
+            }else if(objA.name == "floor" && objB.name == "ball" && G.globalState==2){
+                // 重弹处理
+                // var arrRight = [-1*Math.PI/12,-2*Math.PI/12,-3*Math.PI/12];
+                // var arrLeft = [-11*Math.PI/12,-10*Math.PI/12,-9*Math.PI/12];
+                // if(G.reflag){
+                //     var arr = [-1*Math.PI/12,-2*Math.PI/12,-3*Math.PI/12,-11*Math.PI/12,-10*Math.PI/12,-9*Math.PI/12];
+                //     var angle = arr[parseInt(Math.random()*6)];
+                //     var force = 0.5;
+                //     var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle)); // 施加固定角度的力
+                //     // G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter()); // 失效
+                //     G.ball.box2dBody.ApplyImpulse(vec, G.ball.box2dBody.GetWorldCenter()) // 冲量
+                //     G.reflag = false;
+                // }
+                // 随机角度处理
+                if(G.direflag){
+                     var angle = 0;
+                }else {
+                    var angle = -Math.PI;
+                }
+                var force = 0.8;
+                var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle)); // 施加固定角度的力
+                // G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter()); // 失效
+                G.ball.box2dBody.ApplyImpulse(vec, G.ball.box2dBody.GetWorldCenter()) // 冲量
             }
         }
-        // 动画(鼠标移动)
+        // 动画(鼠标按下，移动，抬起)
         function onmousedown(event) {
             G.flag = true;
         }
@@ -271,7 +361,7 @@
         function onmouseup(event) {
              G.flag = false;
         }
-        // Tools
+        // Tools fn
         // 写时间
         function writeTime(time) {
             G.field.text = time;
@@ -311,7 +401,7 @@
                 }
             },1000);
         }
-        // 背景层，舞台层，顶层，地板层，小球层，方块层(创建方块刚体)，发射层
+        // 背景层，舞台层，顶层，地板层，小球层，光圈层，方块层(创建方块刚体)
         function Background() {
             base(this, LSprite, []);
             var self = this;
@@ -357,6 +447,16 @@
             self.bitmap = new LBitmap(self.bitmapData);
             self.addChild(self.bitmap); 
         }
+        function Halo() {
+            base(this, LSprite, []);
+            var self = this;
+            self.name = "halo";
+            self.bitmapData = new LBitmapData(G.imglist["sprite"],204,259,70,68);
+            self.bitmap = new LBitmap(self.bitmapData);
+            self.bitmap.x = -self.bitmap.getWidth()*0.5;
+            self.bitmap.y = -self.bitmap.getHeight()*0.5;
+            self.addChild(self.bitmap); 
+        }
         function Box() {
             var self = this;
             self.box1 = [[1,1,1,1],
@@ -392,6 +492,27 @@
                         }
                         var sprite = new LSprite();
                         sprite.name = "box";
+                        var bitmapData = new LBitmapData(G.imglist["sprite"],arr[0],arr[1],arr[2],arr[3]);
+                        var bitmap = new LBitmap(bitmapData);
+                        sprite.addChild(bitmap);
+
+                        sprite.x = (bitmap.getWidth()*j+START_X) + (bitmap.getWidth()/2);
+                        sprite.y = (bitmap.getHeight()*i+START_Y) + (bitmap.getHeight()/2);
+                        G.stageLayer.addChild(sprite);
+                        sprite.addBodyPolygon(bitmap.getWidth(),bitmap.getHeight(),0,5,0.4,0);
+                    }
+                }
+            },
+            getHardBox : function(box,START_X,START_Y,imgObj,arr) {
+                var i,j,bitmap;
+	            for(i=0;i<box.length;i++){
+                    for(j=0;j<box[0].length;j++){
+                        if(box[i][j] == 0){
+                            continue;
+                        }
+                        var sprite = new LSprite();
+                        sprite.name = "hardBox";
+                        sprite.num = 0;
                         var bitmapData = new LBitmapData(G.imglist["sprite"],arr[0],arr[1],arr[2],arr[3]);
                         var bitmap = new LBitmap(bitmapData);
                         sprite.addChild(bitmap);

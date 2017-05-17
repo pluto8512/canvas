@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="http://lufylegend.com/js/lufylegend-1.9.0.min.js"></script> 
+<title>demo</title>
+</head>
+<body style="margin:0px 0px 0px 0px;padding:0px 0px 0px 0px;">
+<div id="mylegend">loading……</div>
+<script>
+init(1000/60,"mylegend",1000,500,main);
+function main(){  
+	var loader = new LLoader();  
+	loader.addEventListener(LEvent.COMPLETE,loadBitmapdata);  
+	loader.load("http://lufylegend.com/images/face.jpg","bitmapData");  
+}  
+function loadBitmapdata(event){  
+	var bitmapData;
+	var bitmap;
+	var sprite;
+	bitmapData = new LBitmapData(event.target,20,20,200,200);
+	//rotate
+	bitmap = new LBitmap(bitmapData);
+	bitmap.x = 100;
+	bitmap.y = 10;
+	bitmap.alpha = 0.5;
+	addChild(bitmap);
+	
+	bitmap = new LBitmap(bitmapData);
+	bitmap.alpha = 0.5;
+	bitmap.x = -50;
+	bitmap.y = 0;
+	sprite = new LSprite();
+	sprite.addChild(bitmap);
+	sprite.graphics.drawArc(1,"#000000",[0,0,4,0,Math.PI*2],true);
+	sprite.x = 150;
+	sprite.y = 10;
+	sprite.rotate = 30;
+	addChild(sprite);
+	
+	//scale
+	bitmap = new LBitmap(bitmapData);
+	bitmap.x = 450;
+	bitmap.y = 10;
+	bitmap.alpha = 0.5;
+	addChild(bitmap);
+	
+	bitmap = new LBitmap(bitmapData);
+	bitmap.alpha = 0.5;
+	bitmap.x = -50;
+	bitmap.y = 0;
+	sprite = new LSprite();
+	sprite.addChild(bitmap);
+	sprite.graphics.drawArc(1,"#000000",[0,0,4,0,Math.PI*2],true);
+	sprite.x = 500;
+	sprite.y = 10;
+	sprite.scaleX = 1.5;
+	addChild(sprite);
+	
+	
+	
+	//rotate
+	bitmap = new LBitmap(bitmapData);
+	bitmap.x = 100;
+	bitmap.y = 250;
+	bitmap.alpha = 0.5;
+	addChild(bitmap);
+	
+	bitmap = new LBitmap(bitmapData);
+	bitmap.alpha = 0.5;
+	bitmap.x = -bitmap.getWidth()*0.5;
+	bitmap.y = -bitmap.getHeight()*0.5;
+	sprite = new LSprite();
+	sprite.addChild(bitmap);
+	sprite.graphics.drawArc(1,"#000000",[0,0,4,0,Math.PI*2],true);
+	sprite.x = 200;
+	sprite.y = 350;
+	sprite.rotate = 30;
+	addChild(sprite);
+	
+	//scale
+	bitmap = new LBitmap(bitmapData);
+	bitmap.x = 450;
+	bitmap.y = 250;
+	bitmap.alpha = 0.5;
+	addChild(bitmap);
+	
+	bitmap = new LBitmap(bitmapData);
+	bitmap.alpha = 0.5;
+	bitmap.x = -bitmap.getWidth()*0.5;
+	bitmap.y = -bitmap.getHeight()*0.5;
+	sprite = new LSprite();
+	sprite.addChild(bitmap);
+	sprite.graphics.drawArc(1,"#000000",[0,0,4,0,Math.PI*2],true);
+	sprite.x = 550;
+	sprite.y = 350;
+	sprite.scaleX = 1.5;
+	addChild(sprite);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <title>距离关节</title>
+    <!--距离关节就是指刚体中点之间的距离不变-->
+    <style>
+            *,
+        ::before,
+        ::after {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box; }
+
+        #Box2d_game {
+            width: 16rem !important;
+            height: 17.5rem !important;
+            /*background: skyblue;*/
+            margin: 0 auto; }
+
+        #Box2d_game canvas {
+            width: 16rem !important;
+            height: 17.5rem !important;
+            margin: 0 auto; 
+            border: 0.025rem solid black;
+            }
+
+    </style>
+</head>
+<body>
+    <div id="Box2d_game"></div>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/Box2dWeb-2.1.a.3.min.js"></script>
+    <script src="../js/lufylegend-1.5.1.js"></script>
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                    recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth > 800) clientWidth=800;
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+            
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            recalc();
+        })(document, window);
+
+        // 距离关节
+        var Global = {
+            // 游戏状态
+            "globalState": 1,
+            // canvas ID
+            "canvasId":"Box2d_game",
+            // 画布宽
+            "GAME_WIDTH": 640,
+            // 画布高
+            "GAME_HEIGHT": 700,
+            // 背景层
+            "backLayer": null,
+            // loading层
+            "loadingLayer": null,
+            // 舞台层
+            "stageLayer": null,
+            // 图片缓存
+            "imglist": {}
+        }
+        init(10, Global.canvasId , Global.GAME_WIDTH, Global.GAME_HEIGHT, main);
+
+        function main() {
+            LGlobal.setDebug(true);
+            var circle = new LSprite();
+            circle.x = 320;
+            circle.y = 320;
+            circle.graphics.drawArc(1,"#FF0000",[0,0,20,0,Math.PI*2],true,"#FF0000");
+            addChild(circle);
+            var rect = new LSprite();
+            rect.x = 50;
+            rect.y = 100;
+            rect.graphics.drawRect(1,"#FF00FF",[0,0,20,20],true,"#FF00FF");
+            addChild(rect);
+
+            // LTweenLite.to(circle,2,{x:320,y:320,scaleX:3,scaleY:3,ease:LEasing.Strong.easeInOut,tweenTimeline:LTweenLite.TYPE_TIMER})
+            // .to(circle,2,{x:700,y:50,scaleX:1,scaleY:1,ease:LEasing.Quint.easeIn,onComplete:function(e){
+            //     trace(e.currentTarget);
+            //     trace(e.target);
+            // },tweenTimeline:LTweenLite.TYPE_TIMER});
+            //  LTweenLite.to(rect,1,{x:500,loop:true,ease:LEasing.Sine.easeInOut})
+            // .to(rect,1,{x:50,ease:LEasing.Quad.easeInOut});
+
+            LTweenLite.to(circle,2,{scaleX:3});
+           
+        }
+    </script>
+</body>
+</html>
