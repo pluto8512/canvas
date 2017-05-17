@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <title>移动关节</title>
+    <!--沿指定轴相对移动-->
+    <style>
+            *,
+        ::before,
+        ::after {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box; }
+
+        #Box2d_game {
+            width: 16rem !important;
+            height: 17.5rem !important;
+            margin: 0 auto;}
+
+        #Box2d_game canvas {
+            width: 16rem !important;
+            height: 17.5rem !important;
+            margin: 0 auto; 
+            border: 0.025rem solid black;}
+
+    </style>
+</head>
+<body>
+    <div id="Box2d_game"></div>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/Box2dWeb-2.1.a.3.min.js"></script>
+    <script src="../js/lufylegend-1.5.1.js"></script>
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                    recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth > 800) clientWidth=800;
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+            
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            recalc();
+        })(document, window);
+
+        // 距离关节
+        var Global = {
+            // 游戏状态
+            "globalState": 1,
+            // canvas ID
+            "canvasId":"Box2d_game",
+            // 画布宽
+            "GAME_WIDTH": 640,
+            // 画布高
+            "GAME_HEIGHT": 700,
+            // 背景层
+            "backLayer": null,
+            // loading层
+            "loadingLayer": null,
+            // 舞台层
+            "stageLayer": null,
+            // 图片缓存
+            "imglist": {}
+        }
+        init(10, Global.canvasId , Global.GAME_WIDTH, Global.GAME_HEIGHT, main);
+
+        function main() {
+            LGlobal.setDebug(true);
+            Global.backLayer = new LSprite();
+            addChild(Global.backLayer);
+
+            LGlobal.box2d = new LBox2d();
+
+            var cplayer  = new LSprite();
+            cplayer.x = 320;//刚体中点的x坐标
+            cplayer.y = 390;//刚体中点的y坐标
+            // 添加钢体
+            Global.backLayer.addChild(cplayer);
+            cplayer.addBodyPolygon(640,10,0,5,0.4,0.2);
+
+            // 加入一个动态的圆形物体1
+            var box = new LSprite();
+            box.x = 200;
+            box.y = 100;
+            Global.backLayer.addChild(box);
+            box.addBodyCircle(20,0,0,1,1,0.3,0.6);
+            box.setBodyMouseJoint(true);
+
+            // 加入一个动态的圆形物体2
+            var box2  =  new LSprite();
+            box2.x = 300;               
+            box2.y = 100;
+            Global.backLayer.addChild(box2);
+            box2.addBodyCircle(20,0,0,1,2,1,0.2);//半径，圆心坐标，状态，密度，摩擦，弹力
+            box2.setBodyMouseJoint(true);
+
+            
+            LGlobal.box2d.setPrismaticJoint(box.box2dBody,box2.box2dBody,[0,1],[-5,2,5],[0,10]);
+        }
+    </script>
+</body>
+</html>
