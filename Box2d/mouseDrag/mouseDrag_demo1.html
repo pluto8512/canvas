@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"> 
+<!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">-->
+
+<!--适配-->
+<title>Box2dWeb Demo</title>
+<script type="text/javascript" src="../js/Box2dWeb-2.1.a.3.min.js"></script> 
+<script type="text/javascript" src="../js/lufylegend-1.10.1.js"></script> 
+<style>
+        *,
+    ::before,
+    ::after {
+    padding: 0;
+    margin: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; }
+
+    #mylegend {
+        width: 16rem ;
+        height: 17.5rem ;
+        margin: 0 auto;}
+
+    #mylegend canvas {
+        width: 100% ;
+        height: 100% ;
+        margin: 0 auto; 
+        border: 0.025rem solid black;}
+
+</style>
+</head>
+<body>
+<div id="mylegend">loading……</div>
+<script src="../js/jquery.js"></script>
+<script type="text/javascript">
+(function (doc, win) {
+    var docEl = doc.documentElement,
+    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+        var clientWidth = docEl.clientWidth;
+        if (!clientWidth) return;
+        if(clientWidth > 800) clientWidth=800;
+        docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+    };
+    
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    recalc();
+})(document, window);
+
+// LSystem.screen(LStage.FULL_SCREEN);
+init(10,"mylegend",640,700,main,LEvent.INIT)
+
+var backLayer,cLayer;
+function main(){	
+    
+    LGlobal.align = LStageAlign.TOP_LEFT;
+    LGlobal.stageScale = LStageScaleMode.SHOW_ALL;
+    LSystem.screen(LStage.FULL_SCREEN);
+	LGlobal.setDebug(true);	
+	backLayer = new LSprite();	
+	addChild(backLayer);	
+
+	LGlobal.box2d = new LBox2d();
+	cLayer = new LSprite();
+	cLayer.x = 320;
+	cLayer.y = 390;
+	backLayer.addChild(cLayer);
+	cLayer.addBodyPolygon(640,10,0,5,0.4,0.2);
+	
+	cLayer = new LSprite();
+	cLayer.x = 300;
+	cLayer.y = 100;
+	backLayer.addChild(cLayer);
+	cLayer.addBodyPolygon(100,60,1,5,0.4,0.2);
+	cLayer.setBodyMouseJoint(true);
+}
+</script> 
+</body>
+</html>
