@@ -93,12 +93,44 @@
             "reflag": false,
             // 来球方向标志(false:右方true:左方)
             "direflag": false,
+            // 墙上来球的随机方向(false:右方true:左方)
+            "walldireflag": false,
             // 光圈
             "halo": null,
             // 光圈缓动播完标志
             "overflag": true,
             // 方块被撞击次数
-            "num": 0
+            "num": 0,
+            // 碰撞跟踪对象(flag:掉粽子x/y:撞击时的坐标)
+            "PSO" : {"flag":false,"x":0,"y":0},
+            // 分数
+            "score": 0,
+            // 球2
+            "ball2": null,
+            // 保存球2的位置的数组
+            "posiArr2": [],
+            // 球2的来球方向标志(false:右方true:左方)
+            "direflag2": false,
+            // SK1和挡板碰撞跟踪对象(flag:加球标志x/y:撞击时的坐标)
+            "PSO_SK1FLOOR":{ "flag": false,"x":0,"y":0},
+            // SK4和挡板碰撞跟踪对象(flag:加球标志x/y:撞击时的坐标)
+            "PSO_SK4FLOOR":{ "flag": false,"x":0,"y":0},
+            // 通用弹力指数
+            "normal_config" : 0,
+            // 地板弹力指数
+            "floor_Config" : 0,
+            // 小球密度
+            "midu_config": 2,
+            // 小球的弹力
+            "boll_config": 1,
+            // 小球第一次发射时的力度
+            "force": 200,
+            // 重力系数
+            "g": 9.8,
+            // 通用摩擦力
+            "mormal_config2":0,
+            // 小球和球板碰撞时外加力以及小球和墙碰撞时外加力
+            "forcefloorball":0.8
         }
         var imgData = new Array({
             name: "bg2",
@@ -167,20 +199,20 @@
             top.x = 320;
             top.y = 62.5;
             G.stageLayer.addChild(top);
-            top.addBodyPolygon(640,125,0,10,0.4,0);
+            top.addBodyPolygon(640,125,0,10,G.mormal_config2,G.normal_config);
 
             // 通过顶点坐标加入2面墙
             var wall1 = new Wall();
             wall1.x = 11;
             wall1.y = G.GAME_HEIGHT/2;
             G.stageLayer.addChild(wall1);
-            wall1.addBodyPolygon(22,G.GAME_HEIGHT,0,10,0.4,0);
+            wall1.addBodyPolygon(22,G.GAME_HEIGHT,0,10,G.mormal_config2,G.normal_config);
 
             var wall2 = new Wall();
             wall2.x = 640-11;
             wall2.y = G.GAME_HEIGHT/2;
             G.stageLayer.addChild(wall2);
-            wall2.addBodyPolygon(22,G.GAME_HEIGHT,0,10,0.4,0);
+            wall2.addBodyPolygon(22,G.GAME_HEIGHT,0,10,G.mormal_config2,G.normal_config);
             // 设置层级,最底下调到最上面
             G.stageLayer.setChildIndex(G.stageLayer.getChildAt(0), G.stageLayer.numChildren-1);
 
@@ -189,9 +221,9 @@
             G.floor.x = 320;
             G.floor.y = G.GAME_HEIGHT-120+8;
             G.stageLayer.addChild(G.floor);
-            G.floor.addBodyPolygon(130,16,0,1,0.9,2);
+            G.floor.addBodyPolygon(130,16,0,1,G.mormal_config2,G.floor_Config);
             // 添加移动
-            G.floor.addEventListener(LMouseEvent.MOUSE_DOWN, onmousedown);
+            G.backLayer.addEventListener(LMouseEvent.MOUSE_DOWN, onmousedown);
             G.backLayer.addEventListener(LMouseEvent.MOUSE_MOVE, onmousemove);
             G.backLayer.addEventListener(LMouseEvent.MOUSE_UP, onmouseup);
 
@@ -200,7 +232,7 @@
             G.ball.x = G.point.x;
             G.ball.y = G.point.y;
             G.stageLayer.addChild(G.ball);
-            G.ball.addBodyCircle(15,0,0,1,0.1,0.9,0.1);
+            G.ball.addBodyCircle(15,0,0,1,G.midu_config,G.mormal_config2,G.boll_config);
             // 倒计时3s,随机发射
             G.field = new LTextField();
             G.backLayer.addChild(G.field);
@@ -226,118 +258,326 @@
         // 跟踪
         function onframe() {
             switch(G.globalState){
-                // 跟踪小球坐标
+                // 游戏过程中
                 case 2:
+                    nog(G.ball.box2dBody);
+                    // 跟踪小球坐标
                     if(G.posiArr.length<30) {
                         G.posiArr.push({"x":G.ball.x,"y":G.ball.y});
                     }else {
                         G.posiArr.shift();
                         G.posiArr.push({"x":G.ball.x,"y":G.ball.y});
                     }
-                    // 左方
+                    // 左方(true)
                     if( G.posiArr.length==30 &&　G.posiArr[0].x < G.posiArr[29].x ) {
                         G.direflag = true;
-                        console.log(0); 
                     }else if( G.posiArr.length==30　&&　G.posiArr[0].x >= G.posiArr[29].x ) {
                         G.direflag = false;
+                    }
+                    // 上方(true)
+                    if( G.posiArr.length==30 &&　G.posiArr[0].y < G.posiArr[29].y ) {
+                        G.walldireflag = true;
                         console.log(1);
+                    }else if( G.posiArr.length==30　&&　G.posiArr[0].y >= G.posiArr[29].y ) {
+                        G.walldireflag = false;
+                        console.log(0);
+                    }
+                    // 跟踪小球2的运动状态
+                    if(G.ball2) {
+                        // 跟踪小球2坐标
+                        if(G.posiArr2.length<30) {
+                            G.posiArr2.push({"x":G.ball2.x,"y":G.ball2.y});
+                        }else {
+                            G.posiArr2.shift();
+                            G.posiArr2.push({"x":G.ball2.x,"y":G.ball2.y});
+                        }
+                        // 左方
+                        if( G.posiArr2.length==30 &&　G.posiArr2[0].x < G.posiArr2[29].x ) {
+                            G.direflag2 = true;
+                        }else if( G.posiArr2.length==30　&&　G.posiArr2[0].x >= G.posiArr2[29].x ) {
+                            G.direflag2 = false;
+                        }
+                    }
+                    // 方块和小球的"碰撞后"跟踪(SK1:双球SK2:小球加速SK3:直接死亡SK4:球板变短)
+                    if (G.PSO.flag){
+                        G.PSO.flag = false;
+                        // var flag = parseInt(Math.random*10);
+                        // switch(flag){
+                        //     case 1,2,3:
+                        //         // 创建粽子(可用)
+                                createZongzi();
+                        //     break;
+                        //     case 4:
+                        //         // 创建粽子(可用)
+                        //         createZongzi();
+                        //     break;
+                        //     case 5:
+                        //         // 创建双球道具(SK:skill)
+                        //         createSK1ball();
+                        //     break;
+                        //     case 6:
+                        //         // 创建小球加速道具
+                        //         createSK2ball();
+                        //     break;
+                        //     case 7:
+                        //         // 球板变短道具
+                        //         createSK4ball();
+                        //     break;
+                        //     default:
+                        //         // 创建粽子(可用)
+                        //         createZongzi();
+                        // }
+                       
+                        // 创建小球(可用)
+                        // createBall();
+                       
+
+                    }
+                    // SK1和挡板的碰撞跟踪
+                    if (G.PSO_SK1FLOOR.flag){
+                        // 创建朝上发射的小球
+                        createBall();
+                    }
+                    // SK4和挡板的碰撞跟踪
+                    if (G.PSO_SK4FLOOR.flag){
+                        G.stageLayer.removeChild(G.floor);
+                        G.floor = null;
+                        // 创建短的球板
+                        createShortFloor();
+                        G.PSO_SK4FLOOR.flag = false;
                     }
                     break;
+                // 游戏结束
                 case 3:
-                    breack;
+                    alert("gameOver!");
+                    G.globalState = 0;
+                    break;
                 default:
            } 
-        //    if(G.posiArr.length==30 
-        //        && (Math.abs( parseInt(G.posiArr[0].x) - parseInt(G.posiArr[14].x ))< 130) 
-        //        && (G.globalState==2) 
-        //        && ( Math.abs(parseInt(G.posiArr[14].x) - parseInt(G.posiArr[29].x))<130 )){
-        //        console.log("原地重弹");
-        //        G.reflag = true;
-        //    }
         }
-        // 碰撞(问题：无法给动态的刚体添加力,可能是要清除所有力，再添加力；但是添加冲量的效果很明显)
+        function createZongzi() {
+            var zongzi = new Zongzi();
+            zongzi.x = G.PSO.x+26;
+            zongzi.y = G.PSO.y+300;
+            G.stageLayer.addChild(zongzi);
+            zongzi.addBodyCircle(41.5,0,0,1,0,G.mormal_config2,G.normal_config);
+        }
+        function createSK1ball() {
+            var sk1ball = new SK1();
+            sk1ball.x = G.PSO.x;
+            sk1ball.y = G.PSO.y;
+            G.stageLayer.addChild(sk1ball);
+            sk1ball.addBodyCircle(41.5,0,0,1,0,G.mormal_config2,G.normal_config);
+        }
+        function createSK2ball() {
+            var sk2ball = new SK2();
+            sk2ball.x = G.PSO.x;
+            sk2ball.y = G.PSO.y;
+            G.stageLayer.addChild(sk2ball);
+            sk2ball.addBodyCircle(41.5,0,0,1,0,G.mormal_config2,G.normal_config);
+        }
+        function createSK3ball() {
+            var sk3ball = new SK3();
+            sk3ball.x = G.PSO.x;
+            sk3ball.y = G.PSO.y;
+            G.stageLayer.addChild(sk3ball);
+            sk3ball.addBodyCircle(41.5,0,0,1,0,G.mormal_config2,G.normal_config);
+        }
+        function createSK4ball() {
+            var sk4ball = new SK4();
+            sk4ball.x = G.PSO.x;
+            sk4ball.y = G.PSO.y;
+            G.stageLayer.addChild(sk4ball);
+            sk4ball.addBodyPolygon(83,83,1,0,G.mormal_config2,G.normal_config);
+        }
+        function createBall() {
+            G.ball2 = new Ball();
+            G.ball2.x = G.PSO_SK1FLOOR.x;
+            G.ball2.y = G.PSO_SK1FLOOR.y;
+            G.stageLayer.addChild(G.ball2);
+            G.ball2.addBodyCircle(15,0,0,1,G.midu_config,G.mormal_config2,G.boll_config);
+            G.PSO_SK1FLOOR.flag = false;
+            var angle = -Math.PI/2;
+            var force = 10;
+            var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle)); // 施加固定角度的力
+            G.ball2.box2dBody.ApplyImpulse(vec, G.ball2.box2dBody.GetWorldCenter()) // 冲量
+        }
+        function createShortFloor() {
+            G.floor = new ShortFloor();
+            G.floor.x = G.PSO_SK4FLOOR.x;
+            G.floor.y = G.GAME_HEIGHT-120+8;
+            G.stageLayer.addChild(G.floor);
+            G.floor.addBodyPolygon(87,16,0,1,G.mormal_config2,G.floor_Config);
+        }
+        // 碰撞(问题1：无法给动态的刚体添加力,可能是要清除所有力，再添加力；但是添加冲量的效果很明显;问题2：碰撞的时间里面无法创建新的刚体，m_flags有值，创建被锁直接跳出方法)
         function postSolve(contact,impulse) {
             var objA = contact.GetFixtureA().GetBody().GetUserData();
             var objB = contact.GetFixtureB().GetBody().GetUserData();
-
-            if(objA.name == "ball" && (objB.name == "box" || objB.name == "hardBox") ){
-                // 处理打两次才消除的方块
-                if(objB.name == "box"){
-                    G.stageLayer.removeChild(objB);
-                }else if( objB.name == "hardBox" && objB.num == 0){
-                    objB.num++;
-                    objB.alpha = 0.5;
-                }else {
-                    G.stageLayer.removeChild(objB);
-                }
-                // 撞击的缓动动画
-                if(G.overflag){
-                    G.halo = new Halo();
-                    G.halo.x = objB.x;
-                    G.halo.y = objB.y;
-                    G.halo.scaleX = 0.5;
-                    G.halo.scaleY = 0.5;
-                    G.stageLayer.addChild(G.halo);
-                    G.overflag = false;
-                }
-                LTweenLite.to(G.halo,0.05,{scaleX:1,scaleY:1,onComplete:function(){
-                    G.stageLayer.removeChild(G.halo);
-                    G.overflag = true;
-                }});
-
-            }else if((objA.name == "box" || objA.name == "hardBox") && objB.name == "ball"){
-                // 处理打两次才消除的方块
-                if(objA.name == "box"){
-                    G.stageLayer.removeChild(objA);
-                }else if( objA.name == "hardBox" && objA.num == 0){
-                    objA.num++;
-                    objA.alpha = 0.5;
-                }else {
-                    G.stageLayer.removeChild(objA);
-                }
-                // 撞击的缓动动画
-                if(G.overflag){
-                    G.halo = new Halo();
-                    G.halo.x = objB.x;
-                    G.halo.y = objB.y;
-                    G.halo.scaleX = 0.5;
-                    G.halo.scaleY = 0.5;
-                    G.stageLayer.addChild(G.halo);
-                    G.overflag = false;
-                }
-                LTweenLite.to(G.halo,0.1,{scaleX:1,scaleY:1,onComplete:function(){
-                    G.stageLayer.removeChild(G.halo);
-                    G.overflag = true;
-                }});
-
-            }else if(objA.name == "ball" && objB.name == "floor" && G.globalState==2) {
+            // 方块和球，地板和球，粽子和球
+            if(objA.name == "ball" && (objB.name == "box" || objB.name == "hardBox")){
                 
+                boxBallFn(objB,objA);
+            }else if((objA.name == "box" || objA.name == "hardBox") && objB.name == "ball"){
+                
+                boxBallFn(objA,objB);
+            }else if(objA.name == "ball" && objB.name == "floor" && G.globalState==2){
+                
+                floorBallFn(objB,objA);
             }else if(objA.name == "floor" && objB.name == "ball" && G.globalState==2){
-                // 重弹处理
-                // var arrRight = [-1*Math.PI/12,-2*Math.PI/12,-3*Math.PI/12];
-                // var arrLeft = [-11*Math.PI/12,-10*Math.PI/12,-9*Math.PI/12];
-                // if(G.reflag){
-                //     var arr = [-1*Math.PI/12,-2*Math.PI/12,-3*Math.PI/12,-11*Math.PI/12,-10*Math.PI/12,-9*Math.PI/12];
-                //     var angle = arr[parseInt(Math.random()*6)];
-                //     var force = 0.5;
-                //     var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle)); // 施加固定角度的力
-                //     // G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter()); // 失效
-                //     G.ball.box2dBody.ApplyImpulse(vec, G.ball.box2dBody.GetWorldCenter()) // 冲量
-                //     G.reflag = false;
-                // }
-                // 随机角度处理
-                if(G.direflag){
-                     var angle = 0;
+                
+                floorBallFn(objA,objB);
+            }else if(objA.name == "floor" && objB.name == "zongzi"){
+                
+                zongziBall(objB,objA);
+            }else if(objA.name == "zongzi" && objB.name == "floor"){
+
+                zongziBall(objA,objB);
+            }else if(objA.name == "SK1" && objB.name == "floor" && G.globalState==2){
+
+                SK1Floor(objA,objB);
+            }else if(objA.name == "floor" && objB.name == "SK1" && G.globalState==2){
+
+                SK1Floor(objB,objA);
+            }else if(objA.name == "SK2" && objB.name == "floor" && G.globalState==2){
+
+                SK2Floor(objA,objB);
+            }else if(objA.name == "floor" && objB.name == "SK2" && G.globalState==2){
+
+                SK2Floor(objB,objA);
+            }else if(objA.name == "SK3" && objB.name == "floor" && G.globalState==2){
+
+                SK3Floor(objA,objB);
+            }else if(objA.name == "floor" && objB.name == "SK3" && G.globalState==2){
+
+                SK3Floor(objB,objA);
+            }else if(objA.name == "SK4" && objB.name == "floor" && G.globalState==2){
+
+                SK4Floor(objA,objB);
+            }else if(objA.name == "floor" && objB.name == "SK4" && G.globalState==2){
+
+                SK4Floor(objB,objA);
+            }else if(objA.name == "wall" && objB.name == "ball" && G.globalState==2) {
+
+                wallBall(objA,objB);
+            }else if(objA.name == "ball" && objB.name == "wall" && G.globalState==2){
+
+                wallBall(objB,objA);
+            }
+        }
+        /*碰撞逻辑处理*/
+        // 方块和球碰撞
+        function boxBallFn(bodyBox,bodyball) {
+            // 处理打两次才消除的方块
+            if(bodyBox.name == "box"){
+                G.stageLayer.removeChild(bodyBox);
+                G.PSO.flag = true;
+            }else if( bodyBox.name == "hardBox" && bodyBox.num == 0){
+                bodyBox.num++;
+                bodyBox.alpha = 0.5;
+            }else {
+                G.stageLayer.removeChild(bodyBox);
+                G.PSO.flag = true;
+            }
+            // 撞击的缓动动画
+            if(G.overflag){
+                G.halo = new Halo();
+                G.halo.x = bodyBox.x+26;
+                G.halo.y = bodyBox.y+24;
+                G.halo.scaleX = 0.5;
+                G.halo.scaleY = 0.5;
+                G.stageLayer.addChild(G.halo);
+                G.overflag = false;
+            }
+            LTweenLite.to(G.halo,0.2,{scaleX:3,scaleY:3,onComplete:function(){
+                G.stageLayer.removeChild(G.halo);
+                G.overflag = true;
+            }});
+            // 道具随机掉落的初始位置
+            G.PSO.x =  bodyBox.x;
+            G.PSO.y =  bodyBox.y;
+        }
+        // 两边的墙和球碰撞
+        function wallBall(wallbody,ballbody) {
+            // 随机处理角度
+            if(G.walldireflag){
+                var angle = -3*Math.PI/2;
+            }else {
+                var angle = -Math.PI/2;
+            }
+            if(G.ball2){
+                if(G.walldireflag){
+                    var angle = -3*Math.PI/2;
+                }else {
+                    var angle = -Math.PI/2;
+                }
+            }
+            var vec = new LGlobal.box2d.b2Vec2(G.forcefloorball*Math.cos(angle),G.forcefloorball*Math.sin(angle)); // 施加固定角度的力
+            bodyball.box2dBody.ApplyImpulse(vec, bodyball.box2dBody.GetWorldCenter()) // 冲量
+        }
+
+        // 球板和球碰撞
+        function floorBallFn(bodyFloor,bodyball){
+            // 随机角度处理
+            if(G.direflag){
+                var angle = 0;
+            }else {
+                var angle = -Math.PI;
+            }
+            if(G.ball2){
+                if(G.direflag2){
+                    var angle = 0;
                 }else {
                     var angle = -Math.PI;
                 }
-                var force = 0.8;
-                var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle)); // 施加固定角度的力
-                // G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter()); // 失效
-                G.ball.box2dBody.ApplyImpulse(vec, G.ball.box2dBody.GetWorldCenter()) // 冲量
+            }
+            var vec = new LGlobal.box2d.b2Vec2(G.forcefloorball*Math.cos(angle),G.forcefloorball*Math.sin(angle)); // 施加固定角度的力
+            // G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter()); // 失效
+            bodyball.box2dBody.ApplyImpulse(vec, bodyball.box2dBody.GetWorldCenter()) // 冲量
+        }
+        // 粽子和球板碰撞
+        function zongziBall(bodyZongzi,bodyFloor){
+            if(G.globalState==2){
+                G.stageLayer.removeChild(bodyZongzi);
+                G.score += 20;
+                console.log(G.score);
+            }else {
+                G.stageLayer.removeChild(bodyZongzi);
             }
         }
-        // 动画(鼠标按下，移动，抬起)
+        // 道具(双球)和球板碰撞
+        function SK1Floor(bodySK1,bodyFloor){
+            G.stageLayer.removeChild(bodySK1);
+            G.PSO_SK1FLOOR.x = bodySK1.x;
+            G.PSO_SK1FLOOR.y = bodySK1.y;
+            G.PSO_SK1FLOOR.flag = true;
+        }
+        // 道具(加速)和球板碰撞
+        function SK2Floor(bodySK2,bodyFloor){
+            G.stageLayer.removeChild(bodySK2);
+            // 小球加速
+            var angle = -Math.PI/2;
+            var force = 100;
+            var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle)); // 施加固定角度的力
+            G.ball.box2dBody.ApplyImpulse(vec, G.ball.box2dBody.GetWorldCenter()) // 冲量
+            if(G.ball2){
+                 G.ball2.box2dBody.ApplyImpulse(vec, G.ball2.box2dBody.GetWorldCenter()) // 冲量
+            }
+        }
+        // 道具(gameOver)和球板碰撞
+        function SK3Floor(bodySK3,bodyFloor){
+            G.stageLayer.removeChild(bodySK3);
+            //  gameOver
+            G.globalState=3;
+        }
+        // 道具(球板变短)和球板碰撞
+        function SK4Floor(bodySK4,bodyFloor){
+            G.stageLayer.removeChild(bodySK4);
+            G.PSO_SK4FLOOR.x = bodySK4.x;
+            G.PSO_SK4FLOOR.y = bodyFloor.y;
+            G.PSO_SK4FLOOR.flag = true;
+
+        }
+        // 鼠标/触屏动画(按下，移动，抬起)
         function onmousedown(event) {
             G.flag = true;
         }
@@ -361,7 +601,7 @@
         function onmouseup(event) {
              G.flag = false;
         }
-        // Tools fn
+        /*Tools fn*/
         // 写时间
         function writeTime(time) {
             G.field.text = time;
@@ -378,8 +618,7 @@
                 // var angle = (parseInt(Math.random()*90)+60)*(180/Math.PI)*(Math.random>0.5?1:-1);
                 var arr = [-5*Math.PI/12,-7*Math.PI/12];
                 var angle = arr[parseInt(Math.random()*2)];
-                var force = 50;
-                var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle));
+                var vec = new LGlobal.box2d.b2Vec2( G.force*Math.cos(angle), G.force*Math.sin(angle));
                 G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter());
             }
         }
@@ -401,7 +640,18 @@
                 }
             },1000);
         }
-        // 背景层，舞台层，顶层，地板层，小球层，光圈层，方块层(创建方块刚体)
+        // 重力抵消
+        function nog(body) {
+            // 抵消重力  var force = -10*body.GetMass();
+            var force = -G.g*body.GetMass();
+            var angle = -3*Math.PI/2;
+            var vec = new LGlobal.box2d.b2Vec2(force*Math.cos(angle),force*Math.sin(angle)); // 施加固定角度的力
+            // G.ball.box2dBody.ApplyForce(vec,G.ball.box2dBody.GetWorldCenter());
+            // G.ball.box2dBody.SetAwake(true);
+            body.ApplyForce(vec,body.GetWorldCenter());
+            body.SetAwake(true);
+        }
+        // 背景层，舞台层，顶层，地板层，小球层，光圈层，粽子(刚体)，技能球(双球)，方块层(创建方块刚体)，
         function Background() {
             base(this, LSprite, []);
             var self = this;
@@ -431,6 +681,14 @@
             self.bitmap.scaleY = sy;
             self.addChild(self.bitmap);
         }
+        function ShortFloor() {
+            base(this, LSprite, []);
+            var self = this;
+            self.name = "floor";
+            self.bitmapData = new LBitmapData(G.imglist["sprite"],304,282,87,16);
+            self.bitmap = new LBitmap(self.bitmapData);
+            self.addChild(self.bitmap);
+        }
         function Floor() {
             base(this, LSprite, []);
             var self = this;
@@ -457,6 +715,46 @@
             self.bitmap.y = -self.bitmap.getHeight()*0.5;
             self.addChild(self.bitmap); 
         }
+        function Zongzi() {
+            base(this, LSprite, []);
+            var self = this;
+            self.name = "zongzi";
+            self.bitmapData = new LBitmapData(G.imglist["sprite"],21,254,64,60);
+            self.bitmap = new LBitmap(self.bitmapData);
+            self.addChild(self.bitmap); 
+        }
+        function SK1() {
+            base(this, LSprite, []);
+            var self = this;
+            self.name = "SK1";
+            self.bitmapData = new LBitmapData(G.imglist["sprite"],251,15,83,83);
+            self.bitmap = new LBitmap(self.bitmapData);
+            self.addChild(self.bitmap); 
+        }
+        function SK2() {
+            base(this, LSprite, []);
+            var self = this;
+            self.name = "SK2";
+            self.bitmapData = new LBitmapData(G.imglist["sprite"],496,15,83,83);
+            self.bitmap = new LBitmap(self.bitmapData);
+            self.addChild(self.bitmap); 
+        }
+        function SK3() {
+            base(this, LSprite, []);
+            var self = this;
+            self.name = "SK3";
+            self.bitmapData = new LBitmapData(G.imglist["sprite"],374,15,83,83);
+            self.bitmap = new LBitmap(self.bitmapData);
+            self.addChild(self.bitmap); 
+        } 
+        function SK4() {
+            base(this, LSprite, []);
+            var self = this;
+            self.name = "SK4";
+            self.bitmapData = new LBitmapData(G.imglist["sprite"],740,15,83,83);
+            self.bitmap = new LBitmap(self.bitmapData);
+            self.addChild(self.bitmap); 
+        } 
         function Box() {
             var self = this;
             self.box1 = [[1,1,1,1],
@@ -499,7 +797,7 @@
                         sprite.x = (bitmap.getWidth()*j+START_X) + (bitmap.getWidth()/2);
                         sprite.y = (bitmap.getHeight()*i+START_Y) + (bitmap.getHeight()/2);
                         G.stageLayer.addChild(sprite);
-                        sprite.addBodyPolygon(bitmap.getWidth(),bitmap.getHeight(),0,5,0.4,0);
+                        sprite.addBodyPolygon(bitmap.getWidth(),bitmap.getHeight(),0,5,0.4,G.normal_config);
                     }
                 }
             },
@@ -520,7 +818,7 @@
                         sprite.x = (bitmap.getWidth()*j+START_X) + (bitmap.getWidth()/2);
                         sprite.y = (bitmap.getHeight()*i+START_Y) + (bitmap.getHeight()/2);
                         G.stageLayer.addChild(sprite);
-                        sprite.addBodyPolygon(bitmap.getWidth(),bitmap.getHeight(),0,5,0.4,0);
+                        sprite.addBodyPolygon(bitmap.getWidth(),bitmap.getHeight(),0,5,0.4,G.normal_config);
                     }
                 }
             }
