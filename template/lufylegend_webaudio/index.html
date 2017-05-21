@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <title>lufylegend音乐</title>
+    <style>
+           *,
+        ::before,
+        ::after {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box; }
+
+        #game {
+            width: 16rem !important;
+            margin: 0 auto;}
+
+        #game canvas {
+            width: 16rem !important;
+            margin: 0 auto;}
+    </style>
+</head>
+<body style="font-size:0;">
+    <div class="head"></div>
+    <div id="game"></div>
+    <div class="button"></div>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/Box2dWeb-2.1.a.3.min.js"></script>
+    <script src="./js/lufylegend-1.10.1.min.js"></script>
+    <script>
+        ;(function (doc, win) {
+            var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                    recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth > 800) clientWidth=800;
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+            
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            recalc();
+        })(document, window);
+
+        ;(function(){
+            var G = {
+                // canvas ID
+                "canvasId":"game",
+                // 画布宽
+                "GAME_WIDTH": 640,
+                // 画布高
+                "GAME_HEIGHT": 640*window.innerHeight/window.innerWidth,
+                // 背景层
+                "backLayer": null,
+                // 加载层
+                "loadingLayer": null,
+                // 舞台层
+                "stageLayer": null,
+                // 图片缓存
+                "imglist": {}
+            }
+
+            var imgData = new Array({
+                name: "ball",
+                path: "./images/ball.png"
+            },{
+                name: "bg2",
+                path: "./images/bg2.jpg"
+            });
+
+            LInit(1, G.canvasId , G.GAME_WIDTH, G.GAME_HEIGHT, start);
+
+            function start(){
+                LGlobal.setDebug(true);
+                //预读取音频
+                var loadsound = true;
+                var protocol = location.protocol;
+                if (protocol == "http:" || protocol == "https:") {
+                    if (LGlobal.ios && !LSound.webAudioEnabled){
+                        //如果IOS环境，并且不支持WebAudio，则无法预先读取
+                        loadsound = false;
+                    }
+                } else if (LGlobal.mobile) {
+                    //如果是移动浏览器本地访问，则无法预先读取
+                    loadsound = false;
+                }
+                if(loadsound){
+                    imgData.push({name : "sound_background",path : "./images/game music.mp3"});
+                    if(LSound.webAudioEnabled){
+                        //浏览器支持WebAudio,则预先读取所有音频
+                        imgData.push({name : "duang",path : "./images/duang.wav"});
+                    }
+                }
+                // 实现移动端适配，1.6以后才能使用这个API
+                LGlobal.align = LStageAlign.TOP_LEFT;
+                LGlobal.stageScale = LStageScaleMode.SHOW_ALL;
+                LSystem.screen(LStage.FULL_SCREEN);
+                G.backLayer = new LSprite();
+                addChild(G.backLayer);
+                //利用LLoadManage读取图片, 显示进度条, 执行init
+                G.loadingLayer = new LoadingSample5(12);
+                G.backLayer.addChild(G.loadingLayer);
+                G.backLayer.removeAllChild(G.loadingLayer);
+                LLoadManage.load(
+                    imgData,
+                    function(progress) {
+                        G.loadingLayer.setProgress(progress);
+                    },
+                    // 不能写init,冲突
+                    initGame
+                );  
+            }
+
+            function initGame(result) {
+                //取得图片读取结果
+                G.imglist = result;
+                //移除进度条
+                G.backLayer.removeAllChild(G.loadingLayer);
+                G.loadingLayer = null;
+
+                MySoundPlayer = new SoundPlayer();
+
+                //游戏逻辑
+                main();
+            }
+
+            function main() {
+                // 初始化Box2dweb 
+                LGlobal.box2d = new LBox2d();
+                // 格式化背景层
+                G.backLayer.die();
+                G.backLayer.removeAllChild();
+                // 加载游戏背景实例
+                bgo = new Background(); 
+                G.backLayer.addChild(bgo);
+                // 舞台初始化
+                stageInit(); 
+
+                var cplayer  = new LSprite();
+                cplayer.name = "floor";
+                cplayer.x = 320;//刚体中点的x坐标
+                cplayer.y = 650;//刚体中点的y坐标
+                // 添加钢体
+                G.stageLayer.addChild(cplayer);
+                cplayer.addBodyPolygon(640,10,0,5,0.4,0.2);
+
+                // Ball
+                var ball = new Ball();
+                ball.x = 200;
+                ball.y = 390;
+                G.stageLayer.addChild(ball);
+                ball.addBodyCircle(31.5 ,0,0,1,5,0.4,1);
+
+                // 加入碰撞侦听事件
+                LGlobal.box2d.setEvent(LEvent.POST_SOLVE,postSolve);
+             }
+
+            function postSolve(contact,impulse) {
+                var objA = contact.GetFixtureA().GetBody().GetUserData();
+                var objB = contact.GetFixtureB().GetBody().GetUserData();
+                // 方块和球，地板和球，粽子和球
+                if(objA.name == "ball" && objB.name == "floor"){
+                    
+                    duang(objB,objA);
+                }else if(objA.name == "floor" && objB.name == "ball"){
+                    
+                    duang(objA,objB);
+                }
+            }
+
+            function duang(ball,floor) {
+                MySoundPlayer.playSound("duang");
+            }
+
+            function Background() {
+                base(this, LSprite, []);
+                // var self = this;
+                // self.bitmapData = new LBitmapData(G.imglist["bg2"],0,0,640,1030);
+                // self.bitmap = new LBitmap(self.bitmapData);
+                // var sy = G.GAME_HEIGHT/self.bitmapData.height;// 缩放，将背景图拉伸至全屏
+                // self.bitmap.scaleY = sy;
+                // self.addChild(self.bitmap);
+            }
+
+            function stageInit() {
+                G.stageLayer = new LSprite();
+                G.backLayer.addChild(G.stageLayer);
+            } 
+
+            function Ball() {
+                base(this, LSprite, []);
+                var self = this;
+                self.name = "ball";
+                self.bitmapData = new LBitmapData(G.imglist["ball"],0,0,63,63);
+                self.bitmap = new LBitmap(self.bitmapData);
+                self.addChild(self.bitmap); 
+            }
+
+            /*音乐*/
+            // 问题：在微信里面会报错
+            function SoundPlayer(){
+                var self = this;
+                self.loadIndex = 0;
+                self.background = new LSound();
+                self.background.parent = self;
+                //如果IOS环境，并且不支持WebAudio，则没有预先读取的音频
+                if(LGlobal.ios && !LSound.webAudioEnabled){
+                    return;
+                }
+                //如果没有预先读取的音频
+                if(!G.imglist["sound_background"]){
+                    return;
+                }
+                self.background.addEventListener(LEvent.COMPLETE,self.backgroundLoadComplete);
+                self.background.load(G.imglist["sound_background"]);
+                //如果是移动浏览器，并且不支持WebAudio，则无法适用多声道，所以只适用背景音乐
+                if(LGlobal.mobile && !LSound.webAudioEnabled){
+                    return;
+                }
+                self.duang = new LSound();
+                self.duang.parent = self;
+                
+                self.duang.addEventListener(LEvent.COMPLETE,self.duangLoadComplete);
+                self.duang.load(G.imglist["duang"]);
+            }
+            SoundPlayer.prototype.loadSound = function(){
+                var self = this;
+                //如果支持WebAudio，则已经预先读取了音频，无需再次读取
+                if(LSound.webAudioEnabled){
+                    if (LGlobal.mobile){
+                        switch(self.loadIndex++){
+                            case 0:
+                                self.duang.play(self.duang.length);
+                                break;
+                        }
+                    }
+                    return;
+                }
+                //已读取音频，无需再次读取
+                if(self.loadIndex > 0 ){
+                    return;
+                }
+                self.loadIndex++;
+                self.background.addEventListener(LEvent.COMPLETE,self.backgroundLoadComplete);
+                self.background.load("./images/game music.mp3");
+            };
+            SoundPlayer.prototype.playSound = function(name){
+                var self = this;
+                switch(name){
+                    case "duang":
+                        if(!self.duangIsLoad)return;
+                        self.duang.play(0,1);
+                        break;
+                }
+            };
+            SoundPlayer.prototype.backgroundLoadComplete = function(event){
+                var self = event.currentTarget;
+                self.parent.backgroundIsLoad = true;
+                self.play(0,100);
+            };
+            SoundPlayer.prototype.duangLoadComplete = function(event){
+                var self = event.currentTarget;
+                self.parent.duangIsLoad = true;
+            };
+            
+        })();
+    </script>
+</body>
+</html>

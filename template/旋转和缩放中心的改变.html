@@ -136,15 +136,16 @@
             sprite.y = 320;//缩放中心
             sprite.scaleX = 0.5;
             sprite.scaleY = 0.5;
+            sprite.rotate = 0;
             addChild(sprite);
 
-            LTweenLite.to(sprite,0.1,{scaleX:1,scaleY:1});
+            LTweenLite.to(sprite,10,{rotate:3600,loop:true});
            
             // 循环动画
-            G.backLayer.addEventListener(LEvent.ENTER_FRAME, onframe);
+            // G.backLayer.addEventListener(LEvent.ENTER_FRAME, onframe);
         } 
         // function onframe() {
-        //     if(sprite.scaleX<10){
+        //     if(sprite.scaleX<1.5){
         //         sprite.scaleX++;
         //     }
             
