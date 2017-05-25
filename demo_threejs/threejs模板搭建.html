@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <title>threejs模板搭建</title>
+    <style>
+            *,
+        ::before,
+        ::after {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box; }
+
+        #WebGL-output {
+            width: 15rem !important;
+            height: 17.5rem !important;
+            background: skyblue;
+            /*border: solid 0.25rem #000;*/
+            margin: 0 auto; } 
+        #WebGL-output canvas{
+            width: 15rem !important;
+            height: 17.5rem !important;
+            margin: 0 auto; } 
+        } 
+    </style>
+</head>
+<body>
+    <div id="WebGL-output"></div>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/three.js"></script>
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                    recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth > 800) clientWidth=800;
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+            
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            recalc();
+        })(document, window);
+
+        window.onload = init;
+
+        function init() {
+            // 场景 hold all our elements（保存跟踪）
+            var scene = new THREE.Scene();
+            // 相机 where we're looking at （在渲染好的场景里看到什么）
+            var camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight, 0.1, 1000);
+            // 渲染器 ender and set the size （计算相机指定角度下场景的内容）
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColorHex();
+            renderer.setClearColor(new THREE.Color(0xEEEEEE,1.0));//设置背景色
+            renderer.setSize(window.innerWidth,window.innerHeight);//设置场景的尺寸
+            // 配置可以产生阴影
+            renderer.shadowMapEnabled = true;
+
+            // 坐标轴对象(测试)
+            var axes = new THREE.AxisHelper(30);
+            scene.add(axes);
+
+            // 平面
+            var planeGeometry = new THREE.PlaneGeometry(60,20);//平面尺寸宽60高20
+            var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});//创建材质
+            // 合并到名为plane的Mesh(网格)对象中
+            var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+            // 配置接受阴影
+            plane.receiveShadow = true;
+
+            // 平面的位置
+            plane.rotation.x = -Math.PI/2;
+            plane.position.x = 0;
+            plane.position.y = 0;
+            plane.position.z = 0;
+            scene.add(plane);
+
+            // 立方体
+            var cubeGeometry = new THREE.BoxGeometry(3,3,3);//长宽高
+            // var cubeMaterial = new THREE.MeshBasicMaterial({color: 0xff0000, wireframe: true});//便于测试
+            var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
+            var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
+            // 配置投射阴影
+            cube.castShadow = true;
+
+            // 立方体的位置
+            cube.position.x = 10;
+            cube.position.y = 1.5;
+            cube.position.z = 6;
+            scene.add(cube);
+
+            // 球体
+            var spherGeometry = new THREE.SphereGeometry(4,20,20);//半径，圆心x/y
+            var spherMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});            
+            var sphere = new THREE.Mesh(spherGeometry,spherMaterial);
+            // 配置投射阴影
+            sphere.castShadow = true;
+
+            // 球体的位置
+            sphere.position.x = -10;
+            sphere.position.y = 10;
+            sphere.position.z = -10;
+            scene.add(sphere);
+
+            // 相机摆放的位置,相机离得越远，视野越开阔
+            camera.position.x = -90;
+            camera.position.y = 80;
+            camera.position.z = 60;
+            camera.lookAt(scene.position);// 使用lookAt函数指向场景中心
+
+            // 添加光源(基础材质不会对场景中的光源产生反应)
+            // 有两种材质对场景中的光源产生反应(MeshLambertMaterial,MeshPhongMaterial)
+            var spotLight = new THREE.SpotLight(0xffffff);// 光源的颜色
+            spotLight.position.set(-40, 60,-10);// 光源的位置
+            spotLight.castShadow = true;
+            // 产生阴影的光源
+            spotLight.castShadow = true;
+            scene.add(spotLight);
+
+            // 将renderer的输出挂载到html结构当中
+            $("#WebGL-output").append(renderer.domElement);
+
+            // 告诉renderer用我们的相机来渲染scen
+            renderer.render(scene, camera);
+
+            // 动画函数
+            var step = 0;
+            renderScene();
+        }
+
+        function renderScene() {
+            
+        }
+     </script>
+</body>
+</html>

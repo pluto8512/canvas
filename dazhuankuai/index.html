@@ -57,7 +57,7 @@
          function gameover(gameOverCallback) {
             // // alert("游戏结束"+"分数为："+G.score+"剩余时间为："+G.time_surplus); 
             // G.backLayer.die();
-            // G.backLayer.removeAllChild();   
+            // G.backLayer.removeAllChild();    
             // G.stageLayer.die();
             // G.stageLayer.removeAllChild();
             // //提交分数
@@ -201,7 +201,7 @@
                 loadsound = false;
             }
             if(loadsound){
-                imgData.push({name : "sound_background",path : "./images/game music.mp3"});
+                imgData.push({name : "sound_background",path : "./images/gamemusic.mp3"});
                 if(LSound.webAudioEnabled){
                     //浏览器支持WebAudio,则预先读取所有音频
                     imgData.push({name : "duang",path : "./images/duang.wav"});
@@ -1189,7 +1189,7 @@
             }
             self.loadIndex++;
             self.background.addEventListener(LEvent.COMPLETE,self.backgroundLoadComplete);
-            self.background.load("./images/game music.mp3");
+            self.background.load("./images/gamemusic.mp3");
         };
         SoundPlayer.prototype.playSound = function(name){
             var self = this;
