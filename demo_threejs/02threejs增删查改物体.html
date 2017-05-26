@@ -9,7 +9,7 @@
 	<meta name="format-detection" content="telephone=no">  
 	<meta http-equiv="x-rim-auto-match" content="none">  
     <!--适配-->
-    <title>threejs模板搭建</title>
+    <title>threejs模板增删查改物体</title>
     <style>
             *,
         ::before,
@@ -110,19 +110,6 @@
             cube.position.z = 6;
             scene.add(cube);
 
-            // 球体
-            var spherGeometry = new THREE.SphereGeometry(4,20,20);//半径，圆心x/y
-            var spherMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});            
-            var sphere = new THREE.Mesh(spherGeometry,spherMaterial);
-            // 配置投射阴影
-            sphere.castShadow = true;
-
-            // 球体的位置
-            sphere.position.x = -10;
-            sphere.position.y = 10;
-            sphere.position.z = -10;
-            scene.add(sphere);
-
             // 相机摆放的位置,相机离得越远，视野越开阔
             camera.position.x = -90;
             camera.position.y = 80;
@@ -147,12 +134,50 @@
             // dat.GUI用户界面
             var controls =  new function() {
                 this.rotationSpeed = 0.02;
-                this.bouncingSpeed = 0.03;
+                this.numberOfObjects = scene.children.length;
+                // 删
+                this.removeCube = function() {
+                    var allChildren = scene.children;
+                    var lastObject = allChildren[allChildren.length - 1];
+                    if(lastObject instanceof THREE.Mesh){
+                        scene.remove(lastObject);
+                        this.numberOfObjects = scene.children.length;
+                    }
+                };
+                // 增
+                this.addCube = function() {
+                    var cubeSize = Math.ceil((Math.random()*3));
+                    // 形状
+                    var cubeGeometry = new THREE.BoxGeometry(cubeSize,cubeSize,cubeSize);
+                    // 材质
+                    var cubeMaterial = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
+                    // 合成网格对象
+                    var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
+                    // 产生投影
+                    cube.castShadow = true;
+                    // 命名
+                    cube.name = "cube-"+scene.children.length;
+                    // 添加位置(都是物体中心的位置)
+                    cube.position.x = -30+Math.round((Math.random() * planeGeometry.parameters.width));
+                    cube.position.y = Math.round((Math.random() * 5));
+                    cube.position.z = -20 + Math.round((Math.random() * planeGeometry.parameters.height));
+                    // 放到场景里面
+                    scene.add(cube);
+                    this.numberOfObjects = scene.children.length;
+                }
+                // 查
+                this.outputObjects = function() {
+                    console.log(scene.children);
+                }
+
             };
 
             var gui = new dat.GUI();
             gui.add(controls,"rotationSpeed",0,0.5);
-            gui.add(controls,"bouncingSpeed",0,0.5);
+            gui.add(controls,"addCube");
+            gui.add(controls,"removeCube");
+            gui.add(controls,"outputObjects");
+            gui.add(controls,"numberOfObjects").listen();
 
             renderScene();
 
@@ -162,10 +187,6 @@
                 cube.rotation.x += controls.rotationSpeed;
                 cube.rotation.y += controls.rotationSpeed;
                 cube.rotation.z += controls.rotationSpeed;
-
-                step += controls.bouncingSpeed;
-                sphere.position.x = 20 + (10*(Math.cos(step)));
-                sphere.position.y = 2 + (10*Math.abs(Math.sin(step)));
                 
                 requestAnimationFrame(renderScene);
                 // 告诉renderer用我们的相机来渲染scen
