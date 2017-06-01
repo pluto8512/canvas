@@ -1,0 +1,431 @@
+@charset "UTF-8";
+/*common B!*/
+*,
+::before,
+::after {
+  padding: 0;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+html, body {
+  background: #0C1C2B;
+  font-family: "MicroSoft YaHei","sans-serif";
+  width: 100%;
+  height: 100%; }
+
+ul, ol {
+  list-style: none; }
+
+a {
+  text-decoration: none;
+  color: #333; }
+
+a:hover {
+  color: #333; }
+
+input, textarea {
+  border: none;
+  outline: none;
+  resize: none;
+  -webkit-appearance: none; }
+
+.fl {
+  float: left; }
+
+.fr {
+  float: right; }
+
+.clearfix::after,
+.clearfix::before {
+  content: ".";
+  line-height: 0;
+  height: 0;
+  display: block;
+  visibility: hidden;
+  clear: both; }
+
+/*common E*/
+#file_photo_father, #file_photo_son {
+  opacity: 0;
+  position: fixed;
+  width: 0.025rem;
+  height: 0.025rem;
+  top: 0;
+  left: 0; }
+
+/*up-photo*/
+.backgroud {
+  width: 100%;
+  height: 100%;
+  background: #0C1C2B url("../images/02bg.jpg") no-repeat;
+  background-size: 100% 100%;
+  position: relative; }
+  .backgroud .title {
+    width: 14.35rem;
+    height: 1.975rem;
+    background: url("../images/13.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 7.0297%;
+    left: 50%;
+    margin-left: -7.175rem; }
+  .backgroud .think_electricity {
+    width: 6.55rem;
+    height: 2.15rem;
+    background: url("../images/2.png") no-repeat;
+    background-position: 0 0;
+    background-size: 39.3rem 2.05rem;
+    overflow: hidden;
+    position: absolute;
+    top: 5.5rem;
+    left: 50%;
+    margin-left: -3.275rem;
+    display: none; }
+    .backgroud .think_electricity .pointL {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 0.2rem;
+      -webkit-border-radius: 0.2rem;
+      position: absolute;
+      top: 50%;
+      margin-top: 0.055rem;
+      left: 0.1rem;
+      background: #AAFDE3;
+      border: solid 0.0025rem skyblue;
+      display: none; }
+    .backgroud .think_electricity .pointR {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 0.2rem;
+      -webkit-border-radius: 0.2rem;
+      position: absolute;
+      top: 50%;
+      margin-top: 0.08rem;
+      right: 0.15rem;
+      background: #AAFDE3;
+      border: solid 0.0025rem skyblue;
+      display: none; }
+  .backgroud .up-photo {
+    width: 100%;
+    height: 8.6rem;
+    position: absolute;
+    top: 29.20792%; }
+    .backgroud .up-photo .up-photo-left {
+      width: 50%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0; }
+      .backgroud .up-photo .up-photo-left .photo {
+        width: 7.025rem;
+        height: 6.8rem;
+        background: url("../images/04upphoto.png") no-repeat;
+        background-size: 100% 100%;
+        position: absolute;
+        left: 50%;
+        margin-left: -3.5125rem; }
+        .backgroud .up-photo .up-photo-left .photo .frame {
+          width: 6.075rem;
+          height: 6.075rem;
+          position: absolute;
+          top: 0.45rem;
+          left: 0.425rem;
+          overflow: hidden;
+          text-align: center;
+          line-height: 6.075rem; }
+        .backgroud .up-photo .up-photo-left .photo .adjustingImg {
+          width: 100%;
+          height: 100%;
+          border-radius: 0.125rem;
+          -webkit-border-radius: 0.125rem;
+          border-width: 0; }
+        .backgroud .up-photo .up-photo-left .photo .scan {
+          width: 6.075rem;
+          height: 1.15rem;
+          position: absolute;
+          top: 0rem;
+          left: 0rem;
+          border-bottom-style: solid;
+          border-bottom-color: #00deff;
+          border-bottom-width: 0;
+          border-top-style: solid;
+          border-top-color: #00deff;
+          border-top-width: 0;
+          background: rgba(0, 222, 255, 0);
+          background: -moz-linear-gradient(bottom, rgba(0, 222, 255, 0.6), rgba(244, 250, 250, 0));
+          background: -webkit-gradient(linear, 0 bottom, 0 0, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0)));
+          transform: translateY(-1.15rem);
+          -webkit-transform: translateY(-1.15rem); }
+        .backgroud .up-photo .up-photo-left .photo .mask {
+          width: 1.825rem;
+          height: 1.8rem;
+          background: url("../images/11.png") no-repeat;
+          background-size: 100% 100%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin-left: -0.9125rem;
+          margin-top: -0.9rem; }
+      .backgroud .up-photo .up-photo-left .btn {
+        width: 5.3rem;
+        height: 1.3rem;
+        background: url("../images/btn2.png") no-repeat;
+        background-size: 100% 100%;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        margin-left: -2.65rem; }
+    .backgroud .up-photo .up-photo-right {
+      width: 50%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0; }
+      .backgroud .up-photo .up-photo-right .photo {
+        width: 7.025rem;
+        height: 6.8rem;
+        background: url("../images/04upphoto.png") no-repeat;
+        background-size: 100% 100%;
+        position: absolute;
+        left: 50%;
+        margin-left: -3.5125rem; }
+        .backgroud .up-photo .up-photo-right .photo .frame {
+          width: 6.075rem;
+          height: 6.075rem;
+          position: absolute;
+          top: 0.45rem;
+          left: 0.45rem;
+          overflow: hidden;
+          text-align: center;
+          line-height: 6.075rem; }
+        .backgroud .up-photo .up-photo-right .photo .adjustingImg {
+          width: 100%;
+          height: 100%;
+          border-radius: 0.125rem;
+          -webkit-border-radius: 0.125rem; }
+        .backgroud .up-photo .up-photo-right .photo .scan {
+          width: 6.075rem;
+          height: 1.15rem;
+          position: absolute;
+          top: 0rem;
+          left: 0rem;
+          border-bottom-style: solid;
+          border-bottom-color: #00deff;
+          border-bottom-width: 0;
+          border-top-style: solid;
+          border-top-color: #00deff;
+          border-top-width: 0;
+          background: rgba(0, 222, 255, 0);
+          background: -moz-linear-gradient(bottom, rgba(0, 222, 255, 0.6), rgba(244, 250, 250, 0));
+          background: -webkit-gradient(linear, 0 bottom, 0 0, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0)));
+          transform: translateY(-1.15rem);
+          -webkit-transform: translateY(-1.15rem); }
+        .backgroud .up-photo .up-photo-right .photo .mask {
+          width: 1.825rem;
+          height: 1.8rem;
+          background: url("../images/11.png") no-repeat;
+          background-size: 100% 100%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin-left: -0.9125rem;
+          margin-top: -0.9rem; }
+      .backgroud .up-photo .up-photo-right .btn {
+        width: 5.3rem;
+        height: 1.3rem;
+        background: url("../images/btn3.png") no-repeat;
+        background-size: 100% 100%;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        margin-left: -2.65rem; }
+  .backgroud .think {
+    width: 5.725rem;
+    height: 2.2rem;
+    background: #0C1C2B url("../images/btn1.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 69.70297%;
+    left: 50%;
+    margin-left: -2.8625rem; }
+
+/*result*/
+.result {
+  width: 100%;
+  height: 100%;
+  background: #0C1C2B url("../images/03bg.jpg") no-repeat;
+  background-size: 100% 100%;
+  position: relative; }
+  .result .frame {
+    width: 13.525rem;
+    height: 16.425rem;
+    background: url("../images/07baogao.png") no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 7.0297%;
+    left: 50%;
+    margin-left: -6.7625rem; }
+    .result .frame .frame-top {
+      width: 9.9rem;
+      height: 2.9rem;
+      position: absolute;
+      top: 2.8rem;
+      left: 1.85rem; }
+      .result .frame .frame-top .father-photo {
+        width: 2.875rem;
+        height: 2.9rem;
+        border: solid 0.075rem #00DAF6;
+        border-radius: 0.375rem;
+        -webkit-border-radius: 0.375rem; }
+      .result .frame .frame-top .son-photo {
+        width: 2.875rem;
+        height: 2.9rem;
+        border: solid 0.075rem #00DAF6;
+        border-radius: 0.375rem;
+        -webkit-border-radius: 0.375rem; }
+      .result .frame .frame-top .electricity-effect {
+        width: 4.125rem;
+        height: 2.9rem;
+        position: absolute;
+        left: 50%;
+        margin-left: -2.0625rem;
+        background: url("../images/electricity.png") no-repeat;
+        background-size: 100% 100%;
+        transform: scale(1, 1); }
+  .result .btn-group {
+    width: 100%;
+    height: 1.325rem;
+    position: absolute;
+    top: 19rem; }
+    .result .btn-group .btn-redo {
+      width: 3.725rem;
+      height: 1.325rem;
+      background: url("../images/btn4.png") no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      left: 1.45rem; }
+    .result .btn-group .todo {
+      width: 3.725rem;
+      height: 1.325rem;
+      background: url("../images/btn5-1.png") no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      left: 50%;
+      margin-left: -1.8625rem; }
+    .result .btn-group .share {
+      width: 3.725rem;
+      height: 1.325rem;
+      background: url("../images/btn6.png") no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      right: 1.45rem; }
+
+/*scan楂樺害澧炲姞*/
+.animation_scan_height {
+  -webkit-animation: addheight 1s ease;
+  animation: addheight 1s ease; }
+
+@-webkit-keyframes addheight {
+  0% {
+    height: 0; }
+  100% {
+    height: 0.575rem; } }
+@keyframes addheight {
+  0% {
+    height: 0; }
+  100% {
+    height: 0.575rem; } }
+/*scan绉诲姩*/
+.animation_scan_translate {
+  -webkit-animation: translate 4s linear infinite;
+  animation: translate 4s linear infinite; }
+
+@-webkit-keyframes translate {
+  0% {
+    transform: translateY(0rem);
+    border-bottom-width: 0.125rem;
+    border-top-width: 0rem;
+    background: -webkit-gradient(linear, 0 bottom, 0 0, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); }
+  49% {
+    transform: translateY(6.075rem);
+    border-bottom-width: 0rem;
+    border-top-width: 0rem;
+    background: -webkit-gradient(linear, 0 bottom, 0 0, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); }
+  50% {
+    transform: translateY(6.075rem);
+    border-bottom-width: 0rem;
+    border-top-width: 0rem;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); }
+  99% {
+    transform: translateY(0rem);
+    border-bottom-width: 0rem;
+    border-top-width: 0.125rem;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); }
+  100% {
+    transform: translateY(0rem);
+    border-bottom-width: 0rem;
+    border-top-width: 0.125rem;
+    background: -webkit-gradient(linear, 0 bottom, 0 0, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); } }
+@keyframes translate {
+  0% {
+    transform: translateY(-1.15rem);
+    border-bottom-width: 0.125rem;
+    border-top-width: 0rem;
+    background: -webkit-gradient(linear, 0 bottom, 0 0, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); }
+  49% {
+    transform: translateY(6.075rem);
+    border-bottom-width: 0rem;
+    border-top-width: 0rem;
+    background: -webkit-gradient(linear, 0 bottom, 0 0, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); }
+  50% {
+    transform: translateY(6.075rem);
+    border-bottom-width: 0rem;
+    border-top-width: 0rem;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); }
+  99% {
+    transform: translateY(-1.15rem);
+    border-bottom-width: 0rem;
+    border-top-width: 0.125rem;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); }
+  100% {
+    transform: translateY(-1.15rem);
+    border-bottom-width: 0rem;
+    border-top-width: 0.125rem;
+    background: -webkit-gradient(linear, 0 bottom, 0 0, from(rgba(0, 222, 255, 0.6)), to(rgba(244, 250, 250, 0))); } }
+/*electricity-effect*/
+.animation_electricity-scale {
+  -webkit-animation: electricityScale 0.5s linear infinite;
+  animation: electricityScale 0.5s linear infinite; }
+
+@-webkit-keyframes electricityScale {
+  0% {
+    transform: scale(0rem, 0rem); }
+  100% {
+    transform: scale(4.125rem, 2.9rem); } }
+@keyframes electricityScale {
+  0% {
+    transform: scale(1, 0); }
+  10% {
+    transform: scale(0.8, 0.2); }
+  20% {
+    transform: scale(0.7, 0.4); }
+  30% {
+    transform: scale(0.6, 0.2); }
+  40% {
+    transform: scale(0.5, 0.4); }
+  50% {
+    transform: scale(0.6, 0.6); }
+  60% {
+    transform: scale(0.7, 0.4); }
+  70% {
+    transform: scale(0.8, 0.6); }
+  80% {
+    transform: scale(0.9, 0.7); }
+  90% {
+    transform: scale(0.8, 0.6); }
+  100% {
+    transform: scale(1, 1); } }
+
+/*# sourceMappingURL=imgmatch.css.map */

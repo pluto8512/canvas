@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="haha" width="200" height="100"></canvas>
+
+    <script>
+    //获取刚才的canvas标签
+    var haha = document.getElementById('haha');
+    //执行动画
+    using(haha);
+
+
+    //canvas闪电特效函数
+    function using(c) {
+        //DOM操作
+        c.style.display = 'block';
+        //canvas
+        var ctx = c.getContext("2d"),
+            cWidth = c.offsetWidth,
+            cHeight = c.offsetHeight,
+            //13个折点
+            len = 13,
+            //每个折点的x系数
+            line_x = 110,
+            //每个折点的y系数
+            line_y = cHeight / 2;
+        //线条粗细&颜色
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#63A9FF';
+        //画线的方法
+        function lineTo(ctx) {
+            ctx.beginPath();
+            for (var i = 0; i < len; i++) {
+                var a = i >
+                len / 2 ? len - i : i,
+                    randomNumber = (Math.floor(Math.random() * 50) - 50) * 0.06 * a;
+                x = i === 0 ? 0 : line_x;
+                ctx.lineTo(x * (i * 0.115), randomNumber + line_y);
+            }
+            ctx.stroke();
+        }
+        function doSpasme() {
+            //擦除之前画的东西
+            ctx.clearRect(0, 0, cWidth, cHeight)
+            //画一条线
+            lineTo(ctx);
+            //画另一条线
+            lineTo(ctx);
+            //下一帧
+            c.requestAnimationFrame = requestAnimationFrame(doSpasme);
+        }
+        //一帧
+        c.requestAnimationFrame = requestAnimationFrame(doSpasme);
+    }
+    </script>
+</body>
+</html>
