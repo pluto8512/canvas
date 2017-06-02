@@ -29,8 +29,9 @@
     <!--调用图库里面相机拍的照片-->
     <input type='file' id='file_photo_father' capture='camera' />
     <input type='file' id='file_photo_son' capture='camera' />
-    <div class="mask">
-
+    <!--tips-->
+    <div class="mask-tips">
+        <div class="mask-tips-btn"></div>
     </div>
     <!--up-photo-->
     <div class="backgroud">
@@ -70,30 +71,109 @@
     </div>
 
     <!--result-->
-    <div class="result" style="display: none">
-        <div class="frame">
-            <div class="frame-top">
-                <div class="father-photo fl"></div>
-                <div id="electricity-effect" class="electricity-effect"></div>
-                <div class="son-photo fr"></div>
-            </div>
-            <div class="frame-middle"></div>
-            <div class="frame-bottom"></div>
+    <div class="result">
+        <div class="content_result">
+            <!--<div class="frame">
+                <div class="frame-top">
+                    <div class="electricity-effect"></div>
+                    <div class="father-photo fl">
+                        <img src="./images/test1.jpg">
+                    </div>
+                    <div class="son-photo fr">
+                        <img src="./images/test2.jpg">
+                    </div>
+                </div>
+                <div class="frame-middle-text">
+                    <p class="disc">相似度</p>
+                    <p class="perp">99.99%</p>
+                    <p class="info">(相似度达到80%,即可抽奖,你今天还有2次抽奖机会哦)</p>
+                </div>
+                <div class="frame-bottom-imgText">
+                    <img class="bq" src="./images/bq1.png" alt="表情">
+                    <p class="evaluatep">
+                        坑爹了这是！宝宝不服，我要重新分析！
+                    </p>
+                </div>
+            </div>-->
         </div>
         <div class="btn-group">
-            <div class="btn-redo"></div>
+            <div class="btn-redo" id="redo"></div>
             <div class="todo"></div>
             <div class="share"></div>
         </div>
     </div>
 
+    <!--share-->
+    <div class="go-shares">
+        <div class="arrow"></div>
+        <div class="frame">
+            <div class="txt">长按保存图片，跟小伙伴们分享</div>
+            <div class="theme"></div>
+            <div class="content_poster_tpl">
+                <div class="content_poster">
+                    <div class="scanResult">
+                        <img src="" alt="头像">
+                        <p class="desc"><span class="username">username</span>在参与亲子活动分析中与爸爸的相似度
+                        <span class="percent">28.05%</span></p>
+                    </div>
+                    <div class="joke">
+                        <p>扎心了，老爸！难道我是从垃圾桶里面捡来的？</p>
+                    </div>
+                    <div class="imgShow-content">
+                        <div class="imgShow">
+                            <div class="electricity-effect"></div>
+                            <div class="father-photo fl">
+                                <img src="./images/test1.jpg">
+                            </div>
+                            <div class="son-photo fr">
+                                <img src="./images/test2.jpg">
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="ma">
+                        <img src="" alt="二维码">
+                        <p class="txt">
+                            <span>DNA鉴定，</span>
+                            <span>敢玩就长按二维码！</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-
-
+    <!--tpl/分析报告-->
+    <script type="text/x-template" id="game_tpl">   
+    {{#each imgTxt as record idx}}
+        <div class="frame">
+            <div class="frame-top">
+                <div class="electricity-effect"></div>
+                <div class="father-photo fl">
+                    <img src="{{record.fatherSrc}}">
+                </div>
+                <div class="son-photo fr">
+                    <img src="{{record.sonSrc}}">
+                </div>
+            </div>
+            <div class="frame-middle-text">
+                <p class="disc">相似度</p>
+                <p class="perp">{{(record.per*100).toFixed(2)}}%</p>
+                <p class="info">(相似度达到80%,即可抽奖,你今天还有2次抽奖机会哦)</p>
+            </div>
+            <div class="frame-bottom-imgText">
+                <img class="bq" src="{{record.img}}" alt="表情">
+                <p class="evaluatep">
+                    {{record.txt}}
+                </p>
+            </div>
+        </div>
+    {{/each}}
+    </script>
     <script src="./js/jquery.js"></script>
     <script src="./js/jquery.template.js"></script>
     <script>
+    // @e-mail：tumi330@163.com
     ;(function (doc, win) {
         var docEl = doc.documentElement,
         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
@@ -115,8 +195,42 @@
             // '开始分析'状态标志(true:正在分析)
             'flag_thinkLStatus':false,
             'flag_thinkRStatus':false,
-            'timer_elec':null
+            // '电流'播放的定时器
+            'timer_elec':null,
+            // '提示页'可展示标志(true:可提示)
+            'flag_tips':true,
+            // 点击'开始分析'，给上传图片的按钮加锁(false:没有上锁)
+            'lock_upPhoto':false,
+            // '分析报告'显示图文数组
+            'arr_imgTxt':[],
+            // 父图片路径
+            'src_father':"",
+            // 子图片路径
+            'src_son':""
         }
+        // 初始化
+        G.arr_imgTxt = [{
+            'score':'C',
+            'imgTxt':[{'img':'./images/bq4.png','txt':'坑爹呢这是！宝宝不服，我要重新分析！'},
+            {'img':'./images/bq3.png','txt':'我赌一毛，你可能是从垃圾桶捡来的！'},
+            {'img':'./images/bq2.png','txt':'震惊不？惊喜不？你是充话费送的吧！'},
+            {'img':'./images/bq3.png','txt':'扎心了，老爸！难道我是从垃圾桶里面捡来的？'},
+            {'img':'./images/bq2.png','txt':'换张照片试试，说不定更低呢！'},
+            {'img':'./images/bq4.png','txt':'想抽个奖咋就这么难，换张照片试试！'}
+            ]},{
+            'score':'B',
+            'imgTxt':[{'img':'./images/bq2.png','txt':'老夫掐指一算，你长得很旺夫嘛~'},
+            {'img':'./images/bq2.png','txt':'偷偷告诉你，老爸的优良基因你全遗传到了'},
+            {'img':'./images/bq1.png','txt':'差一点就和老爸长得一模一样！'},
+            {'img':'./images/bq2.png','txt':'长大后，我就成了你！'},
+            {'img':'./images/bq2.png','txt':'都怪我爸，把我生得这么好看！'}
+            ]},{
+            'score':'A',
+            'imgTxt':[{'img':'./images/bq2.png','txt':'长大后，我就成了你！'},
+            {'img':'./images/bq1.png','txt':'惊呆！你和你老爸是复制粘贴的吧！'},
+            {'img':'./images/bq1.png','txt':'绝对是亲生的，错不了！'},
+            {'img':'./images/bq2.png','txt':'一毛一样，说的就是你和你爸！'}
+        ]}];
         // 【动画】扫描
         function scan_add_animation() {
             var $scan = $(".scan");
@@ -143,18 +257,56 @@
         }
         // 【点击】上传图片
         $("#up_photo_btnL").on("click",function(){
-            $('#file_photo_father').click();
+             // 如果图片还没有被扫描
+            if(!G.lock_upPhoto){
+                // 如果需要下显示上传提示
+                if(G.flag_tips){
+                    G.flag_tips = false;
+                    $('.mask-tips').show();
+                }else {
+                    $('#file_photo_father').click();
+                }
+             }else {
+                alert("现在不能上传");
+            }
         });
         $("#mask_addL").on("click",function(){
-            $('#file_photo_father').click();
+           
+                if(G.flag_tips){
+                    G.flag_tips = false;
+                    $('.mask-tips').show();
+                }else {
+                    $('#file_photo_father').click();
+                }
+            
         });
          $("#up_photo_btnR").on("click",function(){
-            $('#file_photo_son').click();
+            if(!G.lock_upPhoto){
+                if(G.flag_tips){
+                    G.flag_tips = false;
+                    $('.mask-tips').show();
+                }else {
+                    $('#file_photo_son').click();
+                }
+             }else {
+                alert("现在不能上传");
+            }
         });
         $("#mask_addR").on("click",function(){
-            $('#file_photo_son').click();
+            
+            if(G.flag_tips){
+                G.flag_tips = false;
+                $('.mask-tips').show();
+            }else {
+                $('#file_photo_son').click();
+            }
+           
         });
-        // 【监听】上传图片
+        // 【点击】'知道了'按钮
+        $('.mask-tips-btn').on('click',function(){
+            $('.mask-tips').hide();
+        });
+        // 【监听】图片变化
         $('#file_photo_father').change(function(){
             var $maskAddL = $("#mask_addL");
             $maskAddL.hide();
@@ -187,14 +339,17 @@
                 alert("上传图片失败")
             },window.succ);
         });
-        // 【点击】开始分析
+        // 【点击】'开始分析'按钮
         $("#think").on("click",function(){
             var src_father = $("#adjustingImgL")[0].getAttribute("src");
             var src_son = $("#adjustingImgR")[0].getAttribute("src");
+            // 如果左边的照片还没有被分析 或者 右边的照片没有被分析
             if(!G.flag_thinkLStatus || !G.flag_thinkRStatus){
+                // 如果两边的图片都上传了
                 if(src_father &&　src_son) {
                     G.flag_thinkLStatus = true;
                     G.flag_thinkRStatus = true;
+                    G.lock_upPhoto = true;
                    
                     $(".think_electricity").show();
                     $(".pointL").show();
@@ -203,15 +358,76 @@
                     // 执行分析动画
                     scan_add_animation();
 
-                    // 调用ajax分析
+                    // 调用ajax分析(模拟ajax的succse函数)
+                    setTimeout(function(){
+                        // 结束'电流'动画
+                        clearInterval( G.timer_elec);
+                        $(".think_electricity").hide();
+                        $(".pointL").hide();
+                        $(".pointR").hide();
+                        // 结束'扫描'动画
+                        scan_remove_animation();
+
+                        $('.result').show();
+                        var moni = Math.random();
+                        var data;
+                        if(moni>=0 && moni<=0.4){
+                            for(var i=0;i<G.arr_imgTxt.length;i++) {
+                                if(G.arr_imgTxt[i].score == 'C'){
+                                    data = G.arr_imgTxt[i];
+                                }
+                            }
+                        }else if(moni>0.4 && moni<=0.7){
+                            for(var i=0;i<G.arr_imgTxt.length;i++) {
+                                if(G.arr_imgTxt[i].score == 'B'){
+                                    data = G.arr_imgTxt[i];
+                                }
+                            }
+                        }else if(moni>0.7 && moni<=1){
+                            for(var i=0;i<G.arr_imgTxt.length;i++) {
+                                if(G.arr_imgTxt[i].score == 'A'){
+                                    data = G.arr_imgTxt[i];
+                                }
+                            }
+                        }else {
+                          console.log("后台传的值是："+moni);  
+                        }
+                        // 回填页面
+                        var n = Math.floor(Math.random() * data.imgTxt.length + 1)-1; 
+                        // 百分比
+                        data.imgTxt[n].per = moni;
+                        // 父/子图片路径
+                        // TODO
+                        // data.imgTxt[n].fatherSrc = G.src_father;
+                        // data.imgTxt[n].sonSrc = G.src_son;
+                        data.imgTxt[n].fatherSrc = "./images/test1.jpg";
+                        data.imgTxt[n].sonSrc = "./images/test2.jpg";
+                        var arr = [];
+                        arr.push(data.imgTxt[n]);
+                        var target = {};
+                        target.imgTxt = arr;
+                        var game_tpl = document.getElementById("game_tpl").text;
+                        var	game_html = $.template(game_tpl).render(target);
+                        $(".content_result").html(game_html);
+                    },10000);
                 }else {
                     alert("还有图片没上传");
                 }
             }else {
-                
+               alert("已经在拼命分析了") 
             }
         });
-
+        // 【点击】'重新分析'按钮
+        $("#redo").on("click",function(){
+            G.flag_thinkLStatus = false;
+            G.flag_thinkRStatus = false;
+            G.lock_upPhoto = false;
+            $('.result').hide();
+            $('#adjustingImgL').attr("src" , "");
+            $('#adjustingImgR').attr("src" , "");
+            $('#mask_addL').show();
+            $('#mask_addR').show();
+        });
         /**
          * 图片预览并上传(拼颜值图片上传代码)
          * @param $_img 预览图片的IMG对象
