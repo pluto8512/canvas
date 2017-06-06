@@ -315,7 +315,7 @@ input,textarea{
     height: 100%;
     background: #0C1C2B url("../images/03bg.jpg") no-repeat;
     background-size: 100% 100%;
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
     z-index: 99;
@@ -458,7 +458,7 @@ input,textarea{
     top: 0;
     left: 0;
     z-index: 99;
-    // display: none;
+    display: none;
     .arrow {
         width: 2.7rem;
         height: 5.1rem;
@@ -616,8 +616,41 @@ input,textarea{
                 width: 100%;
                 height: torem(123);
                 position: absolute;
-                top: torem(462);
+                top: torem(545);
+                left: torem(50);
                 text-align: center; 
+                .border {
+                    width: torem(124);
+                    height: torem(124);
+                    position: absolute;
+                    left: torem(10);
+                    top: 0;
+                    border: solid torem(8) white;
+                }
+                #output {
+                    display: inline-block;
+                    width: torem(108);
+                    height: torem(108);
+                    position: absolute;
+                    left: torem(0);
+                    top: 0;
+                    canvas {
+                        width: torem(108);
+                        height: torem(108);
+                    }
+                }
+                .txt {
+                    display: inline-block;
+                    width: torem(228);
+                    height: torem(56);
+                    text-align: left;
+                    position: absolute;
+                    left: torem(157);
+                    top: torem(35);
+                    font-size: torem(24);
+                    line-height: torem(30);
+                    color: white;
+                }
             }
         }
     }

@@ -99,7 +99,7 @@
         <div class="btn-group">
             <div class="btn-redo" id="redo"></div>
             <div class="todo"></div>
-            <div class="share"></div>
+            <div class="share" id="share"></div>
         </div>
     </div>
 
@@ -131,11 +131,13 @@
                         </div>
                     </div> 
                     <div class="ma">
-                        <img src="" alt="二维码">
-                        <p class="txt">
-                            <span>DNA鉴定，</span>
-                            <span>敢玩就长按二维码！</span>
-                        </p>
+                        <div class="border">
+                            <div id="output"></div>
+                        </div>
+                        <div class="txt">
+                            <p>DNA鉴定，</p>
+                            <p>敢玩就长按二维码！</p>
+                        </div> 
                     </div>
                 </div>
             </div>
@@ -172,6 +174,7 @@
     </script>
     <script src="./js/jquery.js"></script>
     <script src="./js/jquery.template.js"></script>
+    <script src="./js/jquery.qrcode.min.js"></script>
     <script>
     // @e-mail：tumi330@163.com
     ;(function (doc, win) {
@@ -190,6 +193,8 @@
     })(document, window);
     
     ;(function(){
+        var width = $("#output").outerWidth();
+        $('#output').qrcode({width: width,height: width,text:"https://github.com/jeromeetienne/jquery-qrcode"});
         // 全局配置参数
         var G = {
             // '开始分析'状态标志(true:正在分析)
@@ -304,6 +309,9 @@
         });
         // 【点击】'知道了'按钮
         $('.mask-tips-btn').on('click',function(){
+            $('.mask-tips').hide();
+        });
+        $('.mask-tips').on('click',function(){
             $('.mask-tips').hide();
         });
         // 【监听】图片变化
@@ -427,6 +435,13 @@
             $('#adjustingImgR').attr("src" , "");
             $('#mask_addL').show();
             $('#mask_addR').show();
+        });
+        // 【点击】'分享'按钮
+        $("#share").on("click",function(){
+            $(".go-shares").show();
+        });
+        $(".go-shares").on("click",function(){
+            $(".go-shares").hide();
         });
         /**
          * 图片预览并上传(拼颜值图片上传代码)
