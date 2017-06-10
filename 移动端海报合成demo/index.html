@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <title>canvas命令封装</title>
+    <style>
+        *,
+        ::before,
+        ::after {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box; }
+        html,body {
+            width: 100%;
+            height: 100%;
+            
+        }
+        .fram {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: black;
+        }
+        #compose {
+            position: absolute;
+            top:  6.225rem;
+            left: 50% !important;
+            margin-left: -6.7625rem;
+            width: 13rem;
+            height: 20.34rem;
+        }
+        #output {
+            visibility: hidden;
+        }
+
+    </style>
+</head>
+<body>
+<div class="fram">
+    <img id="compose"></img>
+    <div id="output">
+        <img id="compose2"></img>
+    </div>
+</div>
+
+
+<script src="./js/jquery.js"></script>
+<script src="./js/jquery.qrcode.min.js"></script>
+
+<script>
+
+// @e-mail：tumi330@163.com
+;(function (doc, win) {
+    var docEl = doc.documentElement,
+    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+        var clientWidth = docEl.clientWidth;
+        if (!clientWidth) return;
+        if(clientWidth > 800) clientWidth=800;
+        docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+    };
+    
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    recalc();
+})(document, window);
+
+    var store = [];
+    var cache = {
+        set: function(key, value) {
+            var current = this.get() || {};
+            current[key] = value;
+            store.push(current);
+        },
+        get: function(key) {
+            for(var i=0;i<store.length;i++){
+                for(var key_i in store[i]){
+                    if(key_i == key){
+                        return store[i][key];
+                    }
+                }
+            }
+        }
+    };
+    /**
+    * canvas命令
+    */
+    var CanvasCommand = (function() {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'rgba(255, 255, 255, 0)';// canvas背景透明
+        canvas.width = 541;
+        canvas.height = 840;
+
+        var $compose = $('#compose');
+
+        var Action = {
+            fillText: function(font) {
+                var canvas2 = document.createElement('canvas');
+                var sizes = [], width=0;
+                $.each(font, function(key, value) {
+                    sizes.push(value['size']);
+                    width += value['size'] * value['txt'].length + 5;
+                });
+                canvas2.width = width;//画布宽度
+
+                var max = Math.max.apply(this, sizes);
+
+                canvas2.height = max * 1.5;//画布高度
+                var ctx2 = canvas2.getContext('2d');
+                ctx2.fillStyle = 'rgba(255, 255, 255, 0)';// canvas背景透明
+                ctx2.fillRect(0, 0, canvas2.width, canvas2.height);
+                var x = 0;
+                $.each(font, function(key, value) {
+                    ctx2.font = (value['bold'] || '')+" "+value['size']+"px serif";
+                    ctx2.fillStyle = value['color']?value['color']:"#47FDFF";
+                    ctx2.fillText(value['txt'], x, max);
+                    x += value['size'] * value['txt'].length + 5;
+                });
+
+                return canvas2;
+            },
+            fillImage: function(num, txts) {
+                
+                    var image = new Image();
+                    image.crossOrigin = "Anonymous";
+                    image.src = 'img/story/07share.png';
+                    image.onload = function() {
+                        // var img_head = new Image();
+                        // img_head.crossOrigin = "Anonymous";
+                        // img_head.src = 'img/story/head.jpg';
+                        // img_head.onload = function() {
+                            var img_bq = new Image();
+                            img_bq.crossOrigin = "Anonymous";
+                            img_bq.src = 'img/story/bq1.png';
+                            img_bq.onload = function() {
+                                var img_father = new Image();
+                                img_father.crossOrigin = "Anonymous";
+                                img_father.src = 'img/story/test1.jpg';
+                                img_father.onload = function() {
+                                    var img_son = new Image();
+                                    img_son.crossOrigin = "Anonymous";
+                                    img_son.src = 'img/story/test2.jpg';
+                                    img_son.onload = function() {
+                                        var img_title = new Image();
+                                        img_title.crossOrigin = "Anonymous";
+                                        img_title.src = 'img/story/08.png';
+                                        img_title.onload = function() {
+                                            var img_ele = new Image();
+                                            img_ele.crossOrigin = "Anonymous";
+                                            img_ele.src = 'img/story/12.png';
+                                            img_ele.onload = function() {
+                                                $('#output').qrcode({width: 141,height: 141,text:"http://1.m.gametest.weijuju.com/mobile/newgame/game_help.jsp?aid=fffd06f2b9cd42deb315894095a366f5&openid=o8xJfwhP8_9GaCRugOHXzM5vdEf411111&activityid=4337&wuid=1&keyversion=0&itemId=23"});
+                                                var base64_ma = $('#output canvas').get(0).toDataURL("image/jpeg", 0.6);
+                                                var img_ma = new Image();
+                                                img_ma.crossOrigin = "Anonymous";
+                                                img_ma.src = base64_ma;
+                                                img_ma.onload = function() {
+                                                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                                                    // ctx.save(); // 保存当前ctx的状态
+                                                    // ctx.arc(81,160,32, 0, 2 * Math.PI, true); //画出圆
+                                                    // ctx.clip(); //裁剪上面的圆形
+                                                    // ctx.drawImage(img_head, 49, 128, 65, 65); // 在刚刚裁剪的园上画图
+                                                    // ctx.restore(); // 还原状态
+                                                    ctx.drawImage(img_ele, 140, 410, 240, 80);
+                                                    ctx.drawImage(img_father, 60, 394, 130, 130);
+                                                    ctx.drawImage(img_son, 347, 394, 130, 130);
+                                                    drawRoundedRect(ctx,59,392,133,133,10,4,"#00DBFE",'rgba(255, 255, 255, 0)');
+                                                    drawRoundedRect(ctx,346,392,133,133,10,4,"#00DBFE",'rgba(255, 255, 255, 0)');
+                                                    ctx.drawImage(img_title, 55, 68, 416, 37);
+
+                                                    ctx.drawImage(img_ma,  50, 600, 200, 200);
+                                                    drawRoundedWhiteRect(ctx,48,600,204, 204,4,"rgba(255, 255, 255, 1)",'rgba(255, 255, 255, 0)');
+
+                                                    $.each(txts, function(key, value) {
+                                                        ctx.drawImage(value, value.left, value.top, value.width, value.height);
+                                                    });
+                                                    var base64 = canvas.toDataURL("image/jpeg", 0.6);
+                                                    $compose.attr('src', base64);
+                                                };
+                                            };
+                                        };
+                                    };
+                                };
+                            };
+                        };
+                    // };
+               
+            }
+        };
+        return {
+            /**
+            * 命令格式 command,params
+            * @param param
+            * 调用Action的方法(param.command=>fillText/fillImage),传入参数(param.params)
+            */
+            execute: function(param) {
+                return Action[param.command].apply(Action, param.params);//执行命令
+            }
+        }
+    })();
+    /**
+    * 制作语录
+    */
+    cache.set('name', '小明');//上下文
+    cache.set('percent','28.05%');
+    var msg = '扎心了，老爸！难道我是从垃圾桶里 面捡来的？';
+    var arr = msg.split(" ");
+    cache.set('msg1',arr[0]);
+    cache.set('msg2',arr[1]);
+    var stories = [];// 每个故事的配置
+    function setStory(name) {
+        stories = [
+            [
+                {
+                    top:158,
+                    left:0, 
+                    font: [
+                        {size: 26, txt:name, bold:'bold'},
+                        {size: 26, txt:'在参与亲子分析活动中',bold:'bold'}
+                    ]
+                }
+            ]
+        ];
+    }
+    var current = 0;
+    var name = cache.get('name');
+    setStory(name);//配置
+    $('#txt').html(cache.get('msg') + '<i class="ui-icon-down"></i>');
+
+    stories[current].push({left:104, top:190, font:[{size:26, txt:'与爸爸的相似度', bold:'bold'},
+    {size:40, txt:cache.get('percent'), bold:'bold'}]});
+    stories[current].push({left:0, top:288, font:[{size:26, txt:cache.get('msg1'), bold:'bold'}]});
+    stories[current].push({left:0, top:328, font:[{size:26, txt:cache.get('msg2'), bold:'bold'}]});
+    stories[current].push({left:280, top:660, font:[{size:31, txt:'DNA鉴定，敢玩', bold:'bold',color:'white'}]});
+    stories[current].push({left:280, top:740, font:[{size:31, txt:'就长按二维码！', bold:'bold',color:'white'}]});
+
+    var currentStories = stories[current];// 所有故事的集合
+
+    // 将文字画出来
+    var txts = [];
+    $.each(currentStories, function(key, value) {
+        var txt = CanvasCommand.execute({
+            command:'fillText',
+            params:[value['font']]
+        });
+        txt.left = value['left']?value['left']:((541 - txt.width)/2);
+        txt.top = value['top'];
+        txts.push(txt);
+    });
+    CanvasCommand.execute({command:'fillImage', params:[1, txts]});
+
+    /**
+     * 画圆角矩形
+     * @param x 开始的x轴坐标
+     * @param y 开始的y轴坐标
+     * @param w/h 矩形的宽高
+     * @param r 圆角半径
+     * @param bdWidth 边框宽度
+     * @param bdColor 边框的颜色
+     * @param bgcolor 矩形背景的颜色
+     */
+    function drawRoundedRect(ctx,x,y,w,h,r,bdWidth,bdColor,bgcolor){
+        ctx.beginPath();
+        ctx.moveTo(x+r,y);
+        ctx.lineWidth = bdWidth;
+        ctx.strokeStyle = bdColor;
+        ctx.fillStyle = bgcolor;
+        ctx.arcTo(x+w,y,x+w,y+h,r);
+        ctx.arcTo(x+w,y+h,x,y+h,r);
+        ctx.arcTo(x,y+h,x,y,r);
+        ctx.arcTo(x,y,x+w,y,r);
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+    }
+    function drawRoundedWhiteRect(ctx,x,y,w,h,bdWidth,bdColor,bgcolor){
+        ctx.beginPath();
+        ctx.moveTo(x,y);
+        ctx.lineWidth = bdWidth;
+        ctx.strokeStyle = bdColor;
+        ctx.fillStyle = bgcolor;
+        ctx.lineTo(x+w,y,x+w,y+h);
+        ctx.lineTo(x+w,y+h,x,y+h);
+        ctx.lineTo(x,y+h,x,y);
+        ctx.lineTo(x,y,x+w,y);
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+    }
+</script>
+</body>
+</html>
