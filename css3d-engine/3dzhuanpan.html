@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <!--通用-->
+    <style>
+            *,
+        ::before,
+        ::after {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box; }
+        html,body {
+            width: 100%;
+            height: 100%;
+        }
+        #main {
+            width: 100%;
+            height: 100%;
+            background: url("./images/bg.jpg") no-repeat;
+            background-size: 100% 100%;
+        }
+        .redmask {
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0.2rem;
+            background: #aa0117;
+        }
+        .redmask-L {
+            height: 100%;
+            width: 0.2rem;
+            background: #aa0117;
+        }
+        
+    </style>
+    <!--通用-->
+    <title>css3d-engine</title>
+</head>
+<body>
+    <div id="main"></div>
+    <!--=========-->
+    <!--js begine-->
+    <!--=========-->
+    <script src="./js/css3d.js"></script>
+    <script src="./js/jstween.min.js"></script>
+    <script src="./js/hammer.min.js"></script>
+    <script>
+        // @e-mail：tumi330@163.com
+        // 适配：640的设计稿，320的屏
+        ;(function (doc, win) {
+            var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                    recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth > 800) clientWidth=800;
+                docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+            };
+            
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            recalc();
+        })(document, window);
+
+        ;(function(){
+            // 素材
+             var bgData = [
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test2.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+                {url: 'images/test.png'},
+            ];
+            // 上下文
+            var content = {
+                "planes":[],
+                "Sprites":[]
+            };
+            // 运用css3dengine的示例
+            // 创建场景
+            // 所有的函数都能够链式调用
+            // 一般在创建元素的时候都要调用update() 
+            // 分别会执行updateS(),updateM(),updateT(),updateV()
+            var sence = new C3D.Stage();
+            sence.camera.position(-window.innerWidth/8,-4*window.innerWidth/32,-20*window.innerWidth/32).rotation(0,-23,0);
+            sence.size(window.innerWidth,window.innerHeight).material(
+                {
+                    image:"./images/bg.jpg",
+                    size:"100% 100%"
+                }
+            ).update();
+            // 最后将stage的dom元素置入到所需位置
+            // el是所有元素的三维属性，包含对应的dom元素
+            document.getElementById('main').appendChild(sence.el);
+            // 创建一个三维容器，容器没有高宽深和材质信息，只有位置，旋转，缩放等信息
+            
+            // var c = new C3D.Skybox();
+            // c.size(5*window.innerWidth).position(0, 0, 0).material({
+            //     front: {image: "images/cube_FR.jpg",size:"100% 100%"},
+            //     back: {image: "images/cube_BK.jpg",size:"100% 100%"},
+            //     left: {image: "images/cube_LF.jpg",size:"100% 100%"},
+            //     right: {image: "images/cube_RT.jpg",size:"100% 100%"},
+            //     up: {image: "images/cube_UP.jpg",size:"100% 100%"},
+            //     down: {image: "images/cube_DN.jpg",size:"100% 100%"},
+                
+            // }).update();
+            // sence.addChild(c);
+            
+
+            
+            // 循环创建平面
+            function createPlane(imgs) {
+                var _len = imgs.length;
+
+                for( i=0 ; i<_len ; i++){
+                    var _p = new C3D.Plane();
+                    var _sp = new C3D.Sprite();
+                    _p.size(window.innerWidth,window.innerHeight).rotation(0,12*i,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
+                        image:imgs[i].url,
+                        size:"100% 100%",
+                        position:"right bottom",
+                        repeat:"no-repeat"
+                    }).update();
+                    content.planes.push(_p);
+                    _sp.addChild(_p);
+                    content.Sprites.push(_sp);
+                    // (function(i,_p){
+                    //      JT.fromTo(_p, 30, {rotationY: 12*i}, {  
+                    //         rotationY: 360+12*i, ease: JT.Linear.In, onUpdate: function () {  
+                    //             // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+                    //             _p.updateT();  
+                    //         },onEnd:function(){  
+                    //             _sp.removeChild(this);  
+                    //         }  
+                    //     });  
+                    // })(i,_p);
+                }
+                return content.Sprites;
+            }
+            var Sprites = createPlane(bgData);
+            // pano.position(0, 0, 0).visibility({visible:false,alpha:0}).update();
+            for(var i=0; i<Sprites.length; i++){
+                sence.addChild(Sprites[i]);
+            }
+            
+            var myElement = document.getElementById('main');
+           
+            // by hammer.js
+            var mc = new Hammer(myElement);
+
+            // listen to events...
+            // 【swipeleft】
+            mc.on("swipeleft",function(){
+               for(var i=0; i<content.planes.length; i++){
+                   (function(Plane){
+                        JT.fromTo(Plane, 30, {rotationY:Plane.rotationY}, {  
+                            rotationY: -360+Plane.rotationY, ease: JT.Linear.In, onUpdate: function () {  
+                                // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+                                Plane.updateT();  
+                            },onEnd:function(){  
+                                // _sp.removeChild(this);  
+                            }  
+                        });  
+                   })(content.planes[i]);
+               }
+            });
+            // 【swiperight】
+            mc.on("swiperight",function(){
+               for(var i=0; i<content.planes.length; i++){
+                   (function(Plane){
+                        JT.fromTo(Plane, 30, {rotationY:Plane.rotationY}, {  
+                            rotationY: 360+Plane.rotationY, ease: JT.Linear.In, onUpdate: function () {  
+                                // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+                                Plane.updateT();  
+                            },onEnd:function(){  
+                                // _sp.removeChild(this);  
+                            }  
+                        });  
+                   })(content.planes[i]);
+               }
+            });
+
+            // 监视plane的旋转角度
+            function go() {
+
+                for(var i=0 ; i<content.planes.length ; i++){
+                    if( content.planes[i].rotationY%360>=0 && content.planes[i].rotationY%360<50){
+
+                        // content.Sprites[i].visibility({visible:false,alpha:0}).update(); 
+
+                        // sence.camera.position(-window.innerWidth/8,-2*window.innerWidth/32,-20*window.innerWidth/32).rotation(0,-23,0).update();
+
+                        // content.planes[i].material({
+                        //     size:"110% 100%",
+                        //     position:"right bottom",
+                        //     repeat:"no-repeat"
+                        // }).update();  
+
+                        // (function(Plane){
+                        //         JT.fromTo(Plane, 30, {width :Plane.width }, {  
+                        //             width : 1.1*Plane.width, ease: JT.Linear.In, onUpdate: function () {  
+                        //                 // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+                        //                 Plane.updateT();  
+                        //             },onEnd:function(){  
+                        //                 content.planes[i].material({
+                        //                     size:"110% 100%",
+                        //                     position:"right bottom",
+                        //                     repeat:"no-repeat"
+                        //                 }).update(); 
+                        //             }  
+                        //         });  
+                        // })(content.planes[i]);
+
+
+                        // },15);
+                        // var a;
+                        // setInterval(function(){
+                        //      content.planes[i].material({
+                        //         size:"110% 100%",
+                        //         position:"right bottom",
+                        //         repeat:"no-repeat"
+                        //     }).update();  
+                        // },15);
+                        
+                        console.log(content.planes[i]);
+                        
+                        // content.planes[i].size((10*window.innerWidth),window.innerHeight).update();    
+                    }else {
+                        // content.Sprites[i].visibility({visible:true,alpha:1}).update();
+
+                        // sence.camera.position(-window.innerWidth/3,-2*window.innerWidth/32,-12*window.innerWidth/32).rotation(0,-23,0).update();
+
+                        // content.planes[i].material({
+                        //     size:"90% 100%",
+                        //     position:"right bottom",
+                        //     repeat:"no-repeat"
+                        // }).update();  
+                    }
+                }
+
+                requestAnimationFrame(go);
+            }
+
+            requestAnimationFrame(go);
+            
+            // 相机位置移动
+            // function go() {
+            //     // var a = 360/30;
+            //     // sence.camera.position(Math.cos(a)*window.innerWidth/2,-2*window.innerWidth/32,Math.sin(a)*window.innerWidth/2).rotation(0,(180-a),0).update();
+            //     sence.camera.rotate(0, 0.001, 0).updateT();
+            //     requestAnimationFrame(go);
+            // }
+
+            // requestAnimationFrame(go);
+
+            // 创建一个平面放入场景
+            // var p = new C3D.Plane();
+            // p.size(window.innerWidth,1.1*window.innerHeight).rotation(0,-30,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
+            //     image:"./images/1.png",
+            //     size:"100% 100%",
+            //     position:"top top",
+            //     color:"#ccccff"
+            // }).update();
+            // var p2 = new C3D.Plane();
+            // p2.size(window.innerWidth,1.1*window.innerHeight).rotation(0,-15,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
+            //     image:"./images/1.png",
+            //     size:"100% 100%",
+            //     position:"top top"
+            // }).update();
+            // var p3 = new C3D.Plane();
+            // p3.size(window.innerWidth,1.1*window.innerHeight).rotation(0,0,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
+            //     image:"./images/1.png",
+            //     size:"100% 100%",
+            //     position:"top top"
+            // }).update();
+            // var p4 = new C3D.Plane();
+            // p4.size(window.innerWidth,1.1*window.innerHeight).rotation(0,15,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).rotation(0,0,0).material({
+            //     image:"./images/1.png",
+            //     size:"100% 100%",
+            //     position:"top top"
+            // }).update();
+            // var p5 = new C3D.Plane();
+            // p4.size(window.innerWidth,1.1*window.innerHeight).rotation(0,30,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).rotation(0,0,0).material({
+            //     image:"./images/1.png",
+            //     size:"100% 100%",
+            //     position:"top top"
+            // }).update();
+            // 创建一个立方体放入场景
+            // var c = new C3D.Box();
+            // c.size(100).position(0,100,-sence.fov).rotation(0,0,0).material(
+            //     {
+            //         color:C3D.getRandomColor()
+            //     }
+            // ).update();
+            // 添加到场景里面
+            // sence.addChild(sp);
+            // sence.addChild(p);
+            // sence.addChild(p2);
+            // sence.addChild(p3);
+            // sence.addChild(p4);
+            // sence.addChild(p5);
+            // sence.addChild(c);
+
+            // 如果希望单独控制立方体各面的素材
+            // positon(0,0,-sence.fov)是页面中心
+            // var c2 = new C3D.Box();
+            // c2.size(100).position(0, -100, -sence.fov).rotation(100, 100, 50).material({  
+            //     front : {color:C3D.getRandomColor()},  
+            //     back : {color:C3D.getRandomColor()},  
+            //     left : {color:C3D.getRandomColor()},  
+            //     right : {color:C3D.getRandomColor()},  
+            //     up : {color:C3D.getRandomColor()},  
+            //     down : {color:C3D.getRandomColor()},  
+            // }).update();  
+            // sence.addChild(c2);  
+
+            // JT.fromTo(p, 10, {rotationY: -60}, {  
+            //     rotationY: 330, ease: JT.Linear.In, onUpdate: function () {  
+            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+            //         p.updateT();  
+            //     },onEnd:function(){  
+            //         sp.removeChild(this);  
+            //     }  
+            // });  
+            // JT.fromTo(p2, 10, {rotationY: -30}, {  
+            //     rotationY: 360, ease: JT.Linear.In, onUpdate: function () {  
+            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+            //         p2.updateT();  
+            //     },onEnd:function(){  
+            //         sp.removeChild(this);  
+            //     }  
+            // });  
+            // JT.fromTo(p3, 10, {rotationY: 0}, {  
+            //     rotationY: 390, ease: JT.Linear.In, onUpdate: function () {  
+            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+            //         p3.updateT();  
+            //     },onEnd:function(){  
+            //         sp.removeChild(this);  
+            //     }  
+            // });  
+            // JT.fromTo(p4, 10, {rotationY: 30}, {  
+            //     rotationY: 420, ease: JT.Linear.In, onUpdate: function () {  
+            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+            //         p4.updateT();  
+            //     },onEnd:function(){  
+            //         sp.removeChild(this);  
+            //     }  
+            // });  
+            // JT.fromTo(p5, 10, {rotationY: 60}, {  
+            //     rotationY: 450, ease: JT.Linear.In, onUpdate: function () {  
+            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+            //         p5.updateT();  
+            //     },onEnd:function(){  
+            //         sp.removeChild(this);  
+            //     }  
+            // });
+            // JT.fromTo(sence.camera, 5, {z: 1000}, {  
+            //     z: 0, ease: JT.Quart.In, onUpdate: function () {  
+            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+            //         p5.updateT();  
+            //     },onEnd:function(){  
+            //         sp.removeChild(this);  
+            //     }  
+            // });    
+            //响应屏幕调整尺寸
+            function resize() {
+                sence.size(window.innerWidth, window.innerHeight).update();
+            }
+
+            window.onresize = function () {
+                resize();
+            };
+            resize();
+        })(document, window);
+    </script>
+</body>
+</html>
