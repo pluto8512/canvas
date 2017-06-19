@@ -26,7 +26,6 @@
         #main {
             width: 100%;
             height: 100%;
-            background: url("./images/bg.jpg") no-repeat;
             background-size: 100% 100%;
         }
         .redmask {
@@ -42,13 +41,42 @@
             width: 0.2rem;
             background: #aa0117;
         }
-        
+        #startBtn {
+            width: 1.875rem;
+            height: 2.675rem;
+            position: fixed;
+            left: 50%;
+            bottom: 2rem;
+            margin-left: -1.25rem;
+            z-index: 100;
+            background: url("./images/dazhuanpan/other-click.png") no-repeat;
+            background-size: 100% 100%; 
+        }
+        #tip {
+            width: 4.6rem;
+            height: 1rem;
+            line-height: 1rem;
+            position: absolute;
+            bottom: -1.1rem;
+            left: 50%;
+            font-size: 0.5rem;
+            margin-left: -2.3rem;
+            text-align: center;
+            color: #ffffff;
+            background: black;
+            opacity: 0.5;
+            letter-spacing: 0.1rem;
+            transform: scale(0.8,0.8);
+        }
     </style>
     <!--通用-->
     <title>css3d-engine</title>
 </head>
 <body>
     <div id="main"></div>
+    <div id="startBtn" class="disable">
+        <p id="tip">点击开始转动</p>
+    </div>
     <!--=========-->
     <!--js begine-->
     <!--=========-->
@@ -75,6 +103,20 @@
         })(document, window);
 
         ;(function(){
+            // 【开始游戏按钮事件】
+            $("#startBtn").on("click",function(){
+                if(G.lock_startBtn){
+                    doLotteryAnimation();
+                    // 模拟请求抽奖的结果  success函数返回
+                    var moniawardName = "恭喜你获得一等奖，奖品是iphone6";
+                    var monitrophyName = "一等奖";
+                    // 回填中奖信息
+                    G.result.isNull =  false;
+                    G.result.awardName =  moniawardName;
+                    G.result.trophyName =  monitrophyName;
+                    G.lock_startBtn = false;
+                }
+            });
             // 上下文(type:1/中奖 2/没中奖 3/有图的空白框 4/没图的空白框)
             var content = [
                 {
@@ -196,10 +238,10 @@
                 },
             ];
             // 中奖的8个页面
-            var getArr = [];
-            var noGetArr = [];
-            var noEmptyArr = [];
-            var emptyArr = [];
+            var getArr = [];// 5
+            var noGetArr = [];// 5
+            var noEmptyArr = [];// 4
+            var emptyArr = [];// 2
             for (var i=0 ; i<content.length ; i++) {
                 if(content[i].type == 1){
                     getArr.push(content[i]);
@@ -226,227 +268,23 @@
                 "Sprites1":[],
                 "Sprites2":[],
                 "Sprites3":[],
+                // 锁-锁住游戏进程(false代表锁住，不执行)
+                "lock_startGame":false,
+                // 锁-锁住开始动画（false代表锁住，不执行）
+                "lock_startAnimation":true,
+                // 锁-锁住开始游戏的按钮(false代表锁住，不执行)
+                "lock_startBtn":true,
+                // 值-抽奖结果
+                "result":{
+                    // 是否拿到返回值
+                    "isNull":true,
+                    // 奖项名
+                    "trophyName":"",
+                    // 奖品名
+                    "awardName":""
+                }
             };
             // 页面构建
-            // getArr[0].frameUrl
-            var planeData = [
-                {'id':1,
-                 'angle':30,
-                 'bgUrl':getArr[0].frameUrl,
-                 'textUrl':getArr[0].textUrl,
-                 'text':getArr[0].text
-                },
-                {'id':2,
-                 'angle':60,
-                 'bgUrl':getArr[1].frameUrl,
-                 'textUrl':getArr[1].textUrl,
-                 'text':getArr[1].text
-                },
-                {'id':3,
-                 'angle':120,
-                 'bgUrl':getArr[2].frameUrl,
-                 'textUrl':getArr[2].textUrl,
-                 'text':getArr[2].text
-                },
-                {'id':4,
-                 'angle':150,
-                 'bgUrl':getArr[3].frameUrl,
-                 'textUrl':getArr[3].textUrl,
-                 'text':getArr[3].text
-                },
-                {'id':5,
-                 'angle':210,
-                 'bgUrl':getArr[4].frameUrl,
-                 'textUrl':getArr[4].textUrl,
-                 'text':getArr[4].text
-                },
-                {'id':6,
-                 'angle':240,
-                 'bgUrl':getArr[0].frameUrl,
-                 'textUrl':getArr[0].textUrl,
-                 'text':getArr[0].text
-                },
-                {'id':7,
-                 'angle':300,
-                 'bgUrl':getArr[1].frameUrl,
-                 'textUrl':getArr[1].textUrl,
-                 'text':getArr[1].text
-                },
-                {'id':8,
-                 'angle':330,
-                 'bgUrl':getArr[2].frameUrl,
-                 'textUrl':getArr[2].textUrl,
-                 'text':getArr[2].text
-                },
-                {'id':9,
-                 'angle':0,
-                 'bgUrl':noGetArr[0].frameUrl,
-                 'textUrl':noGetArr[0].textUrl,
-                 'text':""
-                },
-                {'id':10,
-                 'angle':90,
-                 'bgUrl':noGetArr[1].frameUrl,
-                 'textUrl':noGetArr[1].textUrl,
-                 'text':""
-                },
-                {'id':11,
-                 'angle':180,
-                 'bgUrl':noGetArr[2].frameUrl,
-                 'textUrl':noGetArr[2].textUrl,
-                 'text':""
-                },
-                {'id':12,
-                 'angle':270,
-                 'bgUrl':noGetArr[3].frameUrl,
-                 'textUrl':noGetArr[3].textUrl,
-                 'text':""
-                },
-                {'id':13,
-                 'angle':10,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':14,
-                 'angle':20,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':15,
-                 'angle':40,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':16,
-                 'angle':50,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':17,
-                 'angle':70,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':18,
-                 'angle':80,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':19,
-                 'angle':100,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':20,
-                 'angle':110,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':21,
-                 'angle':130,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':22,
-                 'angle':140,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':23,
-                 'angle':160,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':24,
-                 'angle':170,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':25,
-                 'angle':190,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':26,
-                 'angle':200,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                 {'id':27,
-                 'angle':220,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':28,
-                 'angle':230,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':29,
-                 'angle':250,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':30,
-                 'angle':260,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':31,
-                 'angle':280,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':32,
-                 'angle':290,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':33,
-                 'angle':310,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':34,
-                 'angle':320,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':35,
-                 'angle':340,
-                 'bgUrl':emptyArr[0].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-                {'id':36,
-                 'angle':350,
-                 'bgUrl':emptyArr[1].frameUrl,
-                 'textUrl':"",
-                 'text':""
-                },
-            ];
             var planeData1 = [
                 {'id':1,
                  'angle':10,
@@ -883,50 +721,225 @@
                  'text':""
                 },
             ];
-
-            // 素材
-            var bgData = [
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test2.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
-                {url: 'images/test.png'},
+            // 第三组素材里面的第一组画面是抽奖结果(随机配置第三组素材)
+             var planeData3 = [
+                 {'id':1,
+                 'angle':10,
+                 'bgUrl':getArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':"3"
+                },
+                {'id':2,
+                 'angle':20,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':3,
+                 'angle':30,
+                 'bgUrl':noEmptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':4,
+                 'angle':40,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':5,
+                 'angle':50,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':6,
+                 'angle':60,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':7,
+                 'angle':70,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':8,
+                 'angle':80,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':9,
+                 'angle':90,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':10,
+                 'angle':100,
+                 'bgUrl':getArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':11,
+                 'angle':110,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':12,
+                 'angle':120,
+                 'bgUrl':noEmptyArr[3].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':13,
+                 'angle':130,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':14,
+                 'angle':140,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':15,
+                 'angle':150,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':16,
+                 'angle':160,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':17,
+                 'angle':170,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':18,
+                 'angle':180,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':19,
+                 'angle':190,
+                 'bgUrl':getArr[2].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':20,
+                 'angle':200,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':21,
+                 'angle':210,
+                 'bgUrl':noEmptyArr[2].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':22,
+                 'angle':220,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':23,
+                 'angle':230,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':24,
+                 'angle':240,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':25,
+                 'angle':250,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':26,
+                 'angle':260,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':27,
+                 'angle':270,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':28,
+                 'angle':280,
+                 'bgUrl':getArr[3].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':29,
+                 'angle':290,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':30,
+                 'angle':300,
+                 'bgUrl':noEmptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':31,
+                 'angle':310,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':32,
+                 'angle':320,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':33,
+                 'angle':330,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':34,
+                 'angle':340,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':35,
+                 'angle':350,
+                 'bgUrl':emptyArr[0].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
+                {'id':36,
+                 'angle':360,
+                 'bgUrl':emptyArr[1].frameUrl,
+                 'textUrl':"",
+                 'text':""
+                },
             ];
-            // 上下文
-            var content = {
-                
-            };
             // 缓存
             var cache = {
                 set: function(key, value) {
@@ -961,21 +974,6 @@
             // 最后将stage的dom元素置入到所需位置
             // el是所有元素的三维属性，包含对应的dom元素
             document.getElementById('main').appendChild(sence.el);
-            // 创建一个三维容器，容器没有高宽深和材质信息，只有位置，旋转，缩放等信息
-            
-            // var c = new C3D.Skybox();
-            // c.size(5*window.innerWidth).position(0, 0, 0).material({
-            //     front: {image: "images/cube_FR.jpg",size:"100% 100%"},
-            //     back: {image: "images/cube_BK.jpg",size:"100% 100%"},
-            //     left: {image: "images/cube_LF.jpg",size:"100% 100%"},
-            //     right: {image: "images/cube_RT.jpg",size:"100% 100%"},
-            //     up: {image: "images/cube_UP.jpg",size:"100% 100%"},
-            //     down: {image: "images/cube_DN.jpg",size:"100% 100%"},
-                
-            // }).update();
-            // sence.addChild(c);
-            
-
             
             //循环创建第一组平面
             function createPlane(imgs) {
@@ -992,22 +990,11 @@
                     }).update();
                     _p.property={
                         "id": i,
-                        "name": imgs[i].bgUrl
+                        "row": "01"
                     };
                     G.planes.push(_p);
                     _sp.addChild(_p);
                     G.Sprites1.push(_sp);
-                   
-                    // (function(i,_p){
-                    //      JT.fromTo(_p, 30, {rotationY: imgs[i].angle}, {  
-                    //         rotationY: 360+imgs[i].angle, ease: JT.Linear.In, onUpdate: function () {  
-                    //             // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-                    //             _p.updateT();  
-                    //         },onEnd:function(){  
-                    //             _sp.removeChild(this);  
-                    //         }  
-                    //     });  
-                    // })(i,_p);
                 }
                 return G.Sprites1;
             }
@@ -1017,7 +1004,7 @@
                 sence.addChild(Sprites1[i]);
             }
 
-            //循环创建第二组平面
+             //循环创建第二组平面
             function createPlane2(imgs) {
                 var _len = imgs.length;
 
@@ -1032,94 +1019,101 @@
                     }).update();
                     _p.property={
                         "id": i,
-                        "name": imgs[i].bgUrl
+                        "row": "02"
                     };
                     G.planes.push(_p);
                     _sp.addChild(_p);
                     G.Sprites2.push(_sp);
-                   
-                    // (function(i,_p){
-                    //      JT.fromTo(_p, 30, {rotationY: imgs[i].angle}, {  
-                    //         rotationY: 360+imgs[i].angle, ease: JT.Linear.In, onUpdate: function () {  
-                    //             // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-                    //             _p.updateT();  
-                    //         },onEnd:function(){  
-                    //             _sp.removeChild(this);  
-                    //         }  
-                    //     });  
-                    // })(i,_p);
                 }
                 return G.Sprites2;
-            }
+            }   
             var Sprites2 = createPlane2(planeData2);
            
             for(var i=0; i<Sprites2.length; i++){
                 sence.addChild(Sprites2[i]);
             }
 
+            // 循环创建第三组平面
+            function createPlane3(imgs) {
+                var _len = imgs.length;
+
+                for( var i=0 ; i<_len ; i++){
+                    var _p = new C3D.Plane();
+                    var _sp = new C3D.Sprite();
+                     _p.size(window.innerWidth,window.innerHeight).rotation(0,imgs[i].angle,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
+                        image:imgs[i].bgUrl,
+                        size:"80% 100%",
+                        position:"left bottom",
+                        repeat:"no-repeat"
+                    }).update();
+                    _p.property={
+                        "id": i,
+                        "row": "03"
+                    };
+                    $(_p.el).html("<p>"+imgs[i].text+"</P>");
+                    G.planes.push(_p);
+                    _sp.addChild(_p);
+                    G.Sprites3.push(_sp);
+                }
+                return G.Sprites3;
+            }
+            var Sprites3 = createPlane3(planeData3);
+           
+            for(var i=0; i<Sprites3.length; i++){
+                sence.addChild(Sprites3[i]);
+            }
+            
             // 隐藏第一组平面
             for(var i=0 ; i<Sprites1.length ; i++){
-                Sprites1[i].visibility({visible:false,alpha:0}).update();
+                // Sprites1[i].visibility({visible:false,alpha:0}).update();
+            }
+            // 隐藏第二组平面
+            for(var i=0 ; i<Sprites2.length ; i++){
+                Sprites2[i].visibility({visible:false,alpha:0}).update();
+            }
+            // 隐藏第三组界面
+            for(var i=0 ;  i<Sprites3.length ; i++){
+                Sprites3[i].visibility({visible:false,alpha:0}).update();
             }
 
+            // 开始动画倒过去滚回来
+            var startAnimation = function(planes) {
+                for(var i=0; i<planes.length; i++){
+                    (function(_p,planes){
+                        // 需求确定：3秒走一圈的速度（不需要滚回来的动画）
+                        JT.fromTo(_p, 3, {rotationY:_p.rotationY}, {  
+                            rotationY: -360+_p.rotationY, Linear: JT.Linear.In, onUpdate: function () {  
+                                // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+                                _p.updateT();  
+                            },onEnd:function(){
+                                // 将rotationY还原
+                                _p.rotationY = _p.rotationY+360;
+                                G.lock_startGame = true;
+                            }  
+                        });  
+                    })(planes[i],planes);
+                }
+            };
+            startAnimation(G.planes);
 
+            // 抽奖动画
+            var doLotteryAnimation = function() {
 
-            // var i=0;
-            // // 动态创建平面
-            // function goCreatePlane() {
-            //     // 单对象缓存
-            //     var cookie;
-            //     // 
+                for(var i=0; i<G.planes.length; i++){
+                   (function(Plane){
+                        JT.fromTo(Plane, 30, {rotationY:Plane.rotationY}, {  
+                            rotationY: 1080+Plane.rotationY, ease: JT.Linear.In, onUpdate: function () {  
+                                // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+                                Plane.updateT();  
+                            },onEnd:function(){  
+                                // _sp.removeChild(this);  
+                            }  
+                        });  
+                   })(G.planes[i]);
+               }
+            };
 
-            //     // 创建单个平面
-            //     var _p = new C3D.Plane();
-            //     var _sp = new C3D.Sprite();
-            //     try{
-            //          _p.size(window.innerWidth,window.innerHeight).rotation(0,0,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
-            //             image:planeData[i].bgUrl,
-            //             size:"100% 90%",
-            //             position:"right bottom",
-            //             repeat:"no-repeat"
-            //         }).update();
-            //     }catch(e){
-            //         console.log(i);
-            //     }
-               
-            //     _p.property={
-            //         "id": i,
-            //         "name": planeData[i].bgUrl
-            //     };
-            //     G.planes.push(_p);
-            //     _sp.addChild(_p);
-            //     cache.set(_sp);
-            //     G.Sprites.push(_sp);
-            //     sence.addChild(_sp);
-            //     // var Sprites = createPlane(planeData);
-            //     // for(var i=0; i<Sprites.length; i++){
-            //     //     sence.addChild(Sprites[i]);
-            //     // }
-            //     (function(i,_p){
-            //              JT.fromTo(_p, 30, {rotationY: 0}, {  
-            //                 rotationY: 360, ease: JT.Linear.In, onUpdate: function () {  
-            //                     // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-            //                     _p.updateT();  
-            //                 },onEnd:function(){  
-            //                     _sp.removeChild(this);  
-            //                 }  
-            //             });  
-            //         })(i,_p);
-            //     i<(planeData.length-1)? i++ : i=0;
-            //     requestAnimationFrame(goCreatePlane);
-            // }
-
-            // requestAnimationFrame(goCreatePlane);
-            
-
-            
-            
-            
-            
-            
+            // 测试
             var myElement = document.getElementById('main');
            
             // by hammer.js
@@ -1130,8 +1124,8 @@
             mc.on("swipeleft",function(){
                for(var i=0; i<G.planes.length; i++){
                    (function(Plane){
-                        JT.fromTo(Plane, 15, {rotationY:Plane.rotationY}, {  
-                            rotationY: -360+Plane.rotationY, ease: JT.Linear.In, onUpdate: function () {  
+                        JT.fromTo(Plane, 30, {rotationY:Plane.rotationY}, {  
+                            rotationY: -720+Plane.rotationY, ease: JT.Linear.In, onUpdate: function () {  
                                 // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
                                 Plane.updateT();  
                             },onEnd:function(){  
@@ -1145,79 +1139,70 @@
             mc.on("swiperight",function(){
                for(var i=0; i<G.planes.length; i++){
                    (function(Plane){
-                        JT.fromTo(Plane, 10, {rotationY:Plane.rotationY}, {  
-                            rotationY: 360+Plane.rotationY, ease: JT.Linear.In, onUpdate: function () {  
+                        JT.fromTo(Plane, 1, {rotationY:Plane.rotationY}, {  
+                            rotationY: 10+Plane.rotationY, ease: JT.Linear.In, onUpdate: function () {  
                                 // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
                                 Plane.updateT();  
                             },onEnd:function(){  
                                 // _sp.removeChild(this);  
+                                console.log("1");
                             }  
                         });  
                    })(G.planes[i]);
                }
             });
 
-            // 【planes操作】
-            for(var i=0; i<G.planes.length; i++){
-                // $(content.planes[i].el).append(html);
-                console.log($(G.planes[i]));
+            // 时间轴
+            var timeLine = {
+                // 时间点1：第一组平面的素材全部被第二组平面里面的素材替换的时间点
+                'time_pl1BePl2' : false,
+                // 时间点2：旋转停止，结果弹窗出现
+                'time_popShow' : false,
+                // 时间点3：旋转完三圈那刻，但是结果还没有出来
+                'time_overNoResult': false
+            };
+            // 写时间点1
+            var writeTime1 = function() {
+                if(G.Sprites2[0].children[0].rotationY < 730){
+                    return false;
+                }
+                return true;
             }
-
+            // 写时间点3
+            var writeTime3 = function() {
+                if(G.Sprites3[0].children[0].rotationY < 1090 || G.result.isNull){
+                    return false;
+                }
+                return true;
+            }
             // 监视plane的旋转角度
             function go() {
-
-                for(var i=0 ; i<G.planes.length ; i++){
-                    if( G.planes[i].rotationY%360>=0 && G.planes[i].rotationY%360<50){
-
-                        // content.Sprites[i].visibility({visible:false,alpha:0}).update(); 
-
-                        // sence.camera.position(-window.innerWidth/8,-2*window.innerWidth/32,-20*window.innerWidth/32).rotation(0,-23,0).update();
-
-                        // content.planes[i].material({
-                        //     size:"110% 100%",
-                        //     position:"right bottom",
-                        //     repeat:"no-repeat"
-                        // }).update();  
-
-                        // (function(Plane){
-                        //         JT.fromTo(Plane, 30, {width :Plane.width }, {  
-                        //             width : 1.1*Plane.width, ease: JT.Linear.In, onUpdate: function () {  
-                        //                 // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-                        //                 Plane.updateT();  
-                        //             },onEnd:function(){  
-                        //                 content.planes[i].material({
-                        //                     size:"110% 100%",
-                        //                     position:"right bottom",
-                        //                     repeat:"no-repeat"
-                        //                 }).update(); 
-                        //             }  
-                        //         });  
-                        // })(content.planes[i]);
-
-
-                        // },15);
-                        // var a;
-                        // setInterval(function(){
-                        //      content.planes[i].material({
-                        //         size:"110% 100%",
-                        //         position:"right bottom",
-                        //         repeat:"no-repeat"
-                        //     }).update();  
-                        // },15);
-                        
-                        // console.log(content.planes[i]);
-                        
-                        // content.planes[i].size((10*window.innerWidth),window.innerHeight).update();    
-                    }else {
-                        // content.Sprites[i].visibility({visible:true,alpha:1}).update();
-
-                        // sence.camera.position(-window.innerWidth/3,-2*window.innerWidth/32,-12*window.innerWidth/32).rotation(0,-23,0).update();
-
-                        // content.planes[i].material({
-                        //     size:"90% 100%",
-                        //     position:"right bottom",
-                        //     repeat:"no-repeat"
-                        // }).update();  
+                if(G.lock_startGame){
+                    // 时间轴赋值
+                    if(!timeLine.time_pl1BePl2){
+                        timeLine.time_pl1BePl2 = writeTime1();
+                    }else if(!timeLine.time_overNoResult){
+                        timeLine.time_overNoResult = writeTime3();
+                    }
+                    // 前3圈的动画处理
+                    for(var i=0 ; i<G.planes.length ; i++){
+                        if( G.planes[i].rotationY%360 <= 90 && G.planes[i].rotationY%360 >= 85 && G.planes[i].property.row === "01"){
+                            // 隐藏第一组平面里面的素材，显示第二组平面里面的素材
+                            G.planes[i].parent.visibility({visible:false,alpha:0}).update();
+                            G.Sprites2[G.planes[i].property.id].visibility({visible:true,alpha:1}).update();
+                        }
+                        if(timeLine.time_pl1BePl2 &&　G.planes[i].rotationY%360 <= 90 && G.planes[i].rotationY%360 >= 85　&& G.planes[i].property.row === "02"){
+                            // console.log("验证正确！");
+                            // 隐藏第二组平面里面的素材，显示第三组平面里面的素材
+                            G.planes[i].parent.visibility({visible:false,alpha:0}).update();
+                            G.Sprites3[G.planes[i].property.id].visibility({visible:true,alpha:1}).update();
+                        }
+                    }
+                    // 请求超过3圈的特殊处理
+                    if(timeLine.time_overNoResult){
+                        //TODO
+                        //......
+                        console.log("执行了超过3圈的特殊处理");
                     }
                 }
 
@@ -1226,125 +1211,6 @@
 
             requestAnimationFrame(go);
             
-            // 相机位置移动
-            // function go() {
-            //     // var a = 360/30;
-            //     // sence.camera.position(Math.cos(a)*window.innerWidth/2,-2*window.innerWidth/32,Math.sin(a)*window.innerWidth/2).rotation(0,(180-a),0).update();
-            //     sence.camera.rotate(0, 0.001, 0).updateT();
-            //     requestAnimationFrame(go);
-            // }
-
-            // requestAnimationFrame(go);
-
-            // 创建一个平面放入场景
-            // var p = new C3D.Plane();
-            // p.size(window.innerWidth,1.1*window.innerHeight).rotation(0,-30,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
-            //     image:"./images/1.png",
-            //     size:"100% 100%",
-            //     position:"top top",
-            //     color:"#ccccff"
-            // }).update();
-            // var p2 = new C3D.Plane();
-            // p2.size(window.innerWidth,1.1*window.innerHeight).rotation(0,-15,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
-            //     image:"./images/1.png",
-            //     size:"100% 100%",
-            //     position:"top top"
-            // }).update();
-            // var p3 = new C3D.Plane();
-            // p3.size(window.innerWidth,1.1*window.innerHeight).rotation(0,0,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
-            //     image:"./images/1.png",
-            //     size:"100% 100%",
-            //     position:"top top"
-            // }).update();
-            // var p4 = new C3D.Plane();
-            // p4.size(window.innerWidth,1.1*window.innerHeight).rotation(0,15,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).rotation(0,0,0).material({
-            //     image:"./images/1.png",
-            //     size:"100% 100%",
-            //     position:"top top"
-            // }).update();
-            // var p5 = new C3D.Plane();
-            // p4.size(window.innerWidth,1.1*window.innerHeight).rotation(0,30,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).rotation(0,0,0).material({
-            //     image:"./images/1.png",
-            //     size:"100% 100%",
-            //     position:"top top"
-            // }).update();
-            // 创建一个立方体放入场景
-            // var c = new C3D.Box();
-            // c.size(100).position(0,100,-sence.fov).rotation(0,0,0).material(
-            //     {
-            //         color:C3D.getRandomColor()
-            //     }
-            // ).update();
-            // 添加到场景里面
-            // sence.addChild(sp);
-            // sence.addChild(p);
-            // sence.addChild(p2);
-            // sence.addChild(p3);
-            // sence.addChild(p4);
-            // sence.addChild(p5);
-            // sence.addChild(c);
-
-            // 如果希望单独控制立方体各面的素材
-            // positon(0,0,-sence.fov)是页面中心
-            // var c2 = new C3D.Box();
-            // c2.size(100).position(0, -100, -sence.fov).rotation(100, 100, 50).material({  
-            //     front : {color:C3D.getRandomColor()},  
-            //     back : {color:C3D.getRandomColor()},  
-            //     left : {color:C3D.getRandomColor()},  
-            //     right : {color:C3D.getRandomColor()},  
-            //     up : {color:C3D.getRandomColor()},  
-            //     down : {color:C3D.getRandomColor()},  
-            // }).update();  
-            // sence.addChild(c2);  
-
-            // JT.fromTo(p, 10, {rotationY: -60}, {  
-            //     rotationY: 330, ease: JT.Linear.In, onUpdate: function () {  
-            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-            //         p.updateT();  
-            //     },onEnd:function(){  
-            //         sp.removeChild(this);  
-            //     }  
-            // });  
-            // JT.fromTo(p2, 10, {rotationY: -30}, {  
-            //     rotationY: 360, ease: JT.Linear.In, onUpdate: function () {  
-            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-            //         p2.updateT();  
-            //     },onEnd:function(){  
-            //         sp.removeChild(this);  
-            //     }  
-            // });  
-            // JT.fromTo(p3, 10, {rotationY: 0}, {  
-            //     rotationY: 390, ease: JT.Linear.In, onUpdate: function () {  
-            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-            //         p3.updateT();  
-            //     },onEnd:function(){  
-            //         sp.removeChild(this);  
-            //     }  
-            // });  
-            // JT.fromTo(p4, 10, {rotationY: 30}, {  
-            //     rotationY: 420, ease: JT.Linear.In, onUpdate: function () {  
-            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-            //         p4.updateT();  
-            //     },onEnd:function(){  
-            //         sp.removeChild(this);  
-            //     }  
-            // });  
-            // JT.fromTo(p5, 10, {rotationY: 60}, {  
-            //     rotationY: 450, ease: JT.Linear.In, onUpdate: function () {  
-            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-            //         p5.updateT();  
-            //     },onEnd:function(){  
-            //         sp.removeChild(this);  
-            //     }  
-            // });
-            // JT.fromTo(sence.camera, 5, {z: 1000}, {  
-            //     z: 0, ease: JT.Quart.In, onUpdate: function () {  
-            //         // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-            //         p5.updateT();  
-            //     },onEnd:function(){  
-            //         sp.removeChild(this);  
-            //     }  
-            // });    
             //响应屏幕调整尺寸
             function resize() {
                 sence.size(window.innerWidth, window.innerHeight).update();
