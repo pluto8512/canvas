@@ -752,81 +752,29 @@
 
             
             //循环创建平面
-            function createPlane(imgs) {
-                var _len = imgs.length;
+            // function createPlane(imgs) {
+            //     var _len = imgs.length;
 
-                for( i=0 ; i<_len ; i++){
-                    var _p = new C3D.Plane();
-                    var _sp = new C3D.Sprite();
-                    _p.size(window.innerWidth,window.innerHeight).rotation(0,imgs[i].angle,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
-                        image:imgs[i].bgUrl,
-                        size:"80% 100%",
-                        position:"left bottom",
-                        repeat:"no-repeat"
-                    }).update();
-                    _p.property={
-                        "id": i,
-                        "name": imgs[i].bgUrl
-                    };
-                    G.planes.push(_p);
-                    _sp.addChild(_p);
-                    G.Sprites.push(_sp);
-                   
-                    (function(i,_p){
-                         JT.fromTo(_p, 30, {rotationY: imgs[i].angle}, {  
-                            rotationY: 360+imgs[i].angle, ease: JT.Linear.In, onUpdate: function () {  
-                                // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
-                                _p.updateT();  
-                            },onEnd:function(){  
-                                _sp.removeChild(this);  
-                            }  
-                        });  
-                    })(i,_p);
-                }
-                return G.Sprites;
-            }
-            var Sprites = createPlane(planeData2);
-           
-            for(var i=0; i<Sprites.length; i++){
-                sence.addChild(Sprites[i]);
-            }
-            // var i=0;
-            // // 动态创建平面
-            // function goCreatePlane() {
-            //     // 单对象缓存
-            //     var cookie;
-            //     // 
-
-            //     // 创建单个平面
-            //     var _p = new C3D.Plane();
-            //     var _sp = new C3D.Sprite();
-            //     try{
-            //          _p.size(window.innerWidth,window.innerHeight).rotation(0,0,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
-            //             image:planeData[i].bgUrl,
-            //             size:"100% 90%",
-            //             position:"right bottom",
+            //     for( i=0 ; i<_len ; i++){
+            //         var _p = new C3D.Plane();
+            //         var _sp = new C3D.Sprite();
+            //         _p.size(window.innerWidth,window.innerHeight).rotation(0,imgs[i].angle,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
+            //             image:imgs[i].bgUrl,
+            //             size:"80% 100%",
+            //             position:"left bottom",
             //             repeat:"no-repeat"
             //         }).update();
-            //     }catch(e){
-            //         console.log(i);
-            //     }
-               
-            //     _p.property={
-            //         "id": i,
-            //         "name": planeData[i].bgUrl
-            //     };
-            //     G.planes.push(_p);
-            //     _sp.addChild(_p);
-            //     cache.set(_sp);
-            //     G.Sprites.push(_sp);
-            //     sence.addChild(_sp);
-            //     // var Sprites = createPlane(planeData);
-            //     // for(var i=0; i<Sprites.length; i++){
-            //     //     sence.addChild(Sprites[i]);
-            //     // }
-            //     (function(i,_p){
-            //              JT.fromTo(_p, 30, {rotationY: 0}, {  
-            //                 rotationY: 360, ease: JT.Linear.In, onUpdate: function () {  
+            //         _p.property={
+            //             "id": i,
+            //             "name": imgs[i].bgUrl
+            //         };
+            //         G.planes.push(_p);
+            //         _sp.addChild(_p);
+            //         G.Sprites.push(_sp);
+                   
+            //         (function(i,_p){
+            //              JT.fromTo(_p, 30, {rotationY: imgs[i].angle}, {  
+            //                 rotationY: 360+imgs[i].angle, ease: JT.Linear.In, onUpdate: function () {  
             //                     // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
             //                     _p.updateT();  
             //                 },onEnd:function(){  
@@ -834,11 +782,63 @@
             //                 }  
             //             });  
             //         })(i,_p);
-            //     i<(planeData.length-1)? i++ : i=0;
-            //     requestAnimationFrame(goCreatePlane);
+            //     }
+            //     return G.Sprites;
             // }
+            // var Sprites = createPlane(planeData2);
+           
+            // for(var i=0; i<Sprites.length; i++){
+            //     sence.addChild(Sprites[i]);
+            // }
+            var i=0;
+            // 动态创建平面
+            function goCreatePlane() {
+                // 单对象缓存
+                var cookie;
+                // 
 
-            // requestAnimationFrame(goCreatePlane);
+                // 创建单个平面
+                var _p = new C3D.Plane();
+                var _sp = new C3D.Sprite();
+                try{
+                     _p.size(window.innerWidth,window.innerHeight).rotation(0,0,0).origin(window.innerWidth,window.innerWidth/2,0).position(window.innerWidth/2,-37*window.innerWidth/96,-sence.fov).material({
+                        image:planeData[i].bgUrl,
+                        size:"100% 90%",
+                        position:"right bottom",
+                        repeat:"no-repeat"
+                    }).update();
+                }catch(e){
+                    console.log(i);
+                }
+               
+                _p.property={
+                    "id": i,
+                    "name": planeData[i].bgUrl
+                };
+                G.planes.push(_p);
+                _sp.addChild(_p);
+                cache.set(_sp);
+                G.Sprites.push(_sp);
+                sence.addChild(_sp);
+                // var Sprites = createPlane(planeData);
+                // for(var i=0; i<Sprites.length; i++){
+                //     sence.addChild(Sprites[i]);
+                // }
+                (function(i,_p){
+                         JT.fromTo(_p, 30, {rotationY: 0}, {  
+                            rotationY: 360, ease: JT.Linear.In, onUpdate: function () {  
+                                // 此处因为是rotationY变化,只需要调用updateT()就可以,如果是alpha活visible变化,需要调用updateV(),材质变化调用updateM(),尺寸变化调用updateS()  
+                                _p.updateT();  
+                            },onEnd:function(){  
+                                _sp.removeChild(this);  
+                            }  
+                        });  
+                    })(i,_p);
+                i<(planeData.length-1)? i++ : i=0;
+                requestAnimationFrame(goCreatePlane);
+            }
+
+            requestAnimationFrame(goCreatePlane);
             
 
             
