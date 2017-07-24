@@ -1,0 +1,6 @@
+{
+    "type":"View",
+    "props":{"width":602,"sceneColor":"#ffffff","sceneBg":"laya/views/UpgradePop.png","height":849},
+    "child":[
+        ]
+}
