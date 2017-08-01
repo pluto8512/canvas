@@ -1,0 +1,146 @@
+@function torem($px){
+  @return $px / 40 * 1rem;
+}
+@function toper($px){
+  @return $px / 1010*100%;
+}
+body {
+    background: url("../images/background.jpg");
+    background-size: 100% 100%; 
+}
+$photoFrame : "../images/photoFrame.png";
+$robot : "../images/robot.png";
+$addMask : "../images/addPhoto.png";
+$start : "../images/start.png";
+.pageOne .photoFrame {
+    width: torem(571);
+    height: torem(441);
+    background: url($photoFrame) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: toper(42);
+    left: 50%;
+    margin-left: torem(-285.5);
+    .title {
+        width: 100%;
+        text-align: center;
+        margin-top: torem(24);
+        color: white;
+        font-size: torem(36);
+    }
+}
+.pageOne .robot {
+    width: torem(641);
+    height: torem(768);
+    background: url($robot) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    top: toper(270);
+    left: 50%;
+    margin-left: torem(-320.5);
+    .start {
+        width: torem(279);
+        height: torem(115);
+        position: absolute;
+        left: 50%;
+        margin-left: torem(-139.5);
+        top: toper(738);
+        background: url($start);
+        background-size: 100% 100%;
+    }
+}
+.pageOne .wrap {
+    width: torem(640);
+    height: torem(62);
+    background: rgba(255,220,240,1);
+    position: absolute;
+    bottom: toper(0);
+    overflow: hidden;
+    ul {
+        width: 16rem;
+        height: 100%;
+    }
+    li {
+        width: torem(16);
+        height: 100%;
+        float: left;
+        transform:skewX(175deg);
+        -webkit-transform:skewX(175deg);
+    }
+    li:nth-child(2n+1){
+        background: rgba(255,220,240,1);
+    }
+    li:nth-child(2n){
+        background: #FAC3E3;
+    }
+}
+.pageOne {
+    .addPhotoL {
+        width: torem(250);
+        height: torem(266);
+        position: absolute;
+        top:toper(383);
+        left: torem(17);
+        border-radius: torem(60);
+        -webkit-border-radius: torem(60);
+        overflow: hidden;
+        .add{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .addBtnL{
+        width: torem(208);
+        height: torem(58);
+        background: #FEECFA;
+        position: absolute;
+        top:toper(1040);
+        left: torem(32);
+        border-radius: torem(10);
+        -webkit-border-radius: torem(10);
+        font-size: torem(20);
+        text-align: center;
+        line-height: torem(58);
+        color: rgba(90 ,99,120,1);
+        font-weight: 300;
+    }
+    .addPhotoR {
+        width: torem(250);
+        height: torem(266);
+        position: absolute;
+        top:toper(383);
+        right: torem(15);
+        border-radius: torem(60);
+        overflow: hidden;
+        .add{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .addBtnR{
+        width: torem(208);
+        height: torem(58);
+        background: #FEECFA;
+        position: absolute;
+        top:toper(1040);
+        right: torem(30);
+        border-radius: torem(10);
+        -webkit-border-radius: torem(10);
+        font-size: torem(20);
+        text-align: center;
+        line-height: torem(58);
+        color: rgba(90 ,99,120,1);
+        font-weight: 300;
+    }
+    .mask_lm {
+        width: torem(140);
+        height: torem(140);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: torem(-70);
+        margin-top: torem(-70);
+        background: url($addMask);
+        background-size: 100% 100%; 
+    }
+}
