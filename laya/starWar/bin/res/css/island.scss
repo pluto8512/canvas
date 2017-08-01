@@ -1,57 +1,6 @@
 @function torem($px){
   @return $px / 40 * 1rem;
 }
-/*common B!*/
-*,
-::before,
-::after {
-  padding: 0;
-  margin: 0;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-html, body {
-  font-family: "MicroSoft YaHei","sans-serif";
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-ul, ol {
-  list-style: none;
-}
-
-a {
-  text-decoration: none;
-  color: #333;
-}
-
-input, textarea {
-  border: none;
-  outline: none;
-  resize: none;
-  -webkit-appearance: none;
-}
-
-.clearfix::after,
-.clearfix::before {
-  content: ".";
-  line-height: 0;
-  height: 0;
-  display: block;
-  visibility: hidden;
-  clear: both;
-}
-
-.textCenter {
-  text-align: center;
-}
-
-.textRight {
-  text-align: right;
-}
 
 /*common E*/
 #pop {
@@ -64,7 +13,7 @@ input, textarea {
 .xzctpop {
     width: 15.05rem;
     height: 21.225rem;
-    background: url("../pop.png") no-repeat;
+    background: url("../modal_build.png") no-repeat;
     background-size: 100% 100%;
     position: absolute;
     top: 50%;
@@ -77,7 +26,7 @@ input, textarea {
 .xzctpop .close {
     width: 1.2rem;
     height: 1.2rem;
-    background: url("../X-btn.png") no-repeat;
+    background: url("../btn_no.png") no-repeat;
     background-size: 100% 100%;
     position: absolute;
     right: -0.2rem;
@@ -101,7 +50,6 @@ input, textarea {
 .xzctpop ul:nth-child(3) {
     width: 11.75rem;
     height: 2.125rem;
-    background: red;
     position:absolute;
     left: 2.125rem;
     top: 10.05rem;
@@ -109,7 +57,6 @@ input, textarea {
 .xzctpop ul:nth-child(4) {
     width: 11.75rem;
     height: 2.125rem;
-    background: red;
     position:absolute;
     left: 2.125rem;
     top: 13.6rem;
@@ -117,23 +64,22 @@ input, textarea {
 .xzctpop ul:nth-child(5) {
     width: 11.75rem;
     height: 2.125rem;
-    background: red;
     position:absolute;
     left: 2.125rem;
     top: 17.125rem;
 }
 .geted {
-    background: url("../geted.png") no-repeat;
+    background: url("../btn_yes.png") no-repeat;
     -webkit-background-size: 0.825rem 0.65rem;
     background-size: 0.825rem 0.65rem;
-    background-position: center; 
+    background-position: center;
 }
 
 .xzctpop ul:nth-child(1) li:nth-child(1) {
     float: left;
     width: 1rem;
     height: 0.9rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -0.125rem;
@@ -161,7 +107,7 @@ input, textarea {
     float: left;
     width: 1.8rem;
     height: 0.875rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -1.65rem;
@@ -191,7 +137,7 @@ input, textarea {
     float: left;
     width: 1.8rem;
     height: 1.2rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -3.975rem;
@@ -221,7 +167,7 @@ input, textarea {
     float: left;
     width: 2.175rem;
     height: 1.225rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -6.3rem;
@@ -251,7 +197,7 @@ input, textarea {
     float: left;
     width: 2.4rem;
     height: 1.35rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -9rem;
@@ -281,7 +227,7 @@ input, textarea {
 .xzctpop ul:nth-child(2) li:nth-child(1) {
     width: 0.675rem;
     height: 1.775rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -0.275rem;
@@ -310,7 +256,7 @@ input, textarea {
 .xzctpop ul:nth-child(2) li:nth-child(2) {
     width: 0.675rem;
     height: 1.75rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -7.375rem;
@@ -338,7 +284,7 @@ input, textarea {
 .xzctpop ul:nth-child(2) li:nth-child(3) {
     width: 0.75rem;
     height: 1.975rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -8.4rem;
@@ -366,7 +312,7 @@ input, textarea {
 .xzctpop ul:nth-child(2) li:nth-child(4) {
     width: 0.725rem;
     height: 1.975rem;
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: -9.575rem;
@@ -394,7 +340,7 @@ input, textarea {
 .xzctpop ul:nth-child(2) li:nth-child(5) {
     width: torem(46);
     height: torem(79);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-423);
@@ -423,7 +369,7 @@ input, textarea {
 .xzctpop ul:nth-child(3) li:nth-child(1) {
     width: torem(70);
     height: torem(70);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-5);
@@ -447,7 +393,7 @@ input, textarea {
 .xzctpop ul:nth-child(3) li:nth-child(2) {
     width: torem(60);
     height: torem(70);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-93);
@@ -475,7 +421,7 @@ input, textarea {
 .xzctpop ul:nth-child(3) li:nth-child(3) {
     width: torem(60);
     height: torem(78);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-186);
@@ -503,7 +449,7 @@ input, textarea {
 .xzctpop ul:nth-child(3) li:nth-child(4) {
     width: torem(65);
     height: torem(84);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-284);
@@ -531,7 +477,7 @@ input, textarea {
 .xzctpop ul:nth-child(3) li:nth-child(5) {
     width: torem(72);
     height: torem(84);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-387);
@@ -560,7 +506,7 @@ input, textarea {
 .xzctpop ul:nth-child(4) li:nth-child(1) {
     width: torem(76);
     height: torem(61);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-16);
@@ -584,7 +530,7 @@ input, textarea {
 .xzctpop ul:nth-child(4) li:nth-child(2) {
     width: torem(73);
     height: torem(66);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-115);
@@ -612,7 +558,7 @@ input, textarea {
 .xzctpop ul:nth-child(4) li:nth-child(3) {
     width: torem(69);
     height: torem(70);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-209);
@@ -640,7 +586,7 @@ input, textarea {
 .xzctpop ul:nth-child(4) li:nth-child(4) {
     width: torem(69);
     height: torem(70);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-304);
@@ -668,7 +614,7 @@ input, textarea {
 .xzctpop ul:nth-child(4) li:nth-child(5) {
     width: torem(83);
     height: torem(77);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-394);
@@ -697,7 +643,7 @@ input, textarea {
 .xzctpop ul:nth-child(5) li:nth-child(1) {
     width: torem(52);
     height: torem(57);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-12);
@@ -721,7 +667,7 @@ input, textarea {
 .xzctpop ul:nth-child(5) li:nth-child(2) {
     width: torem(57);
     height: torem(65);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-98);
@@ -749,7 +695,7 @@ input, textarea {
 .xzctpop ul:nth-child(5) li:nth-child(3) {
     width: torem(65);
     height: torem(69);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-184);
@@ -777,7 +723,7 @@ input, textarea {
 .xzctpop ul:nth-child(5) li:nth-child(4) {
     width: torem(74);
     height: torem(69);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-284);
@@ -805,7 +751,7 @@ input, textarea {
 .xzctpop ul:nth-child(5) li:nth-child(5) {
     width: torem(77);
     height: torem(76);
-    background: url("../biuld.png");
+    background: url("../sprite_material.png");
     -webkit-background-size: 11.925rem 19.2rem;
     background-size: 11.925rem 19.2rem;
     background-position-x: torem(-387);

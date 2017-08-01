@@ -68,7 +68,9 @@
      * @param {hammer} 锤子对象
      */
     _proto.up = function (island,target,hammer) {
-        island.update(target,hammer);
+        // 发送请求,判断建岛的条件是否满足
+        reqForIsland.build_island(island,[target,hammer],target);
+        // island.update(target,hammer);
     }
 })();
 
@@ -446,4 +448,52 @@
         pop.show();
     }
 })();
+
+// Ajax请求
+var reqForIsland = {
+    build_island:function(island,arr,target) {
+        $.ajax({
+            // url: '/mobile/participation/starwar/build_island',
+            url: '../bin/res/json/build_island.json',
+            type: "GET",
+            dataType: "json",
+            data: {
+                "islandId":1,
+                "rowId":target.type,
+                "level":target.lel
+            },
+            success: function(data){
+                var retCode = data.retCode;
+                var model = data.model;
+                if(retCode == 0){
+                    if(model.finished){
+                        $("#pop").hide();
+                        var type = "BMB_0031";
+                        var toShow = {
+                            "trophyName":model.activity.prizeList[0].trophyName,
+                            "trophyImg":model.activity.prizeList[0].trophyImg,
+                            "getPrizeCount":model.activity.getPrizeCount,
+                            "prizeLeftCount":model.activity.prizeLeftCount
+                        }; 
+                        commonMethods.addPop(type); 
+                        $("#BMB_0031 .BMB_content3_2 .p_center:nth-child(1)").text(toShow.trophyName);
+                        $("#BMB_0031 .BMB_content3_2 .p_center:nth-child(2) .mark").text(toShow.prizeLeftCount + "份");
+                        $("#BMB_0031 .BMB_content3_2 .p_center:nth-child(3)").text("已有"+toShow.getPrizeCount + "人领取");
+                        $("#BMB_0031 .BMB_content3_2 .img").css("background-image","url("+toShow.trophyImg+")");
+                    }else {
+                        island.update(arr[0],arr[1]);
+                    }
+                }else if(retCode == -1454){
+                    alert(data.message);
+                }else {
+                    alert(data.message);
+                }
+            },
+            error: function(e){
+                alert(e);
+            }
+        });
+    }
+
+};
 

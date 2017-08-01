@@ -1,0 +1,18 @@
+{
+    "retCode": 0,
+    "message": "建设岛屿成功.",
+    "model": {
+        "finished": true,
+        "activity": {
+            "state": 2,
+            "prizeList": [
+                {
+                    "trophyName": "苹果手机一部",
+                    "trophyImg": "http://static.resource.youyu.weijuju.com//image/mobile/newgame/gamepage/riddle/question_example.png"
+                }
+            ],
+            "getPrizeCount": 1089,
+            "prizeLeftCount": 101
+        }
+    }
+}

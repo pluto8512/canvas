@@ -1,0 +1,46 @@
+{
+    "retCode": 0,
+    "message": "初始化成功",
+    "model": {
+        "data": {
+            "activity": {
+                "state": 2,
+                "prizeList": [
+                    {
+                        "trophyName": "苹果手机一部",
+                        "trophyImg": "http://static.resource.youyu.weijuju.com//image/mobile/newgame/gamepage/riddle/question_example.png"
+                    }
+                ],
+                "getPrizeCount": 1089,
+                "prizeLeftCount": 101
+            },
+            "player": {
+                "openid": "ocOeEjhbPGbQZwq0E6K2sGxez0Q9",
+                "headimg": "http://wx.qlogo.cn/mmopen/dc2Kc6skZ1DEkSDvGfmuAQKSg1oKXcTw7GFSEIKMa9GT8aaRSe0ibV4ePzdXO0sgUvISQzt2wP4X7ZvI0w6eZopAicC3iaK6VRic/0",
+                "energy": 100,
+                "coin": 5000,
+                "islandsBuild": [
+                    {
+                        "id": 1,
+                        "finished": false,
+                        "progress": {
+                            "1": 5,
+                            "2": 2,
+                            "3": 3,
+                            "4": 1,
+                            "5": 4
+                        },
+                        "hasGetPrize": false
+                    }
+                ],
+                "loginGiftEnergy": 88
+            },
+            "richman": {
+                "openid": "ocOeEjhbPGbQZwq0E6K2sGxez0Q9",
+                "nickName": "蔡明喜",
+                "headimg": "http://wx.qlogo.cn/mmopen/dc2Kc6skZ1DEkSDvGfmuAQKSg1oKXcTw7GFSEIKMa9GT8aaRSe0ibV4ePzdXO0sgUvISQzt2wP4X7ZvI0w6eZopAicC3iaK6VRic/0",
+                "coin": 1888
+            }
+        }
+    }
+}

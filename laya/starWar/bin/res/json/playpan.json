@@ -1,0 +1,8 @@
+{
+    "retCode": 0,
+    "message": "转转盘成功",
+    "model": {
+        "coin": 669,
+        "slot": 1
+    }
+}
