@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./lib/common.css">
+    <style>
+    body {
+        background: rgba(0, 0, 0, 0.7);
+    }
+    .animWindow {
+        width: 7.075rem;
+        height: 7.6rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -3.5375rem;
+        margin-top: -3.8rem;
+        overflow: hidden;
+        background: url("./images/sticks.png") no-repeat;
+        background-size: 42.55rem 7.6rem;
+    }
+    /* .content {
+        width: 34.65rem;
+        height: 7.6rem;
+        
+    } */
+    </style>
+</head>
+<body>
+    <div class="animWindow"></div>
+    <script src="./lib/jquery.js"></script>
+    <script src="./lib/common.js"></script>
+    <script>
+
+        function animation_electricity() {
+            var $ele = $(".animWindow");
+            var n=0;
+            timer_elec = setInterval(function(){
+                var offset = $ele.outerWidth();
+                $ele.get(0).style.backgroundPosition= -n*offset +"px 0px";
+                n++;
+                if(n >= 6) n = 0;
+            },140);
+        }
+        animation_electricity();
+    </script>
+</body>
+</html>

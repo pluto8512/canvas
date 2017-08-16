@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--适配-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,user-scalable=no,maximum-scale=1,initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">  
+	<meta http-equiv="x-rim-auto-match" content="none">  
+    <!--适配-->
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./lib/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/_base.css">
+    <link rel="stylesheet" type="text/css" href="./css/tada.css">
+    <style>
+    body {
+        /* background: rgba(0, 0, 0, 0.7); */
+    }
+    .animWindow {
+        width: 16rem;
+        height: 16rem;
+        background: url("./images/3.png") no-repeat;
+        background-size: 100% auto; 
+    }
+    </style>
+</head>
+<body>
+    <div class="animWindow">
+    </div>
+    <script src="./lib/jquery.js"></script>
+    <script src="./lib/common.js"></script>
+    <script>
+    // $(".block").animate({left: '+50px'}, "slow");
+    // $(".animWindow").animate({height: $(".animWindow").outerWidth()/(640/1010)+"px"}, 8000 ,"swing");
+    // $(".animWindow").animate({opacity:0}, 8000 ,"swing");
+    $.fn.extend({
+        animateCss: function (animationName) {
+            var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+            this.addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass('animated ' + animationName);
+            });
+            return this;
+        }
+    });
+    $('.animWindow').on('touchend',function(){
+        console.log(1);
+        $('.animWindow').animateCss('tada');
+    });
+    </script>
+</body>
+</html>

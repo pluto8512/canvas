@@ -1,0 +1,22 @@
+// common
+@function torem($px){
+  @return $px / 40 * 1rem;
+}
+@function toper($px){
+  @return $px / 1010*100%;
+}
+$test : yellow;
+$standard_mark : #FF2A9B;
+$standard_fontSize : torem(20);
+@mixin bg($url) {
+  background: url($url) no-repeat;
+  background-size: 100% 100%;
+}
+// params
+$bg : "../images/background.jpg";
+// page
+.pagePoster {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,1);
+}

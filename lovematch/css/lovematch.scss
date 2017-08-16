@@ -4,14 +4,44 @@
 @function toper($px){
   @return $px / 1010*100%;
 }
-body {
-    background: url("../images/background.jpg");
-    background-size: 100% 100%; 
+$test : yellow;
+$standard_mark : #FF2A9B;
+$standard_fontSize : torem(20);
+@mixin bg($url) {
+  background: url($url) no-repeat;
+  background-size: 100% 100%;
 }
+@mixin title($font){
+    width: 100%;
+    text-align: center;
+    margin-top: torem(24);
+    color: white;
+    font-size: $font;
+    line-height: torem(40);
+}
+
 $photoFrame : "../images/photoFrame.png";
 $robot : "../images/robot.png";
 $addMask : "../images/addPhoto.png";
 $start : "../images/start.png";
+$resultFrame : "../images/resultFrame.png";
+$restart : "../images/restart.png";
+$luck : "../images/luck.png";
+$share : "../images/share.png";
+$we : "../images/we.png";
+$tab : "../images/tab.png";
+$rank1 : "../images/rank1.png";
+$rank2 : "../images/rank2.png";
+$prizeList1 : "../images/prizeList1.png";
+$prizeList2 : "../images/prizelist2.png";
+$medal1 : "../images/medal1.png";
+$medal2 : "../images/medal2.png";
+$medal3 : "../images/medal3.png";
+$heart2 : "../images/heart2.png";
+body {
+    background: url("../images/background.jpg");
+    background-size: 100% 100%; 
+}
 .pageOne .photoFrame {
     width: torem(571);
     height: torem(441);
@@ -22,11 +52,7 @@ $start : "../images/start.png";
     left: 50%;
     margin-left: torem(-285.5);
     .title {
-        width: 100%;
-        text-align: center;
-        margin-top: torem(24);
-        color: white;
-        font-size: torem(36);
+       @include title(torem(40));
     }
 }
 .pageOne .robot {
@@ -143,4 +169,371 @@ $start : "../images/start.png";
         background: url($addMask);
         background-size: 100% 100%; 
     }
+}
+// pageTwo
+.pageTwo {
+    letter-spacing: torem(0.5);
+    .fixposi {
+        position: absolute;
+        left: 50%;
+        margin-left: torem(-297.5);
+        top:toper(42);
+    }
+    .resultFrame {
+        width: torem(605);
+        height: torem(719);
+        background: url($resultFrame) no-repeat;
+        background-size: 100% 100%;
+        .titleGroup {
+            width: 100%;
+            text-align: center;
+            margin-top: torem(10);
+            color: white;
+            .str {
+                display: inline-block;
+                font-size: torem(30);
+                vertical-align: middle;
+            }
+            .score {
+                display: inline-block;
+                font-size: torem(40);
+                vertical-align: middle;
+                font-weight: 600;
+            }
+        }
+        .lm_text {
+            width: 100%;
+            margin-top: torem(85);
+            p {
+                font-size: torem(30);
+                text-align: center;
+                color: #FF2A9B;
+            }
+        }
+        .photoL {
+            width: torem(202);
+            height: torem(202);
+            position: absolute;
+            top:toper(555);
+            left: torem(78.4);
+            border-radius: torem(50);
+            -webkit-border-radius: torem(46);
+            background: rgba(0,0,0,0.5);
+            overflow: hidden;
+            .add{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .icon_we {
+            width: torem(91);
+            height: torem(79);
+            position: absolute;
+            top: 50%;
+            margin-top: torem(99);
+            left: 50%;
+            margin-left: torem(-50);
+            @include bg($we);
+            z-index: 99;
+        }
+        .photoR {
+            width: torem(202);
+            height: torem(202);
+            position: absolute;
+            top:toper(555);
+            right: torem(88.8);
+            border-radius: torem(50);
+            -webkit-border-radius: torem(46);
+            background: rgba(0,0,0,0.5);
+            overflow: hidden;
+            .add{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .tips {
+            width: 100%;
+            font-size: torem(20);
+            text-align: center;
+            position: absolute;
+            bottom: torem(30);
+            color: rgba(0,0,0,0.6);
+            span.num {
+                color: $standard_mark;
+                font-weight: 600;
+            }
+        }
+        .btnGroup {
+            width: torem(595);
+            height: torem(114);
+            position: absolute;
+            bottom: 0;
+            margin-bottom: torem(-190);
+            .btn_restart {
+                width: torem(192);
+                height: torem(89);
+                @include bg($restart);
+                margin-top: torem(14);
+                margin-left: torem(-14);
+            }
+            .btn_luck {
+                width: torem(261);
+                height: torem(114);
+                @include bg($luck);
+                margin: 0 auto;
+            }
+            .btn_share {
+                width: torem(192);
+                height: torem(89);
+                @include bg($share);
+                position: absolute;
+                top: torem(14);
+                right: torem(-14); 
+            }
+        }
+    }
+    
+}
+// pageThree
+.pageThree {
+    .tab {
+        height: torem(899);
+        width: torem(613);
+        @include bg($tab);
+        position: absolute;
+        left: 50%;
+        margin-left: torem(-306.5);
+        top:50%;
+        margin-top: torem(-480);
+        .rank {
+            width: torem(196);
+            height: torem(86);
+            @include bg($rank1);
+            position: absolute;
+            top: torem(-16);
+            left: torem(81.5);
+        }
+        .prizeList {
+            width: torem(196);
+            height: torem(86);
+            @include bg($prizeList1);
+            position: absolute;
+            top: torem(-16);
+            right: torem(78);
+        }
+        .tab_rank {
+            width: torem(580);
+            height: torem(763);
+            position: absolute;
+            top: torem(130);
+            left: 50%;
+            margin-left: torem(-291);
+            border-radius: torem(22);
+            -webkit-border-radius: torem(22);
+            overflow: auto;
+            .title {
+                width: 100%;
+                height: torem(69);
+                line-height: torem(69);
+                font-size: torem(30);
+                text-align: center;
+                span {
+                    color: $standard_mark;
+                }
+            }
+            .list {
+                width: 100%;
+                .item {
+                    width: 100%;
+                    height: torem(119);
+                    float: left;
+                    >div {
+                        height: 100%;
+                        float: left;
+                    }
+                    .part1 {
+                        width: 11%;
+                        position: relative;
+                        .line {
+                            width: torem(2);
+                            transform: scaleX(0.5);
+                            -webkit-transform: scalX(0.5);
+                            height: 80%;
+                            position: absolute;
+                            right: 0;
+                            top: 10%;
+                            background: rgba(0,0,0,0.1);
+                            z-index: 99;
+                        }
+                    }
+                    .part2 {
+                        width: 19%;
+                        padding: torem(18) torem(5);
+                        text-align: center;
+                        .headImg {
+                            width: torem(57);
+                            height: torem(57);
+                            border-radius: torem(28.5);
+                            -webkit-border-radius: torem(28.5);
+                            background: rgba(0,0,0,0.5);
+                            margin: 0 auto;
+                        }
+                        .text {
+                            font-size: torem(20);
+                            transform: scale(0.9,0.9);
+                            -webkit-transform: scale(0.9,0.9);
+                        }
+                    }
+                    .part3 {
+                        position: relative;
+                        width: 30%;
+                        .photoGroup {
+                            width: 100%;
+                            padding-top: torem(17);
+                        }
+                        .icon_heart {
+                            width: torem(35);
+                            height: torem(32);
+                            position: absolute;
+                            left: 50%;
+                            top: 50%;
+                            margin-left: torem(-17.5);
+                            margin-top: torem(-16);
+                            @include bg($heart2);
+                            z-index: 99; 
+                        }
+                        .photoFrame {
+                            width: torem(80);
+                            height: torem(80);
+                            border: torem(1) solid $standard_mark;
+                            border-radius: torem(10);
+                            -webkit-border-radius: torem(10);
+                            position: relative;
+                            overflow: hidden;
+                            .mask_black {
+                                height: torem(20);
+                                width: 100%;
+                                background: rgba(0, 0, 0, 0.5);
+                                position: absolute;
+                                bottom: 0;
+                                color: #fff;
+                                p {
+                                    width: 100%;
+                                    height: torem(20);
+                                    font-size: torem(20);
+                                    transform: scale(0.8,0.8);
+                                    -webkit-transform: scale(0.8,0.8);
+                                    text-align: center;
+                                    line-height: torem(20);
+                                }
+                            }
+                        }
+                        
+                    }
+                    .part4 {
+                        width: 40%;
+                        height: torem(119);
+                        p {
+                            width: 100%;
+                            height: 100%;
+                            text-align: center;
+                            line-height: torem(119);
+                            font-size: torem(20); 
+                            transform: scale(0.98,0.98);
+                            -webkit-transform: scale(0.98,0.98);
+                            span {
+                                color: $standard_mark
+                            }
+                        }
+                    }
+                }
+                .item:nth-child(2n+1) {
+                    background: rgba(0,0,0,0.1);
+                }
+                .item:nth-child(1) .part1 {
+                    @include bg($medal1);
+                    background-position: center center;
+                    background-size: torem(41) torem(52);  
+                }
+                .item:nth-child(2) .part1 {
+                    @include bg($medal2);
+                    background-position: center center;
+                    background-size: torem(41) torem(52);  
+                }
+                .item:nth-child(3) .part1 {
+                    @include bg($medal3);
+                    background-position: center center;
+                    background-size: torem(39) torem(52);  
+                }
+            }
+        }
+        .tab_prizeList {
+            width: torem(580);
+            height: torem(763);
+            position: absolute;
+            top: torem(130);
+            left: 50%;
+            margin-left: torem(-291);
+            border-radius: torem(22);
+            -webkit-border-radius: torem(22);
+            overflow: hidden;
+            font-size: torem(30);
+            .title {
+                height: torem(53);
+                width: 100%;
+                >div {
+                    width: 50%;
+                    height: torem(53);
+                    text-align: center;
+                    line-height: torem(53);
+                }
+                .column1 {
+                    border-right: torem(1) solid #ECECEC;
+                }
+            }
+            .list {
+                .item {
+                    width: 100%;
+                    height: torem(74);
+                    float: left;
+                    .column1{
+                        width: 50%;
+                        height: torem(74);
+                        border-right: torem(1) solid #ECECEC;
+                        .headImg {
+                            display: inline-block;
+                            background: rgba(0, 0, 0, 0.5);
+                            width: torem(58);
+                            height: torem(58);
+                            border-radius: torem(29);
+                            -webkit-border-radius: torem(29);
+                            margin-left: torem(40);
+                            margin-right: torem(5);
+                            margin-top: torem(8);
+                            border: torem(1) solid $standard_mark;
+                        }
+                        .text{
+                            display: inline-block;
+                            width: torem(150);
+                            height: torem(74);
+                            line-height: torem(74);
+                            text-align: left;
+                            vertical-align: top;
+                        }
+                    }
+                    .column2 {
+                        width: 50%;
+                        height: torem(74);
+                        line-height: torem(74);
+                        text-align: center;
+                        color: $standard_mark;
+                    }
+                }
+                .item:nth-child(2n+1) {
+                    background: rgba(0,0,0,0.1);
+                }
+            }
+        }
+    }
+
 }

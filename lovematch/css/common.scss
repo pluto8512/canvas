@@ -56,10 +56,19 @@ input, textarea {
 .textRight {
   text-align: right;
 }
-
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
 *::-webkit-input-placeholder {
     font-family: "MicroSoft YaHei","sans-serif";
     color: rgba(128,128,128,1);
+}
+
+.hide {
+  display: none;
 }
 // font-family
 
